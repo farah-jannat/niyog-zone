@@ -106,3 +106,50 @@ export const logout = async (req, res) => {
     console.log("error while logging out", err);
   }
 };
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { fullname, email, phoneNumber, bio, skills } = req.body;
+    const file = req.file;
+    // cloudinary will be here
+    let skillsArray;
+    if (skills) {
+      skillsArray = skills.split(",");
+    }
+    const userId = req.id; //middleware authentication
+    console.log("this i user id", userId);
+    let user = await User.findOne({ _id: userId });
+    console.log("user is here", user);
+    if (!user) {
+      return res.status(400).json({
+        message: "User not found.",
+        success: false,
+      });
+    }
+    // updating data
+    if (fullname) user.fullname = fullname;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (bio) user.profile.bio = bio;
+    if (skills) user.profile.skills = skillsArray;
+
+    // resume comes later here...
+    await user.save();
+
+    user = {
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      role: user.role,
+      profile: user.profile,
+    };
+    return res.status(200).json({
+      message: "Profile updated successfully.",
+      user,
+      success: true,
+    });
+  } catch (err) {
+    console.log("error while updating profile", err);
+  }
+};
