@@ -53,8 +53,8 @@ export const getCompany = async (req, res) => {
 export const getCompanyById = async (req, res) => {
   try {
     const companyId = req.params.id;
-    console.log("this is companyid", companyId)
-    const company = await Company.findOne({_id: companyId });
+    console.log("this is companyid", companyId);
+    const company = await Company.findOne({ _id: companyId });
     if (!company) {
       return res.status(404).json({
         message: "Company not found.",
@@ -70,3 +70,31 @@ export const getCompanyById = async (req, res) => {
   }
 };
 
+export const updateCompany = async (req, res) => {
+  try {
+    const { name, description, website, location } = req.body;
+
+    const file = req.file;
+    //the cloudinary will be here
+
+    const updateData = { name, description, website, location };
+
+    const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+    });
+
+    if (!company) {
+      return res.status(404).json({
+        message: "Company not found.",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "Company information updated.",
+      company,
+      success: true,
+    });
+  } catch (error) {
+    console.log("error while updating company date", error);
+  }
+};
