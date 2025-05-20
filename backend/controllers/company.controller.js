@@ -49,3 +49,24 @@ export const getCompany = async (req, res) => {
     console.log("eroor while fetching companies", err);
   }
 };
+
+export const getCompanyById = async (req, res) => {
+  try {
+    const companyId = req.params.id;
+    console.log("this is companyid", companyId)
+    const company = await Company.findOne({_id: companyId });
+    if (!company) {
+      return res.status(404).json({
+        message: "Company not found.",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      company,
+      success: true,
+    });
+  } catch (err) {
+    console.log("error while fetching this company", err);
+  }
+};
+
