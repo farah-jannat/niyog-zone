@@ -76,3 +76,31 @@ export const getAppliedJobs = async (req, res) => {
     console.log("error while getting applied jobs", err);
   }
 };
+
+
+// admin gonna check applicants..
+
+export const getApplicants = async (req,res) => {
+    try {
+        const jobId = req.params.id;
+        const job = await Job.findById(jobId).populate({
+            path:'applications',
+            options:{sort:{createdAt:-1}},
+            populate:{
+                path:'applicant'
+            }
+        });
+        if(!job){
+            return res.status(404).json({
+                message:'Job not found.',
+                success:false
+            })
+        };
+        return res.status(200).json({
+            job, 
+            succees:true
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
