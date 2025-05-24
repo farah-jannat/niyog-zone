@@ -3,8 +3,11 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../shared/Navbar";
+import { USER_API_END_POINT } from "@/utils/constant";
+import { toast } from "sonner";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -12,14 +15,30 @@ const Login = () => {
     password: "",
     role: "",
   });
+  const navigate = useNavigate();
   const changeEvenHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
+    try {
+      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      console.log("here is response from login page", res.data.succes);
+      if (res.data.succes) {
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (err) {
+      console.log("eroor form login page", err);
+    }
   };
+
   return (
     <div>
       <Navbar />
