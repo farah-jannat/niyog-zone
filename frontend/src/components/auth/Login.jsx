@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -7,21 +7,49 @@ import { Link } from "react-router-dom";
 import Navbar from "../shared/Navbar";
 
 const Login = () => {
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
+  const changeEvenHandler = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    console.log(input);
+  };
   return (
     <div>
       <Navbar />
       <div className="flex items-center justify-center max-w-7xl mx-auto">
-        <form className="w-1/2 border border-gray-200 rounded-md p-4 my-10">
+        <form
+          onSubmit={submitHandler}
+          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
+        >
           <h1 className="font-bold text-xl mb-5">Login</h1>
 
           <div className="my-2">
             <Label>Email</Label>
-            <Input type="email" placeholder="farah@gmail.com" />
+            <Input
+              type="email"
+              placeholder="farah@gmail.com"
+              value={input.email}
+              name="email"
+              onChange={changeEvenHandler}
+            />
           </div>
 
           <div className="my-2">
             <Label>Password</Label>
-            <Input type="password" placeholder="farah" />
+            <Input
+              type="password"
+              placeholder="farah"
+              value={input.password}
+              name="password"
+              onChange={changeEvenHandler}
+            />
           </div>
           <div className="flex items-center justify-between ">
             <RadioGroup
@@ -33,6 +61,8 @@ const Login = () => {
                   type="radio"
                   name="role"
                   value="student"
+                  checked={input.role == "student"}
+                  onChange={changeEvenHandler}
                   className="cursor-pointer"
                 />
                 <Label htmlFor="r1">Student</Label>
@@ -41,13 +71,14 @@ const Login = () => {
                 <Input
                   type="radio"
                   name="role"
-                  value="student"
+                  value="recruiter"
+                  checked={input.role == "recruiter"}
                   className="cursor-pointer"
+                  onChange={changeEvenHandler}
                 />
                 <Label htmlFor="r1">Recruiter</Label>
               </div>
             </RadioGroup>
-            
           </div>
           <Button type="submit" className="w-full my-4">
             Login
