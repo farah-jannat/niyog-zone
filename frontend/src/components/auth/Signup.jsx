@@ -3,27 +3,61 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../shared/Navbar";
+import axios from "axios";
+import { USER_API_END_POINT } from "@/utils/constant";
+import { toast } from "sonner";
 
 const Signup = () => {
   const [input, setInput] = useState({
-    fullname: "",
+    fullName: "",
     email: "",
     phoneNumber: "",
     password: "",
     role: "",
     file: "",
   });
+  const navigate = useNavigate();
+
   const changeEvenHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const changeFileHandler = (e) => {
     setInput({ ...input, file: e.target.files?.[0] });
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(input);
+
+    const formData = new FormData();
+    formData.append("fullName", input.fullName);
+    formData.append("email", input.email);
+    formData.append("phoneNumber", input.phoneNumber);
+    formData.append("password", input.password);
+    formData.append("role", input.role);
+    if (input.file) {
+      formData.append("file", input.file);
+    }
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+    try {
+      console.log("try is working");
+      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      });
+      console.log("After axios.post has resolved, before console.log(res)");
+      console.log("res if tere is any eroor or not", res);
+      if (res.data.success) {
+        navigate("/login");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log("error form signup page", error);
+      toast.error(error.response.data.message);
+    }
   };
   return (
     <div>
@@ -39,8 +73,8 @@ const Signup = () => {
             <Input
               type="text"
               placeholder="your name"
-              value={input.fullname}
-              name="fullname"
+              value={input.fullName}
+              name="fullName"
               onChange={changeEvenHandler}
             />
           </div>
