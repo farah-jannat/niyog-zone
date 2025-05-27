@@ -8,9 +8,9 @@ const Jobs = () => {
   return (
     <div>
       <Navbar />
-      <div className="max-w-7xl mx-auto mt-5 bg-green-300">
+      <div className="max-w-7xl mx-auto mt-5 ">
         <div className="flex gap-5">
-          <div className="w-20% bg-blue-800">
+          <div className="w-20% ">
             <FilterCard />
           </div>{" "}
           {jobsArray.length <= 0 ? (
