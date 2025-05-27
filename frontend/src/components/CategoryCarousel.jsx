@@ -22,7 +22,7 @@ const CategoryCarousel = () => {
       <Carousel className="mx-auto max-w-xl my-20">
         <CarouselContent className="mx-auto">
           {category.map((cat, index) => (
-            <CarouselItem className="md-basis-1/2 lg-basis-1/3">
+            <CarouselItem className="md-basis-1/2 lg:basis-1/3">
               <Button variant="outline" className="rounded-full">
                 {cat}
               </Button>
