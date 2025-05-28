@@ -8,11 +8,14 @@ import { Label } from "./ui/label";
 import AppliedJobTable from "./AppliedJobTable";
 import { useState } from "react";
 import UpdateProfileDialog from "./updateProfileDialog";
+import { useSelector } from "react-redux";
 
 const skills = ["Html", "javascript", "python", "c++", "css"];
 const isResume = true;
 const Profile = () => {
   const [open, setOpen] = useState(false);
+  const { user } = useSelector((store) => store.auth);
+  console.log("user from updateuprofile", user);
 
   return (
     <div>
@@ -22,16 +25,13 @@ const Profile = () => {
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24">
               <AvatarImage
-                src="https://www.shutterstock.com/image-vector/circle-line-simple-design-logo-600nw-2174926871.jpg"
+                src={user?.Profile?.profilePhoto}
                 alt="profile"
               />
             </Avatar>
             <div>
-              <h1 className="font-medium text-xl">Full Name</h1>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Id
-                quaerat optio dignissimos quia tenetur voluptatem?
-              </p>
+              <h1 className="font-medium text-xl">{user?.fullName}</h1>
+              <p>{user?.Profile?.bio}</p>
             </div>
           </div>
           <Button
@@ -45,18 +45,18 @@ const Profile = () => {
         <div className="my-5">
           <div className="flex items-center gap-3 my-2">
             <Mail />
-            <span>mim@gmail.com</span>
+            <span>{user?.email}</span>
           </div>
           <div className="flex items-center gap-3 my-2">
             <Contact />
-            <span>87867857</span>
+            <span>{user?.phoneNumber}</span>
           </div>
         </div>
         <div className="my-4">
           <h1>Skills</h1>
           <div className="flex items-center gap-2 ">
-            {skills.length != 0 ? (
-              skills.map((item, index) => (
+            {user?.Profile?.skills.length != 0 ? (
+              user?.Profile?.skills.map((item, index) => (
                 <Badge className="px-3 py-1" key={index}>
                   {item}
                 </Badge>
@@ -71,10 +71,10 @@ const Profile = () => {
           {isResume ? (
             <a
               target="blank"
-              href=""
-              className="text-blue-500 w-full hover:underline cursor-pointer"
+              href={user?.Profile?.resume}
+              className="text-blue-500 w-full hover:underline cursor-pointer "
             >
-              this the resume
+              {user?.Profile?.resumeOriginalName}
             </a>
           ) : (
             <span>NA</span>
