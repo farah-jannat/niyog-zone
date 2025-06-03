@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "@/redux/authSlice";
 import store from "@/redux/store";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -19,7 +20,7 @@ const Login = () => {
     password: "",
     role: "",
   });
-  const { loading } = useSelector((store) => store.auth);
+  const { loading, user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const changeEvenHandler = (e) => {
@@ -38,7 +39,7 @@ const Login = () => {
       });
       console.log("here is user from login page", res.data.user);
       if (res.data.succes) {
-        dispatch(setUser(res.data.user))
+        dispatch(setUser(res.data.user));
         navigate("/");
         toast.success(res.data.message);
       }
@@ -48,6 +49,11 @@ const Login = () => {
       dispatch(setLoading(false));
     }
   };
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div>
