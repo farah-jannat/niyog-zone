@@ -2,7 +2,7 @@ import React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
-import { LogOut, User2 } from "lucide-react";
+import { Bell, LogOut, User2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -32,16 +32,16 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-white">
-      <div className="flex justify-between items-center mx-auto max-w-7xl h-16 ">
+    <div>
+      <div className="flex justify-between items-center w-[93%] mx-auto h-16 ">
         <div>
           <h1 className="text-2xl font-bold">
-            Job<span className="text-[#F83002]">Portal</span>
+            Niyog<span className="text-blue-900">Zone</span>
           </h1>
         </div>
 
         <div className="flex items-center gap-12 ">
-          <ul className="flex font-medium items-center gap-5">
+          <ul className="hidden md:flex font-medium items-center  gap-5">
             {user && user.role == "recruiter" ? (
               <>
                 <li>
@@ -71,65 +71,77 @@ const Navbar = () => {
                 <Button variant="outline">Login</Button>
               </Link>
               <Link to="/signup">
-                <Button className="bg-[#6A38c2] hover:bg-[#5b30a6]">
-                  signup
-                </Button>
+                <Button className="bg-button_blue ">signup</Button>
               </Link>
             </div>
           ) : (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Avatar>
-                  <AvatarImage
-                    src={user?.Profile?.profilePhoto}
-                    alt="@shadcn"
-                  />
-                </Avatar>
-              </PopoverTrigger>
-              <PopoverContent className="w-80">
-                <div>
-                  <div className="flex gap-2 space-y-2  items-center">
-                    <Avatar className="cursor-pointer">
-                      <AvatarImage
-                        src={user?.Profile?.profilePhoto}
-                        alt="@shadcn"
-                      />
-                    </Avatar>
-                    <div>
-                      <h4 className="font-medium">{user?.fullName}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {user?.Profile?.bio}
-                      </p>
+            <div className="flex items-center gap-5">
+              <div className="relative">
+                <Bell size={28} />
+                <div className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center bg-button_blue text-white rounded-full text-xs">
+                  1
+                </div>
+              </div>
+
+              <div className="hidden sm:flex flex-col items-start">
+                <h2 className="font-semibold">Emma W</h2>
+                <h1 className="text-sm text-gray-500">Recruiter</h1>
+              </div>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Avatar>
+                    <AvatarImage
+                      src={user?.Profile?.profilePhoto}
+                      alt="@shadcn"
+                    />
+                  </Avatar>
+                </PopoverTrigger>
+                <PopoverContent className="w-80">
+                  <div>
+                    <div className="flex gap-2 space-y-2  items-center">
+                      <Avatar className="cursor-pointer">
+                        <AvatarImage
+                          src={user?.Profile?.profilePhoto}
+                          alt="@shadcn"
+                        />
+                      </Avatar>
+                      <div>
+                        <h4 className="font-medium">{user?.fullName}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {user?.Profile?.bio}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col my-2 text-gray-600 ">
-                    {user?.role == "student" ? (
-                      <>
-                        <div className="flex gap-2 items-center w-fit cursor-pointer">
-                          <User2 />
-                          <Button variant="link">
-                            <Link to="/profile">view profile</Link>
-                          </Button>
-                        </div>
+                    <div className="flex flex-col my-2 text-gray-600 ">
+                      {user?.role == "student" ? (
+                        <>
+                          <div className="flex gap-2 items-center w-fit cursor-pointer">
+                            <User2 />
+                            <Button variant="link">
+                              <Link to="/profile">view profile</Link>
+                            </Button>
+                          </div>
+                          <div className="flex gap-2 items-center w-fit cursor-pointer ">
+                            <LogOut />
+                            <Button onClick={logoutHandler} variant="link">
+                              logout
+                            </Button>
+                          </div>
+                        </>
+                      ) : (
                         <div className="flex gap-2 items-center w-fit cursor-pointer ">
                           <LogOut />
                           <Button onClick={logoutHandler} variant="link">
                             logout
                           </Button>
                         </div>
-                      </>
-                    ) : (
-                      <div className="flex gap-2 items-center w-fit cursor-pointer ">
-                        <LogOut />
-                        <Button onClick={logoutHandler} variant="link">
-                          logout
-                        </Button>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
-              </PopoverContent>
-            </Popover>
+                </PopoverContent>
+              </Popover>
+            </div>
           )}
         </div>
       </div>
