@@ -12,27 +12,45 @@ const Companies = () => {
   useGetAllCompanies();
   const [input, setInput] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(setSearchCompanyByText(input))
-  },[input])
+  useEffect(() => {
+    dispatch(setSearchCompanyByText(input));
+  }, [input]);
   return (
     <div>
-      <Navbar />
-      <div className="max-w-6xl mx-auto my-10">
-        <div className="flex items-center justify-between ">
-          <Input
-            className="w-fit"
-            placeholder="filter by name"
-            onChange={(e) => setInput(e.target.value)}
-          />
-
-          <Button onClick={() => navigate("/admin/companies/create")}>
-            New Company
-          </Button>
+      <div>
+        {/* part1 */}
+        <div className="bg-grayish ">
+          <Navbar />
+          <div className="flex items-center justify-between">
+            <Input
+              className="w-fit"
+              placeholder="filter by name"
+              onChange={(e) => setInput(e.target.value)}
+            />
+            <button className="bg-button_blue text-center text-white py-2 px-4 rounded-xl">
+              New Company
+            </button>
+          </div>
         </div>
-        <CompaniesTable />
+        {/* part2 */}
+        <div></div>
+        {/* <Navbar />
+        <div className="max-w-6xl mx-auto my-10 ">
+          <div className="flex items-center justify-between ">
+            <Input
+              className="w-fit"
+              placeholder="filter by name"
+              onChange={(e) => setInput(e.target.value)}
+            />
+
+            <Button onClick={() => navigate("/admin/companies/create")}>
+              New Company
+            </Button>
+          </div>
+        </div>
+        <CompaniesTable /> */}
       </div>
     </div>
   );
