@@ -33,15 +33,15 @@ const Navbar = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center w-[93%] mx-auto h-16 ">
+      <div className="flex justify-between items-center w-[80%] mx-auto h-16 text-white">
         <div>
           <h1 className="text-2xl font-bold">
-            Niyog<span className="text-blue-900">Zone</span>
+            Niyog<span className="text-blue-300">Zone</span>
           </h1>
         </div>
 
-        <div className="flex items-center gap-12 ">
-          <ul className="hidden md:flex font-medium items-center  gap-5">
+        <div>
+          <ul className="hidden md:flex font-medium items-center  gap-7">
             {user && user.role == "recruiter" ? (
               <>
                 <li>
@@ -60,25 +60,30 @@ const Navbar = () => {
                   <Link to="/jobs">Jobs</Link>
                 </li>
                 <li>
-                  <Link to="/browse">Browse</Link>
+                  <Link to="/browse">Find a job</Link>
+                </li>
+                <li>
+                  <Link to="/browse">Company</Link>
                 </li>
               </>
             )}
           </ul>
+        </div>
+        <div>
           {!user ? (
             <div className="flex items-center gap-2">
               <Link to="/login">
                 <Button variant="outline">Login</Button>
               </Link>
               <Link to="/signup">
-                <Button className="bg-button_blue ">signup</Button>
+                <Button className="bg-button_blue ">Signup</Button>
               </Link>
             </div>
           ) : (
             <div className="flex items-center gap-5">
               <div className="relative">
                 <Bell size={28} />
-                <div className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center bg-button_blue text-white rounded-full text-xs">
+                <div className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center bg-red-500 text-white rounded-full text-xs">
                   1
                 </div>
               </div>
