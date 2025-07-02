@@ -7,6 +7,7 @@ import Footer from "./shared/Footer";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import HomeCreateProfile from "./HomeCreateProfile";
 
 const Home = () => {
   useGetAllJobs();
@@ -20,10 +21,14 @@ const Home = () => {
   }, []);
   return (
     <div>
-      <Navbar />
-      <HeroSection />
-      <CategoryCarousel />
+      <div className="h-screen bg-Blue">
+        <Navbar />
+        <HeroSection />
+        <CategoryCarousel />
+      </div>
+
       <LatestJobs />
+      <HomeCreateProfile />
       <Footer />
     </div>
   );
