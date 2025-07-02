@@ -75,45 +75,44 @@ const CategoryCarousel = () => {
   return (
     <div>
       <div className="text-center mt-20 ">
-        <h2 className="text-2xl font-semibold">Browse Jobs Category</h2>
+        {/* <h2 className="text-2xl font-semibold">Browse Jobs Category</h2>
         <h1 className="text-xs text-gray-500 mt-2">
           Find the Jobs thats perfect for you, about 800+ new jobs everyday
-        </h1>
+        </h1> */}
       </div>
-      <Carousel className="mx-auto w-[70%] md:w-[85%] my-10">
-        <CarouselContent className="mx-auto">
-          {category.map((cat, index) => (
-            <CarouselItem className="sm:basis-1/2 lg:basis-1/4">
-              <div className="flex flex-col gap-2 w-[200px]">
-                {/* <div className="flex flex-col gap-5"> */}
+      <div className="mx-auto flex flex-col items-center gap-5   w-[70%] md:w-[80%] my-10">
+        <Carousel className="w-full">
+          <CarouselContent >
+            {category.map((cat, index) => (
+              <CarouselItem className="hidden  sm:block basis-1/2 md:basis-1/3 lg:basis-1/4">
                 <div
                   onClick={() => searchJobHandler(cat)}
-                  className="flex items-center justify-center rounded-xl p-3  gap-3 border shadow-md border-gray-200 "
+                  className="flex items-center rounded-md p-3  gap-3 border shadow-md bg-White border-gray-200 "
                 >
-                  <BookOpenText size={30} strokeWidth="1" className="text-blue-900" />
+                  <BookOpenText
+                    size={40}
+                    strokeWidth="1"
+                    className="text-blue-900"
+                  />
                   <div className="flex flex-col">
                     <p className="font-semibold text-[14px]"> {cat.name}</p>
                     <span className="text-xs text-gray-500">{cat.desc}</span>
                   </div>
                 </div>
-                {/* </div> */}
-                <div
-                  onClick={() => searchJobHandler(cat)}
-                  className="flex items-center justify-center rounded-xl p-3  gap-3 border border-gray-200 "
-                >
-                  <Home size={20} className="text-blue-900" />
-                  <div className="flex flex-col">
-                    <p className="font-semibold"> {cat.name}</p>
-                    <span className="text-xs text-gray-500">{cat.desc}</span>
-                  </div>
-                </div>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="bg-blue-100 text-blue-900" />
-        <CarouselNext className="bg-blue-100 text-blue-900" />
-      </Carousel>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          {/* <CarouselPrevious className="bg-blue-100 text-blue-900" />
+        <CarouselNext className="bg-blue-100 text-blue-900" /> */}
+        </Carousel>
+        <div className="hidden sm:flex items-center gap-2">
+          <div className="h-[6px] w-[6px] bg-blue-200 rounded-full"></div>
+          <div className="h-[10px] w-[10px] bg-White rounded-full"></div>
+          <div className="h-[6px] w-[6px] bg-blue-200 rounded-full"></div>
+          <div className="h-[6px] w-[6px] bg-blue-200 rounded-full"></div>
+          <div className="h-[6px] w-[6px] bg-blue-200 rounded-full"></div>
+        </div>
+      </div>
     </div>
   );
 };
