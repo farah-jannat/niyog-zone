@@ -12,7 +12,7 @@ const LatestJobsCards = ({ job }) => {
       onClick={() => navigate(`/description/${job._id}`)}
       className="max-w-[200px] p-2 flex shadow-md flex-col gap-2 sm:p-5 gap-5 bg-white rounded-md border border-gray-150  cursor-pointer mt-10   lg:max-w-[260px]"
     >
-      <h1 className="font-semibold capitalize text-[14px]  text-[#333] text-normal">
+      <h1 className="font-semibold capitalize text-[14px]  text-Black text-normal">
         {job?.title}
       </h1>
       <div className="flex gap-1 items-center text-[12px] font-semibold -mt-[6px]">
