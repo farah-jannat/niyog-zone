@@ -16,7 +16,10 @@ const Job = ({ job }) => {
   };
 
   return (
-    <div className="flex-1 p-5 rounded-xl hover:bg-White border border-gray-100 max-w-[250px] flex flex-col gap-4">
+    <div
+      className="flex-1 p-3 sm:p-5 max-w-[500px] rounded-xl hover:bg-White border border-gray-100 sm:max-w-[250px] flex flex-col gap-4 cursor-pointer"
+      onClick={() => navigate(`/description/${job?._id}`)}
+    >
       <div className="flex items-center gap-2">
         <div className="flex items-center justify-between  w-full">
           <div className="flex items-center gap-3">
@@ -42,7 +45,7 @@ const Job = ({ job }) => {
       </div>
 
       <h1 className="font-semibold text-Black">{job?.title}</h1>
-      <p className="hidden md:block text-sm leading-[1.6] text-gray-600">{job?.description}</p>
+      <p className=" text-sm leading-[1.6] text-gray-600">{job?.description}</p>
 
       <div className="flex gap-1 items-center text-[12px] font-semibold -mt-[6px]">
         <div className="flex gap-1 items-center text-gray-500 mr-3">
