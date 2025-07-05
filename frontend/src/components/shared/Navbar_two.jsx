@@ -60,7 +60,7 @@ const Navbar_two = () => {
                   <Link to="/browse">Find a job</Link>
                 </li>
                 <li>
-                  <Link to="/browse">Company</Link>
+                  <Link to="/browse">My Network</Link>
                 </li>
               </>
             )}
