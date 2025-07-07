@@ -4,16 +4,60 @@ import { Button } from "./ui/button";
 import { ChevronDown, Home, MapPin, Search } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { setSearchedQuery } from "@/redux/jobSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Label } from "./ui/label";
+import { Select, Separator } from "@radix-ui/react-select";
+import {
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+
+const populerSearches = ["Designer", "Mid", "Developer", "Senior Developer"];
+
+const filterData = [
+  {
+    name: "Industry",
+    icon: "Home",
+    array: [
+      "All",
+      "Software",
+      "mid",
+      "Finance",
+      "Marketing",
+      "Management",
+      "Design",
+    ],
+  },
+  {
+    name: "location",
+    icon: "MapPin",
+    array: ["All", "Dhaka", "Florida", "Bonani"],
+  },
+];
+
 const HeroSection = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Get a specific query parameter
+  const category = searchParams.get("category");
+  const page = searchParams.get("page");
+
   const [query, setQuery] = useState("");
+  const [label, setLabel] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const searchJobHandler = () => {
-    dispatch(setSearchedQuery(query));
-    navigate("/browse");
+    console.log("the que is = ", query);
+    // navigate("/jobs");
+    navigate(`/jobs?search=${query}`);
+
+    // console.log("hello");
+    // dispatch(setSearchedQuery(query));
   };
 
   return (
@@ -38,30 +82,79 @@ const HeroSection = () => {
               className="border-none w-full px-0"
             />
           </div>
-          <span className="hidden md:block">|</span>
-          <div className="hidden md:flex  items-center gap-2 ">
-            <Home size={20} className="" />
-            <span className="">Industry</span>
-            <ChevronDown size={17} />
-          </div>
-          <span className="hidden md:block">|</span>
-          <div className="hidden md:flex  items-center gap-2 ">
-            <MapPin size={20} className="" />
-            <span>location</span>
-            <ChevronDown size={17} />
-          </div>
+          {/* <span className="hidden md:block">|</span> */}
+          {filterData.map((item, idx) => (
+            <>
+              <Select>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder={item.name} />
+                </SelectTrigger>
+                <SelectContent>
+                  {item.array.map((item, idx) => (
+                    <>
+                      <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
+                        {/* <Label
+                          // onClick={() => navigate(`/jobs?search=${item}`)}
+                          className="text-sm font-normal text-gray-500 cursor-pointer hover:text-gray-900"
+                        >
+                          {item}
+                        </Label>
+
+                        <span className="bg-light_purple rounded-md py-1 px-1 font-bold text-blue-900 text-[10px]">
+                          29
+                        </span> */}
+                        <SelectItem value={item}>{item}</SelectItem>
+                      </div>
+                      <Separator className="border-b" />
+                    </>
+                  ))}
+                </SelectContent>
+              </Select>
+            </>
+          ))}
+
           <Button onClick={searchJobHandler} className="rounded-md bg-Blue">
             search
           </Button>
         </div>
-        <p className="hidden sm:block text-text_white ">
+        <p className="hidden sm:flex items-center gap-3 text-text_white  mx-auto">
+          {" "}
           popular searches:{"   "}
-          <a className="underline" href="#">
+          {populerSearches.map((item, idx) => (
+            <span
+              // onClick={(e) => {
+              //   setQuery(item); // First, set the query
+              //   searchJobHandler(); // Then, call the search handler
+              // }}
+              onClick={() => navigate(`/jobs?search=${item}`)}
+              className="underline cursor-pointer"
+            >
+              {item},
+            </span>
+          ))}
+        </p>
+        {/* <p className="hidden sm:block text-text_white ">
+          popular searches:{"   "}
+          <a
+            onClick={(e) => {
+              setQuery("Designer"); // First, set the query
+              searchJobHandler(); // Then, call the search handler
+            }}
+            className="underline"
+            href="#"
+          >
             Designer,
           </a>
           {"  "}
-          <a className="underline" href="#">
-            Web,{"  "}
+          <a
+            onClick={(e) => {
+              setQuery("mid"); // First, set the query
+              searchJobHandler(); // Then, call the search handler
+            }}
+            className="underline"
+            href="#"
+          >
+            mid,{"  "}
           </a>
           <a className="underline" href="">
             IOS Developer,
@@ -70,7 +163,7 @@ const HeroSection = () => {
           <a className="underline" href="">
             Php
           </a>
-        </p>
+        </p> */}
       </div>
     </div>
   );
