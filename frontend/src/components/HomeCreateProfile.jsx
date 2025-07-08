@@ -1,8 +1,10 @@
 import { BadgeCheck } from "lucide-react";
 import React from "react";
 import { Button } from "./ui/button";
+import { Link, useNavigate } from "react-router-dom";
 
 const HomeCreateProfile = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-[#EDF2FC] mt-10 flex items-center justify-center">
       <div className="flex flex-col gap-10 w-[90%] sm:flex-row items-center sm:gap-20 sm:w-[80%] mx-auto  my-10   ">
@@ -63,9 +65,14 @@ const HomeCreateProfile = () => {
               </div>
             </div>
           </div>
-          <Button className="bg-green-700 hover:bg-green-800 w-[200px]">
-            Create an Account
-          </Button>
+          <Link to="/signup">
+            <Button
+              onClick={() => {}}
+              className="bg-green-700 hover:bg-green-800 w-[200px]"
+            >
+              Create an Account
+            </Button>
+          </Link>
         </div>
       </div>
       //{" "}
