@@ -69,21 +69,21 @@ const Navbar = () => {
         <div>
           {!user ? (
             <div className="flex items-center gap-2">
-              <Link to="/login">
-                <Button variant="outline">Login</Button>
-              </Link>
               <Link to="/signup">
-                <Button className="bg-button_blue ">Signup</Button>
+                <Button variant="none" className="underline">Signup</Button>
+              </Link>
+              <Link to="/login">
+                <Button variant="outline" className="bg-White text-Blue">Login</Button>
               </Link>
             </div>
           ) : (
             <div className="flex items-center gap-5">
-              <div className="relative">
+              {/* <div className="relative">
                 <Bell size={28} />
                 <div className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center bg-red-500 text-white rounded-full text-xs">
                   1
                 </div>
-              </div>
+              </div> */}
 
               <div className="hidden sm:flex flex-col items-start">
                 <h2 className="font-semibold">Emma W</h2>
