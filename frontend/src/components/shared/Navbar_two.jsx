@@ -57,7 +57,7 @@ const Navbar_two = () => {
                   <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <Link to="/browse">Find a job</Link>
+                  <Link to="/jobs">Find a job</Link>
                 </li>
                 <li>
                   <Link to="/browse">My Network</Link>
@@ -73,7 +73,7 @@ const Navbar_two = () => {
                 <Button variant="outline">Login</Button>
               </Link>
               <Link to="/signup">
-                <Button className="bg-button_blue ">Signup</Button>
+                <Button className="bg-Blue">Signup</Button>
               </Link>
             </div>
           ) : (
