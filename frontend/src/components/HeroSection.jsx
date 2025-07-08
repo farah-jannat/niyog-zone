@@ -19,26 +19,25 @@ import {
 
 const populerSearches = ["Designer", "Mid", "Developer", "Senior Developer"];
 
-const filterData = [
-  {
-    name: "Industry",
-    icon: "Home",
-    array: [
-      "All",
-      "Software",
-      "mid",
-      "Finance",
-      "Marketing",
-      "Management",
-      "Design",
-    ],
-  },
-  {
-    name: "location",
-    icon: "MapPin",
-    array: ["All", "Dhaka", "Florida", "Bonani"],
-  },
-];
+const filter1 = {
+  name: "Industry",
+  icon: "Home",
+  array: [
+    "All",
+    "Software",
+    "mid",
+    "Finance",
+    "Marketing",
+    "Management",
+    "Design",
+  ],
+};
+
+const filter2 = {
+  name: "location",
+  icon: "MapPin",
+  array: ["All", "Dhaka", "Florida", "Bonani"],
+};
 
 const HeroSection = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,21 +47,24 @@ const HeroSection = () => {
   const page = searchParams.get("page");
 
   const [query, setQuery] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [location, setLocation] = useState("");
   const [label, setLabel] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const searchJobHandler = () => {
     console.log("the que is = ", query);
     // navigate("/jobs");
-    navigate(`/jobs?search=${query}`);
+    navigate(`/jobs?search=${query}&industry=${industry}&location=${location}`);
 
     // console.log("hello");
     // dispatch(setSearchedQuery(query));
   };
 
   return (
-    <div className="text-center w-[70%] mx-auto md:w-[80%] text-white">
-      <div className="flex flex-col gap-5 my-10 ">
+    <div className="text-center w-[70%] mx-auto md:w-[80%] text-white  mt-10">
+      <div className="flex flex-col gap-5 ">
         <h1 className=" text-3xl md:text-4xl font-bold">
           The #1 Job Board for Hiring <br />
           or Find Your next Job
@@ -83,17 +85,18 @@ const HeroSection = () => {
             />
           </div>
           {/* <span className="hidden md:block">|</span> */}
-          {filterData.map((item, idx) => (
-            <>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder={item.name} />
-                </SelectTrigger>
-                <SelectContent>
-                  {item.array.map((item, idx) => (
-                    <>
-                      <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
-                        {/* <Label
+
+          {/* Industry */}
+          <div className="hidden md:block">
+            <Select onValueChange={(value) => setIndustry(value)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={filter1.name} />
+              </SelectTrigger>
+              <SelectContent>
+                {filter1.array.map((item, idx) => (
+                  <>
+                    <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
+                      {/* <Label
                           // onClick={() => navigate(`/jobs?search=${item}`)}
                           className="text-sm font-normal text-gray-500 cursor-pointer hover:text-gray-900"
                         >
@@ -103,16 +106,33 @@ const HeroSection = () => {
                         <span className="bg-light_purple rounded-md py-1 px-1 font-bold text-blue-900 text-[10px]">
                           29
                         </span> */}
-                        <SelectItem value={item}>{item}</SelectItem>
-                      </div>
-                      <Separator className="border-b" />
-                    </>
-                  ))}
-                </SelectContent>
-              </Select>
-            </>
-          ))}
+                      <SelectItem value={item}>{item}</SelectItem>
+                    </div>
 
+                    <Separator className="border-b" />
+                  </>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {/* filter 2 */}
+          <div className="hidden md:block">
+            <Select onValueChange={(value) => setLocation(value)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={filter2.name} />
+              </SelectTrigger>
+              <SelectContent>
+                {filter2.array.map((item, idx) => (
+                  <>
+                    <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
+                      <SelectItem value={item}>{item}</SelectItem>
+                    </div>
+                    <Separator className="border-b" />
+                  </>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <Button onClick={searchJobHandler} className="rounded-md bg-Blue">
             search
           </Button>
