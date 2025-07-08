@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import store from "@/redux/store";
 import { setLoading } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
+import Navbar_two from "../shared/Navbar_two";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -74,7 +75,7 @@ const Signup = () => {
   }, []);
   return (
     <div>
-      <Navbar />
+      <Navbar_two />
       <div className="flex items-center justify-center max-w-7xl mx-auto">
         <form
           onSubmit={submitHandler}
