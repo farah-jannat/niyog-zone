@@ -64,6 +64,11 @@ const Jobs = () => {
   const searchValue = searchParams.get("search");
   const industryValue = searchParams.get("industry");
   const locationValue = searchParams.get("location");
+  const keywordValue = searchParams.get("keyword");
+  const salaryValue = searchParams.get("salary");
+  const positionValue = searchParams.get("position");
+  console.log("position", positionValue);
+
   const dispatch = useDispatch();
 
   const searchJobHandler = () => {
@@ -73,8 +78,12 @@ const Jobs = () => {
       prevParams.set("search", query);
       prevParams.set("industry", industry);
       prevParams.set("location", location);
+      prevParams.set("keyword");
+      prevParams.set("salary");
+
       return prevParams;
     });
+    console.log("salary", salary);
     // navigate(`/jobs?search=${query}&industry=${industry}&location=${location}`);
   };
   // useEffect(() => {
@@ -111,9 +120,27 @@ const Jobs = () => {
     const trimmedLocationValue = locationValue
       ? locationValue.trim().toLowerCase()
       : "";
+    const trimmedkeywordValue = keywordValue
+      ? keywordValue.trim().toLowerCase()
+      : "";
+    const trimmedSalaryValue = salaryValue
+      ? salaryValue.trim().toLowerCase()
+      : "";
+
+    const trimmedPositionValue = positionValue
+      ? positionValue.trim().toLowerCase()
+      : "";
 
     // Check if any filter criteria are provided
-    if (trimmedSearchValue || trimmedIndustryValue || trimmedLocationValue) {
+    console.log("salary is ", salaryValue);
+    if (
+      trimmedSearchValue ||
+      trimmedIndustryValue ||
+      trimmedLocationValue ||
+      trimmedkeywordValue ||
+      trimmedSalaryValue ||
+      trimmedPositionValue
+    ) {
       console.log("searchValues ", trimmedSearchValue);
       console.log("searched query is true search query should be visible");
 
@@ -121,6 +148,7 @@ const Jobs = () => {
         const jobTitle = job.title.toLowerCase();
         const jobDescription = job.description.toLowerCase();
         const jobLocation = job.location.toLowerCase();
+        const jobSalary = String(job.salary).toLowerCase();
 
         // Individual filter conditions
         const matchesSearch = trimmedSearchValue
@@ -141,12 +169,33 @@ const Jobs = () => {
             jobLocation.includes(trimmedLocationValue)
           : false; // If locationValue is empty, this condition is false
 
+        const matchesKeyword = trimmedkeywordValue
+          ? jobTitle.includes(trimmedkeywordValue) ||
+            jobDescription.includes(trimmedkeywordValue) ||
+            jobLocation.includes(trimmedkeywordValue) // Or remove jobLocation if keyword doesn't apply there
+          : false;
+        const matchesSalary = trimmedSalaryValue
+          ? jobSalary.includes(trimmedSalaryValue) // Simple string match
+          : false;
+        const matchesPosition = trimmedPositionValue
+          ? jobTitle.includes(trimmedPositionValue) ||
+            jobDescription.includes(trimmedPositionValue) ||
+            jobLocation.includes(trimmedPositionValue) // Or remove jobLocation if keyword doesn't apply there
+          : false;
+
         // Combine conditions:
         // If ANY value is present, return true if it matches its respective filter.
         // This setup still uses OR logic across the different input fields (search, industry, location).
         // If you want jobs to match ALL filled-in criteria (e.g., search AND industry),
         // you'll need to adjust this combining logic.
-        return matchesSearch || matchesIndustry || matchesLocation;
+        return (
+          matchesSearch ||
+          matchesIndustry ||
+          matchesLocation ||
+          matchesKeyword ||
+          matchesSalary ||
+          matchesPosition
+        );
       });
 
       setFilterJobs(filteredJobs);
@@ -154,7 +203,14 @@ const Jobs = () => {
       // If no search criteria are provided, show all jobs
       setFilterJobs(allJobs);
     }
-  }, [allJobs, searchValue, industryValue, locationValue]); // Add industryValue and locationValue to dependencies
+  }, [
+    allJobs,
+    searchValue,
+    industryValue,
+    locationValue,
+    keywordValue,
+    salaryValue,
+  ]); // Add industryValue and locationValue to dependencies
 
   return (
     <div>
