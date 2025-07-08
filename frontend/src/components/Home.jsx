@@ -28,7 +28,8 @@ const Home = () => {
       </div>
 
       <LatestJobs />
-      <HomeCreateProfile />
+      {!user && <HomeCreateProfile />}
+
       <Footer />
     </div>
   );
