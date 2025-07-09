@@ -116,29 +116,24 @@ const Navbar_two = () => {
                       </div>
                     </div>
                     <div className="flex flex-col my-2 text-gray-600 ">
-                      {user?.role == "student" ? (
-                        <>
-                          <div className="flex gap-2 items-center w-fit cursor-pointer">
-                            <User2 />
-                            <Button variant="link">
-                              <Link to="/profile">view profile</Link>
-                            </Button>
-                          </div>
-                          <div className="flex gap-2 items-center w-fit cursor-pointer ">
-                            <LogOut />
-                            <Button onClick={logoutHandler} variant="link">
-                              logout
-                            </Button>
-                          </div>
-                        </>
-                      ) : (
+                      {/* {user?.role == "student" ? ( */}
+                      <>
+                        <div className="flex gap-2 items-center w-fit cursor-pointer">
+                          <User2 />
+                          <Button variant="link">
+                            <Link to="/profile">view profile</Link>
+                          </Button>
+                        </div>
                         <div className="flex gap-2 items-center w-fit cursor-pointer ">
                           <LogOut />
                           <Button onClick={logoutHandler} variant="link">
                             logout
                           </Button>
                         </div>
-                      )}
+                      </>
+                      {/* ) : ( */}
+
+                      {/* )} */}
                     </div>
                   </div>
                 </PopoverContent>
