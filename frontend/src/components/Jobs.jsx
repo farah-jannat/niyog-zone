@@ -67,6 +67,8 @@ const Jobs = () => {
   const keywordValue = searchParams.get("keyword");
   const salaryValue = searchParams.get("salary");
   const positionValue = searchParams.get("position");
+  const onsiteRemoteValue = searchParams.get("onsiteRemote");
+  const jobTypeValue = searchParams.get("jobType");
   console.log("position", positionValue);
 
   const dispatch = useDispatch();
@@ -130,6 +132,12 @@ const Jobs = () => {
     const trimmedPositionValue = positionValue
       ? positionValue.trim().toLowerCase()
       : "";
+    const trimmedOnsiteRemoteValue = onsiteRemoteValue
+      ? onsiteRemoteValue.trim().toLowerCase()
+      : "";
+    const trimmedJobTypeValue = jobTypeValue
+      ? jobTypeValue.trim().toLowerCase()
+      : "";
 
     // Check if any filter criteria are provided
     console.log("salary is ", salaryValue);
@@ -139,7 +147,9 @@ const Jobs = () => {
       trimmedLocationValue ||
       trimmedkeywordValue ||
       trimmedSalaryValue ||
-      trimmedPositionValue
+      trimmedPositionValue ||
+      trimmedOnsiteRemoteValue ||
+      trimmedJobTypeValue
     ) {
       console.log("searchValues ", trimmedSearchValue);
       console.log("searched query is true search query should be visible");
@@ -182,6 +192,16 @@ const Jobs = () => {
             jobDescription.includes(trimmedPositionValue) ||
             jobLocation.includes(trimmedPositionValue) // Or remove jobLocation if keyword doesn't apply there
           : false;
+        const matchesOnsiteRemote = trimmedOnsiteRemoteValue
+          ? jobTitle.includes(trimmedOnsiteRemoteValue) ||
+            jobDescription.includes(trimmedOnsiteRemoteValue) ||
+            jobLocation.includes(trimmedOnsiteRemoteValue) // Or remove jobLocation if keyword doesn't apply there
+          : false;
+        const matchesJobType = trimmedJobTypeValue
+          ? jobTitle.includes(trimmedJobTypeValue) ||
+            jobDescription.includes(trimmedJobTypeValue) ||
+            jobLocation.includes(trimmedJobTypeValue) // Or remove jobLocation if keyword doesn't apply there
+          : false;
 
         // Combine conditions:
         // If ANY value is present, return true if it matches its respective filter.
@@ -194,7 +214,9 @@ const Jobs = () => {
           matchesLocation ||
           matchesKeyword ||
           matchesSalary ||
-          matchesPosition
+          matchesPosition ||
+          matchesOnsiteRemote ||
+          matchesJobType
         );
       });
 
@@ -210,6 +232,9 @@ const Jobs = () => {
     locationValue,
     keywordValue,
     salaryValue,
+    positionValue,
+    onsiteRemoteValue,
+    jobTypeValue,
   ]); // Add industryValue and locationValue to dependencies
 
   return (
