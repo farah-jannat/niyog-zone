@@ -58,12 +58,12 @@ const FilterCard_two = () => {
       <RadioGroup value={selectedValue} onValueChange={changeHandler}>
         <div className="flex items-center justify-center gap-5 flex-wrap">
           {fitlerData.map((data, index) => (
-            <div>
+            <div key={index}>
               <h1 className="font-semibold text-Black">{data.fitlerType}</h1>
               {data.array.map((item, idx) => {
                 const itemId = `id${index}-${idx}`;
                 return (
-                  <div className="flex  items-center justify-between my-2 text-sm font-normal text-gray-500 ">
+                  <div key={itemId} className="flex  items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
                         value={item}
