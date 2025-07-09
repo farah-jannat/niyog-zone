@@ -16,23 +16,19 @@ const skills = ["Html", "javascript", "python", "c++", "css"];
 const isResume = true;
 
 const Profile = () => {
-  useGetAppliedJobs()
+  useGetAppliedJobs();
   const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
   console.log("user from updateuprofile", user);
 
   return (
-
     <div>
-      <Navbar_two/>
+      <Navbar_two />
       <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             <Avatar className="h-24 w-24">
-              <AvatarImage
-                src={user?.Profile?.profilePhoto}
-                alt="profile"
-              />
+              <AvatarImage src={user?.Profile?.profilePhoto} alt="profile" />
             </Avatar>
             <div>
               <h1 className="font-medium text-xl">{user?.fullName}</h1>
@@ -57,41 +53,48 @@ const Profile = () => {
             <span>{user?.phoneNumber}</span>
           </div>
         </div>
-        <div className="my-4">
-          <h1>Skills</h1>
-          <div className="flex items-center gap-2 ">
-            {user?.Profile?.skills.length != 0 ? (
-              user?.Profile?.skills.map((item, index) => (
-                <Badge className="px-3 py-1" key={index}>
-                  {item}
-                </Badge>
-              ))
-            ) : (
-              <span>NA</span>
-            )}
-          </div>
-        </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label className="text-md font-bold">Resume</Label>
-          {isResume ? (
-            <a
-              target="blank"
-              href={user?.Profile?.resume}
-              className="text-blue-500 w-full hover:underline cursor-pointer "
-            >
-              {user?.Profile?.resumeOriginalName}
-            </a>
-          ) : (
-            <span>NA</span>
-          )}
-        </div>
-      </div>
+        {user?.role == "student" ? (
+          <>
+            <div className="my-4">
+              <h1>Skills</h1>
+              <div className="flex items-center gap-2 ">
+                {user?.Profile?.skills.length != 0 ? (
+                  user?.Profile?.skills.map((item, index) => (
+                    <Badge className="px-3 py-1" key={index}>
+                      {item}
+                    </Badge>
+                  ))
+                ) : (
+                  <span>NA</span>
+                )}
+              </div>
+            </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label className="text-md font-bold">Resume</Label>
+              {isResume ? (
+                <a
+                  target="blank"
+                  href={user?.Profile?.resume}
+                  className="text-blue-500 w-full hover:underline cursor-pointer "
+                >
+                  {user?.Profile?.resumeOriginalName}
+                </a>
+              ) : (
+                <span>NA</span>
+              )}
+            </div>
 
-      <div className="max-w-4xl mx-auto rounded2xl">
-        <h1 className="font-bold text-lg my-5">Applied Jobs</h1>
-        <AppliedJobTable />
+            <div className="max-w-4xl mx-auto rounded2xl">
+              <h1 className="font-bold text-lg my-5">Applied Jobs</h1>
+              <AppliedJobTable />
+            </div>
+          </>
+        ) : (
+          <span>:)</span>
+        )}
+
+        <UpdateProfileDialog open={open} setOpen={setOpen} />
       </div>
-      <UpdateProfileDialog open={open} setOpen={setOpen} />
     </div>
   );
 };
