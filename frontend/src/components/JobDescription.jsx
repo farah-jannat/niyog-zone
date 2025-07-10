@@ -30,6 +30,14 @@ const JobDescription = () => {
   const jobId = params.id;
   const { singleJob } = useSelector((store) => store.job);
   const { user } = useSelector((store) => store.auth);
+
+  const daysAgoFunction = (mongodbTime) => {
+    const createdAt = new Date(mongodbTime);
+    const currentTime = new Date();
+    const timeDifference = currentTime - createdAt;
+    return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
+  };
+
   const isIntiallyApplied =
     singleJob?.applications?.some(
       (application) => application.applicant === user?._id
@@ -169,10 +177,15 @@ const JobDescription = () => {
             <div className="flex gap-1 items-center text-[12px] font-semibold  mt-2">
               <div className="flex gap-1 items-center text-gray-500 mr-3">
                 <BriefcaseBusiness size={15} />
-                Fulltime
+                {singleJob?.jobType}
               </div>
               <div className="flex gap-1 items-center text-gray-500">
-                <Clock7 size={15} />3 days ago
+                <Clock7 size={15} />
+                <p>
+                  {daysAgoFunction(singleJob?.createdAt) == 0
+                    ? "Today"
+                    : `${daysAgoFunction(singleJob?.createdAt)} days ago`}
+                </p>
               </div>
             </div>
           </div>
@@ -254,10 +267,10 @@ const JobDescription = () => {
             {/* second  part */}
             <div className="flex flex-col gap-5 mt-5">
               <div className="flex flex-col gap-5">
-                <h2 className="font-semibold text-gray-600  text-xl">
+                {/* <h2 className="font-semibold text-gray-600  text-xl">
                   Wellcome to Nokia Team
-                </h2>
-                <p className="text-gray-500 text-sm">
+                </h2> */}
+                {/* <p className="text-gray-500 text-sm">
                   Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                   Minus nulla debitis vel numquam, ullam magnam voluptatum vitae
                   exercitationem aliquid, Lorem ipsum dolor sit amet
@@ -266,7 +279,10 @@ const JobDescription = () => {
                   aliquid,Lorem ipsum dolor sit amet consectetur adipisicing
                   elit. Hic aspernatur nulla maxime quaerat, consectetur
                   blanditiis.
-                </p>
+                </p> */}
+                <div
+                  dangerouslySetInnerHTML={{ __html: singleJob?.description }}
+                />
               </div>
               <div className="flex flex-col gap-5 text-gray-500 text-sm">
                 <h2 className="font-semibold text-gray-600  text-xl">
@@ -465,7 +481,7 @@ const JobDescription = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
