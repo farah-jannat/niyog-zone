@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import AdminJobsTable from "./AdminJobsTable";
 import useGetAllAdminJobs from "@/hooks/useGetAllAdminJobs";
 import { setSearchJobByText } from "@/redux/jobSlice";
+import Navbar_two from "../shared/Navbar_two";
 
 const AdminJobs = () => {
   useGetAllAdminJobs();
@@ -19,7 +20,7 @@ const AdminJobs = () => {
   }, [input]);
   return (
     <div>
-      <Navbar />
+      <Navbar_two />
       <div className="max-w-6xl mx-auto my-10">
         <div className="flex items-center justify-between my-5">
           <Input
