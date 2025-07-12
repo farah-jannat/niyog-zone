@@ -20,13 +20,27 @@ export const register = async (req, res) => {
       });
     }
 
-    const file = req.file;
-    console.log("resume file name :", file);
+    const { profilePhoto, resume } = req.files;
+    console.log(
+      "Profile Photo file received by controller:",
+      profilePhoto ? profilePhoto[0] : "No profile photo"
+    );
+    console.log(
+      "Resume file received by controller:",
+      resume ? resume[0] : "No resume"
+    );
     // cloudinary will be here
-    const fileUri = getDataUri(file);
+    const resumeUri = getDataUri(resume);
+    const profileUri = getDataUri(profilePhoto);
 
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-    // console.log("cloudResponse here :", cloudResponse);
+    const cloudResponse_resume = await cloudinary.uploader.upload(
+      resumeUri.content
+    );
+    const cloudResponse_profile = await cloudinary.uploader.upload(
+      profileUri.content
+    );
+    console.log("cloudResponse here :", cloudResponse_resume);
+    console.log("cloudResponse here :", cloudResponse_profile);
 
     const user = await User.findOne({ email });
     if (user) {
@@ -43,9 +57,9 @@ export const register = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
-      Profile:{
-        profilePhoto:cloudResponse.secure_url
-      }
+      Profile: {
+        profilePhoto: cloudResponse.secure_url,
+      },
     });
     return res.status(201).json({
       message: "Account created successfully.",
@@ -131,33 +145,163 @@ export const logout = async (req, res) => {
   }
 };
 
+// export const updateProfile = async (req, res) => {
+//   console.log("hello from u@@@@@@@@@@@@@@@@@@@@@@@@@@");
+//   try {
+//     const { fullName, email, phoneNumber, bio, skills } = req.body;
+
+//     // const profile = req.profilePhoto;
+//     // const { profilePhoto, resume } = req.files;
+
+//     console.log("########## ", req.files["profilePhoto"]);
+
+//     const profilePhoto =
+//       req.files && req.files["profilePhoto"]
+//         ? req.files["profilePhoto"][0]
+//         : undefined;
+//     const resume =
+//       req.files && req.files["resume"] ? req.files["resume"][0] : undefined;
+
+//     console.log(
+//       "Profile Photo file received by controller:",
+//       profilePhoto ? profilePhoto[0] : "No profile photo"
+//     );
+//     console.log(
+//       "Resume file received by controller:",
+//       resume ? resume[0] : "No resume"
+//     );
+//     // cloudinary will be here
+//     const resumeUri = getDataUri(resume);
+//     const profileUri = getDataUri(profilePhoto);
+
+//     const cloudResponse_resume = await cloudinary.uploader.upload(
+//       resumeUri.content
+//     );
+//     const cloudResponse_profile = await cloudinary.uploader.upload(
+//       profileUri.content
+//     );
+//     console.log("cloudResponse here :", cloudResponse_resume);
+//     console.log("cloudResponse here :", cloudResponse_profile);
+//     let skillsArray;
+//     if (skills) {
+//       skillsArray = skills.split(",");
+//     }
+//     const userId = req.id; //middleware authentication
+//     // console.log("this i user id", userId);
+//     let user = await User.findOne({ _id: userId });
+//     console.log("user resume is here", user?.Profile?.resume);
+//     if (!user) {
+//       return res.status(400).json({
+//         message: "User not found.",
+//         success: false,
+//       });
+//     }
+//     console.log("here is the bio of mim :", bio);
+//     // updating data
+//     if (fullName) user.fullName = fullName;
+//     if (email) user.email = email;
+//     if (phoneNumber) user.phoneNumber = phoneNumber;
+//     if (bio) user.Profile.bio = bio;
+//     if (skills) user.Profile.skills = skillsArray;
+
+//     // resume comes later here...
+//     if (cloudResponse_resume) {
+//       user.Profile.resume = cloudResponse_resume.secure_url; // save the cloudinary url
+//       user.Profile.resumeOriginalName = resume.originalname; // Save the original file name
+//     }
+//     if (cloudResponse_profile) {
+//       user.Profile.profilePhoto = cloudResponse_profile.secure_url; // save the cloudinary url
+//       // Save the original file name
+//     }
+
+//     await user.save();
+
+//     user = {
+//       _id: user._id,
+//       fullName: user.fullName,
+//       email: user.email,
+//       phoneNumber: user.phoneNumber,
+//       role: user.role,
+//       Profile: user.Profile,
+//     };
+//     return res.status(200).json({
+//       message: "Profile updated successfully.",
+//       user,
+//       success: true,
+//     });
+//   } catch (err) {
+//     console.log("error while updating Profile", err);
+//   }
+// };
+
+// updateProfile
+
 export const updateProfile = async (req, res) => {
+  console.log("hello from u@@@@@@@@@@@@@@@@@@@@@@@@@@");
   try {
     const { fullName, email, phoneNumber, bio, skills } = req.body;
 
-    const file = req.file;
-    console.log("resume file name :", file);
-    // cloudinary will be here
-    const fileUri = getDataUri(file);
+    let profilePhotoFile;
+    let resumeFile;
 
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-    // console.log("cloudResponse here :", cloudResponse);
+    // req.files will be an array when using .any()
+    if (req.files && Array.isArray(req.files)) {
+      req.files.forEach((file) => {
+        if (file.fieldname === "profilePhoto") {
+          profilePhotoFile = file;
+        } else if (file.fieldname === "resume") {
+          resumeFile = file;
+        }
+      });
+    }
+
+    console.log(
+      "Profile Photo file received by controller:",
+      profilePhotoFile ? profilePhotoFile.originalname : "No profile photo"
+    );
+    console.log(
+      "Resume file received by controller:",
+      resumeFile ? resumeFile.originalname : "No resume"
+    );
+
+    let cloudResponse_resume;
+    let cloudResponse_profile;
+
+    // Only upload to Cloudinary if the file exists
+    if (resumeFile) {
+      const resumeUri = getDataUri(resumeFile); // Pass the actual file object
+      cloudResponse_resume = await cloudinary.uploader.upload(
+        resumeUri.content
+      );
+      console.log("Cloudinary response for resume:", cloudResponse_resume);
+    }
+
+    if (profilePhotoFile) {
+      const profileUri = getDataUri(profilePhotoFile); // Pass the actual file object
+      cloudResponse_profile = await cloudinary.uploader.upload(
+        profileUri.content
+      );
+      console.log(
+        "Cloudinary response for profile photo:",
+        cloudResponse_profile
+      );
+    }
 
     let skillsArray;
     if (skills) {
       skillsArray = skills.split(",");
     }
+
     const userId = req.id; //middleware authentication
-    // console.log("this i user id", userId);
     let user = await User.findOne({ _id: userId });
-    console.log("user resume is here", user?.Profile?.resume);
+
     if (!user) {
       return res.status(400).json({
         message: "User not found.",
         success: false,
       });
     }
-    console.log("here is the bio of mim :", bio);
+
     // updating data
     if (fullName) user.fullName = fullName;
     if (email) user.email = email;
@@ -165,10 +309,14 @@ export const updateProfile = async (req, res) => {
     if (bio) user.Profile.bio = bio;
     if (skills) user.Profile.skills = skillsArray;
 
-    // resume comes later here...
-    if (cloudResponse) {
-      user.Profile.resume = cloudResponse.secure_url; // save the cloudinary url
-      user.Profile.resumeOriginalName = file.originalname; // Save the original file name
+    // Update resume and profile photo URLs only if uploaded
+    if (cloudResponse_resume) {
+      user.Profile.resume = cloudResponse_resume.secure_url;
+      user.Profile.resumeOriginalName = resumeFile.originalname;
+    }
+    if (cloudResponse_profile) {
+      user.Profile.profilePhoto = cloudResponse_profile.secure_url;
+      // No original name for profile photo? Add if needed.
     }
 
     await user.save();
@@ -181,6 +329,7 @@ export const updateProfile = async (req, res) => {
       role: user.role,
       Profile: user.Profile,
     };
+
     return res.status(200).json({
       message: "Profile updated successfully.",
       user,
@@ -188,5 +337,10 @@ export const updateProfile = async (req, res) => {
     });
   } catch (err) {
     console.log("error while updating Profile", err);
+    return res.status(500).json({
+      message: "Error updating profile.",
+      success: false,
+      error: err.message, // Provide error message for debugging
+    });
   }
 };
