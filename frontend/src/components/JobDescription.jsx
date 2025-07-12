@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
 import { setSingleJob } from "@/redux/jobSlice";
 import store from "@/redux/store";
 import { toast } from "sonner";
+
 import {
   BadgeCent,
   BriefcaseBusiness,
@@ -24,12 +25,18 @@ import {
 import Navbar_two from "./shared/Navbar_two";
 import { Separator } from "@radix-ui/react-select";
 import Footer from "./shared/Footer";
+import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const JobDescription = () => {
   const params = useParams();
   const jobId = params.id;
   const { singleJob } = useSelector((store) => store.job);
   const { user } = useSelector((store) => store.auth);
+  const { allJobs } = useSelector((store) => store.job);
+
+  useGetCompanyById(singleJob?.company);
+  const { singleCompany } = useSelector((store) => store.company);
+  const navigate = useNavigate();
 
   const daysAgoFunction = (mongodbTime) => {
     const createdAt = new Date(mongodbTime);
@@ -82,6 +89,7 @@ const JobDescription = () => {
           ); // Ensure the state is in sync with fetched data
           console.log("here is the isapplied", isApplied);
           console.log("songlejob", singleJob);
+          console.log("siglecompany", singleCompany);
         }
       } catch (error) {
         console.log(error);
@@ -89,6 +97,9 @@ const JobDescription = () => {
     };
     fetchSingleJob();
   }, [jobId, dispatch, user?._id]);
+
+  // console.log("jlkjljl ========== ",singleJob)
+
   return (
     // <div className="max-w-7xl mx-auto my-10">
     //   <div className="flex items-center justify-between">
@@ -189,9 +200,19 @@ const JobDescription = () => {
               </div>
             </div>
           </div>
-          <button className="text-sm font-semibold bg-Blue px-4 py-2 rounded-md text-White ">
+          {/* <button className=" bg-Blue px-4 py-2 rounded-md text-White ">
             Apply Now
-          </button>
+          </button> */}
+          <Button
+            onClick={isApplied ? null : applyJobHandler}
+            className={`rounded-md px-4 py-2 text-sm font-semibold text-White ${
+              isApplied
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-Blue hover:bg-blue-900"
+            }`}
+          >
+            {isApplied ? "Already Applied" : "Apply Now "}
+          </Button>
         </div>
 
         <Separator className=" border-t" />
@@ -267,22 +288,13 @@ const JobDescription = () => {
             {/* second  part */}
             <div className="flex flex-col gap-5 mt-5">
               <div className="flex flex-col gap-5">
-                {/* <h2 className="font-semibold text-gray-600  text-xl">
-                  Wellcome to Nokia Team
-                </h2> */}
-                {/* <p className="text-gray-500 text-sm">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Minus nulla debitis vel numquam, ullam magnam voluptatum vitae
-                  exercitationem aliquid, Lorem ipsum dolor sit amet
-                  consectetur, adipisicing elit. Minus nulla debitis vel
-                  numquam, ullam magnam voluptatum vitae exercitationem
-                  aliquid,Lorem ipsum dolor sit amet consectetur adipisicing
-                  elit. Hic aspernatur nulla maxime quaerat, consectetur
-                  blanditiis.
-                </p> */}
-                <div
-                  dangerouslySetInnerHTML={{ __html: singleJob?.description }}
-                />
+              
+
+                <div className="prose">
+                  <div
+                    dangerouslySetInnerHTML={{ __html: singleJob?.description }}
+                  />
+                </div>
               </div>
               <div className="flex flex-col gap-5 text-gray-500 text-sm">
                 <h2 className="font-semibold text-gray-600  text-xl">
@@ -352,31 +364,38 @@ const JobDescription = () => {
               <div className="flex items-end  justify-between ">
                 <div className="flex items-center gap-3 ">
                   <img
-                    // src={singleJob?.company?.logo}
-                    src="../../public/company-logo.png"
+                    src={singleCompany?.logo}
+                    // src={}
                     alt=""
                     className="rounded-md h-12 w-12"
                   />
 
                   <div className="flex flex-col gap-1">
                     <h1 className="capitalize text-normal font-semibold">
-                      {singleJob?.company?.name} Nokia
+                      {singleCompany?.name}
                     </h1>
                     <div className="text-sm text-gray-500 flex items-center gap-1">
                       <MapPin size={15} />
-                      Bangladesh
+                      {singleCompany?.location}
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-start justify-between mt-10 text-gray-500">
                   <div className="flex items-center gap-3">
-                    <button className="text-sm font-semibold bg-Blue px-4 py-2 rounded-md text-White">
-                      Apply Now
-                    </button>
-                    <button className="text-sm font-semibold px-4 py-2 border border-gray-150  rounded-md">
+                    <Button
+                      onClick={isApplied ? null : applyJobHandler}
+                      className={`rounded-md px-4 py-2 text-sm font-semibold text-White ${
+                        isApplied
+                          ? "bg-gray-600 cursor-not-allowed"
+                          : "bg-Blue hover:bg-blue-900"
+                      }`}
+                    >
+                      {isApplied ? "Already Applied" : "Apply Now "}
+                    </Button>
+                    {/* <button className="text-sm font-semibold px-4 py-2 border border-gray-150  rounded-md">
                       Save job
-                    </button>
+                    </button> */}
                   </div>
                   {/* <div className="flex items-center gap-3">
                     <p className="font-semibold text-gray-500">Share this</p>
@@ -393,22 +412,27 @@ const JobDescription = () => {
           {/* right  */}
           <div className="hidden md:flex flex-col gap-5 md:w-[40%]  lg:w-[30%] ">
             <div className="hidden md:flex flex-col gap-3 border border-gray-150 p-4 max-w-full ">
-              <div className="max-w-[200px]  flex items-center gap-3">
+              <div
+                onClick={() => {
+                  navigate(`/companyProfile/${singleCompany?._id}`);
+                }}
+                className="max-w-[200px]  flex items-center gap-3 cursor-pointer"
+              >
                 <img
-                  src={singleJob?.company?.logo}
+                  src={singleCompany?.logo}
                   alt=""
                   className="rounded-full h-12 w-12"
                 />
 
                 <div>
                   <h1 className="capitalize text-normal font-semibold">
-                    {singleJob?.company?.name} name
+                    {singleCompany?.name}
                   </h1>
                   <div className="text-sm text-gray-500 flex items-center gap-1">
                     <MapPin size={15} />
-                    Bangladesh
+                    {singleJob?.location}
                   </div>
-                  <span>2 open jobs</span>
+                  {/* <span>2 open jobs</span> */}
                 </div>
               </div>
               <Separator className="border-t" />
@@ -416,63 +440,69 @@ const JobDescription = () => {
                 <img
                   src="../../public/Home_Create_Profile.png"
                   alt=""
-                  className="rounded-md w-full h-full"
+                  className="rounded-md object-cover object-center w-full h-full"
                 />
               </div>
 
-              <div className="">
-                <ul>
-                  <li>this is point number 1. we will see more points</li>
-                  <li>this is point number 1</li>
-                  <li>this is point number 1</li>
-                </ul>
+              <div className="line-clamp-4 text-gray-500 text-sm">
+                <p>{singleCompany?.description}</p>
               </div>
             </div>
 
             <div className="border border-gray-150 p-4 flex flex-col gap-3  ">
               <h2 className="text-Black font-semibold">Similar Jobs</h2>
               <Separator className="border-t" />
-              <div className="flex flex-col items-center gap-5">
-                {[1, 2, 3, 4, 5].map((job, idx) => (
+              <div className="flex flex-col items-start gap-5 ">
+                {allJobs.map((job, idx) => (
                   <>
-                    <div className="text-Black cursor-pointer flex-1 flex items-center gap-5">
+                    <div
+                      className="text-Black cursor-pointer flex-1 flex items-center justify-between min-w-[250px] max-w-[300px] gap-5 border-b"
+                      onClick={() => navigate(`/description/${job?._id}`)}
+                    >
                       <div className="flex items-start gap-3 ">
                         <img
                           // src={job?.company?.logo}
-                          src="../../public/company-logo.png"
+                          src={job?.company?.logo}
                           alt=""
                           className="rounded-md h-12 w-12"
                         />
 
-                        <div className=" flex flex-col gap-1">
+                        <div className=" flex flex-col gap-1  w-full">
                           <h1 className="capitalize text-normal font-semibold">
-                            {job?.company?.name} Company Name
+                            {job?.company?.name}
                           </h1>
-                          <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center  justify-between gap-3">
                             <div className="text-sm text-gray-500 flex items-center gap-1">
-                              <Clock7 size={15} />3 min
+                              <Clock7 size={15} />
+                              <p>
+                                {daysAgoFunction(job?.createdAt) == 0
+                                  ? "Today"
+                                  : `${daysAgoFunction(
+                                      job?.createdAt
+                                    )} days ago`}
+                              </p>
                             </div>
                             <div className="text-sm text-gray-500 flex items-center gap-1">
                               <MapPin size={15} />
-                              Bangladesh
+                              {job?.location}
                             </div>
                           </div>
 
                           <div className="text-blue-700 font-bold capitalize p-0 border-none flex  items-center justify-between">
                             <h1 className="text-Blue font-semibold text-md">
-                              ${job?.salary}300
+                              ${job?.salary}k
                               <span className="text-[12px] font-semibold text-gray-500">
                                 /Hour
                               </span>
                             </h1>
 
                             <span className="text-[12px] text-green-500 font-semibold">
-                              Full Time
+                              {job.jobType}
                             </span>
                           </div>
                         </div>
                       </div>
-                      <Separator className="border-t" />
+                      {/* <Separator className="border-t mt-5" /> */}
                     </div>
                   </>
                 ))}
