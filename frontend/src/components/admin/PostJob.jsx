@@ -17,6 +17,9 @@ import { JOB_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import JobDescription from "./AdminJobDescription";
+import AdminJobDescription from "./AdminJobDescription";
+import Navbar_two from "../shared/Navbar_two";
 
 const PostJob = () => {
   const [input, setInput] = useState({
@@ -43,10 +46,20 @@ const PostJob = () => {
     );
     setInput({ ...input, companyId: selectedCompany._id });
   };
-  console.log("input for post job", input);
+  // console.log("input for post job", input);
+
+  const handleDescriptionChange = (html) => {
+    // This function will be called by AdminJobDescription with the Quill content
+    setInput((prevInput) => ({
+      ...prevInput,
+      description: html,
+    }));
+    // console.log("content came from description", html);
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    // console.log("input of job", input);
     try {
       setLoading(true);
       const res = await axios.post(`${JOB_API_END_POINT}/post`, input, {
@@ -68,13 +81,10 @@ const PostJob = () => {
 
   return (
     <div>
-      <Navbar />
-      <div className="flex items-center justify-center w-screen my-5">
-        <form
-          onSubmit={submitHandler}
-          className="p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md"
-        >
-          <div className="grid grid-cols-2 gap-2">
+      <Navbar_two />
+      <div className="flex items-center justify-center mx-auto my-5  w-[80%]">
+        <form onSubmit={submitHandler} className=" w-full">
+          <div className="grid grid-cols-1 gap-2">
             <div>
               <Label>Title</Label>
               <Input
@@ -86,13 +96,16 @@ const PostJob = () => {
               />
             </div>
             <div>
-              <Label>Description</Label>
+              {/* <Label>Description</Label>
               <Input
                 type="text"
                 name="description"
                 value={input.description}
                 onChange={changeEventHandler}
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+              /> */}
+              <AdminJobDescription
+                onDescriptionChange={handleDescriptionChange}
               />
             </div>
             <div>
@@ -102,6 +115,7 @@ const PostJob = () => {
                 name="requirements"
                 value={input.requirements}
                 onChange={changeEventHandler}
+                placeholder=""
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               />
             </div>
@@ -112,6 +126,7 @@ const PostJob = () => {
                 name="salary"
                 value={input.salary}
                 onChange={changeEventHandler}
+                placeholder="300k"
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               />
             </div>
@@ -122,6 +137,7 @@ const PostJob = () => {
                 name="location"
                 value={input.location}
                 onChange={changeEventHandler}
+                placeholder="Bonani, Dhaka"
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               />
             </div>
@@ -132,6 +148,7 @@ const PostJob = () => {
                 name="jobType"
                 value={input.jobType}
                 onChange={changeEventHandler}
+                placeholder="Fulltime"
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               />
             </div>
@@ -142,6 +159,7 @@ const PostJob = () => {
                 name="experience"
                 value={input.experience}
                 onChange={changeEventHandler}
+                placeholder="2 years"
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               />
             </div>
@@ -152,6 +170,7 @@ const PostJob = () => {
                 name="position"
                 value={input.position}
                 onChange={changeEventHandler}
+                placeholder="9"
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               />
             </div>
