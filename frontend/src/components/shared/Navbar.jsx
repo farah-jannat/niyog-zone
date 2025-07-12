@@ -54,7 +54,16 @@ const Navbar = () => {
             ) : (
               <>
                 <li>
-                  <Link to="/">Home</Link>
+                  <Link
+                    to="/"
+                    className={` ${
+                      location.pathname === "/"
+                        ? "border-b border-White" // Active style
+                        : "text-gray-700 hover:text-blue-500"
+                    }`}
+                  >
+                    Home
+                  </Link>
                 </li>
                 <li>
                   <Link to="/jobs">Find a job</Link>
@@ -70,10 +79,14 @@ const Navbar = () => {
           {!user ? (
             <div className="flex items-center gap-2">
               <Link to="/signup">
-                <Button variant="none" className="underline">Signup</Button>
+                <Button variant="none" className="underline">
+                  Signup
+                </Button>
               </Link>
               <Link to="/login">
-                <Button variant="outline" className="bg-White text-Blue">Login</Button>
+                <Button variant="outline" className="bg-White text-Blue">
+                  Login
+                </Button>
               </Link>
             </div>
           ) : (
@@ -86,8 +99,8 @@ const Navbar = () => {
               </div> */}
 
               <div className="hidden sm:flex flex-col items-start">
-                <h2 className="font-semibold">Emma W</h2>
-                <h1 className="text-sm text-gray-500">Recruiter</h1>
+                <h2 className="font-semibold">{user?.fullName}</h2>
+                <h1 className="text-sm text-gray-500">{user?.role}</h1>
               </div>
 
               <Popover>
