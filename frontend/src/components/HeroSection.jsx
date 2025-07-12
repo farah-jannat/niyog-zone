@@ -81,16 +81,16 @@ const HeroSection = () => {
               type="text"
               placeholder="Your Keyword"
               onChange={(e) => setQuery(e.target.value)}
-              className="border-none w-full px-0"
+              className="border-none w-full px-0 outline-none"
             />
           </div>
           {/* <span className="hidden md:block">|</span> */}
 
           {/* Industry */}
           <div className="hidden md:block">
-            <Select onValueChange={(value) => setIndustry(value)}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={filter1.name} />
+            <Select className="outline-none border-none" onValueChange={(value) => setIndustry(value)}>
+              <SelectTrigger className="w-[180px] outline-none border-none">
+                <SelectValue className="outline-none border-none" placeholder={filter1.name} />
               </SelectTrigger>
               <SelectContent>
                 {filter1.array.map((item, idx) => (
