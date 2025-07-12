@@ -25,7 +25,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     phoneNumber: user?.phoneNumber,
     bio: user?.Profile?.bio,
     skills: user?.Profile?.skills?.map((skill) => skill),
-    file: user?.Profile?.resume,
+    resume: user?.Profile?.resume,
+    profilePhoto: user?.Profile?.profilePhoto,
   });
 
   const dispatch = useDispatch();
@@ -38,6 +39,19 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     const file = e.target.files?.[0];
     setInput({ ...input, file });
   };
+
+  const handleProfilePhotoChange = (e) => {
+    setInput((prevInput) => ({
+      ...prevInput,
+      profilePhoto: e.target.files[0],
+    }));
+  };
+  const handleResumeChange = (e) => {
+    setInput((prevInput) => ({
+      ...prevInput,
+      resume: e.target.files[0],
+    }));
+  };
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log("input  here ", input);
@@ -47,11 +61,18 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     formData.append("phoneNumber", input.phoneNumber);
     formData.append("bio", input.bio);
     formData.append("skills", input.skills);
-    if (input.file) {
-      formData.append("file", input.file);
+    if (input.profilePhoto) {
+      formData.append("profilePhoto", input.profilePhoto);
     }
+
+    if (input.resume) {
+      // Check if a resume file is selected
+      formData.append("resume", input.resume); // Append the resume file
+    }
+
+    console.log("input from profile update", input);
     try {
-        setLoading(true)
+      setLoading(true);
       const res = await axios.post(
         `${USER_API_END_POINT}/profile/update`,
         formData,
@@ -70,8 +91,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     } catch (error) {
       console.log("errpr while updata data from frontend", error);
       toast.error(error.response.data.message);
-    }finally{
-        setLoading(false)
+    } finally {
+      setLoading(false);
     }
     setOpen(false);
   };
@@ -156,13 +177,24 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 <Label htmlFor="file" className="text-right">
                   Resume
                 </Label>
-                <Input
-                  id="file"
-                  name="file"
+                <input
                   type="file"
-                  accept="application/pdf"
-                  onChange={changeFileHandler}
+                  id="resume"
+                  name="resume"
+                  onChange={handleResumeChange}
                   className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="file" className="text-right">
+                  Profile Picture
+                </Label>
+                <input
+                  type="file"
+                  id="profilePhoto"
+                  name="profilePhoto"
+                  className="con-span-3"
+                  onChange={handleProfilePhotoChange}
                 />
               </div>
             </div>
