@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 import { useDispatch } from "react-redux";
 import { setSearchCompanyByText } from "@/redux/companySlice";
+import Navbar_two from "../shared/Navbar_two";
 
 const Companies = () => {
   useGetAllCompanies();
@@ -22,22 +23,22 @@ const Companies = () => {
       <div>
         {/* part1 */}
         <div className="bg-grayish ">
-          <Navbar />
-          <div className="flex items-center justify-between">
+          <Navbar_two />
+          <div className="flex items-center justify-between my-10">
             <Input
               className="w-fit"
               placeholder="filter by name"
               onChange={(e) => setInput(e.target.value)}
             />
-            <button className="bg-button_blue text-center text-white py-2 px-4 rounded-xl">
+            <Button onClick={() => navigate("/admin/companies/create")}>
               New Company
-            </button>
+            </Button>
           </div>
         </div>
         {/* part2 */}
         <div></div>
-        {/* <Navbar />
-        <div className="max-w-6xl mx-auto my-10 ">
+
+        {/* <div className="max-w-6xl mx-auto my-10 ">
           <div className="flex items-center justify-between ">
             <Input
               className="w-fit"
@@ -45,12 +46,10 @@ const Companies = () => {
               onChange={(e) => setInput(e.target.value)}
             />
 
-            <Button onClick={() => navigate("/admin/companies/create")}>
-              New Company
-            </Button>
-          </div>
-        </div>
-        <CompaniesTable /> */}
+           
+        </div> */}
+
+        <CompaniesTable />
       </div>
     </div>
   );
