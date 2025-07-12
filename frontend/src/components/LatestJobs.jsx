@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const LatestJobs = () => {
   const { allJobs } = useSelector((store) => store.job);
   console.log("all job here", allJobs);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="w-[90%] lg:w-[80%] mx-auto my-10">
       <div className="flex flex-col items-center gap-4">
@@ -23,12 +23,20 @@ const LatestJobs = () => {
               Marketing
             </button>
           </div> */}
-          {["Marketing", "Software", "UI/UX", "Develop", "Mid", "Senior"].map((item, idx) => (
-            <div className="flex items-center gap-2 border border-gray-150 rounded-md px-3 py-2">
-              <Home size={20} className="text-blue-900" />
-              <button onClick={()=> {navigate(`/jobs?search=${item}`)}} className="text-sm font-semibold  ">{item}</button>
-            </div>
-          ))}
+          {["Marketing", "Software", "UI/UX", "Develop", "Mid", "Senior"].map(
+            (item, idx) => (
+              <div
+                className="flex items-center gap-2 border border-gray-150 rounded-md px-3 py-2 text-sm font-[300] cursor-pointer bg-[rgb(37,36,209,.8)] text-white"
+                onClick={() => {
+                  navigate(`/jobs?search=${item}`);
+                }}
+              >
+                {/* <Home size={22} strokeWidth="1" className="text-blue-900" /> */}
+
+                {item}
+              </div>
+            )
+          )}
         </div>
       </div>
       {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 my-5"> */}
