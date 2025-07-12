@@ -9,6 +9,7 @@ import { COMPANY_API_END_POINT } from "@/utils/constant";
 import { useDispatch } from "react-redux";
 import { setSingleCompany } from "@/redux/companySlice";
 import { toast } from "sonner";
+import Navbar_two from "../shared/Navbar_two";
 
 const CompanyCreate = () => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const CompanyCreate = () => {
   };
   return (
     <div>
-      <Navbar />
+      <Navbar_two />
       <div className="max-w-4xl mx-auto">
         <div className="my-10">
           <h1 className="font-bold text-2xl">Your Company Name</h1>
