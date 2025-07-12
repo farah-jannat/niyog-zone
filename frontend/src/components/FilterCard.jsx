@@ -5,6 +5,14 @@ import { useDispatch } from "react-redux";
 import { setSearchedQuery } from "@/redux/jobSlice";
 import { ChevronDown } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Separator } from "@radix-ui/react-select";
 
 // const fitlerData = [
 //   {
@@ -44,13 +52,11 @@ const popularKeyward = {
   items: ["All", "Frontend Developer", "Developer", "Software"],
 };
 
-
 // const salary = {
 //   name: "Salary",
 //   paramKey: "salary",
 //   items: ["All", "30", "35k-40k", "40k-80k", "30k-100k", "100k-200k"],
 // };
-
 
 const salary = {
   name: "Salary",
@@ -58,33 +64,30 @@ const salary = {
   items: [
     {
       label: "All",
-      value: ""
+      value: "",
     },
     {
       label: "30k",
-      value: "30"
+      value: "30",
     },
     {
       label: "35k-40k",
-      value: "35-40"
+      value: "35-40",
     },
     {
       label: "40k-80k",
-      value: "40k-80k"
+      value: "40k-80k",
     },
     {
       label: "30k-100k",
-      value: "30k-100k"
+      value: "30k-100k",
     },
     {
       label: "100k-200k",
-      value: "100k-200k"
-    }
-  ]
+      value: "100k-200k",
+    },
+  ],
 };
-
-
-
 
 const positon = {
   name: "Positon",
@@ -98,10 +101,16 @@ const jobType = {
   name: "Job Type",
   items: ["All", "Full Time", "Part-Time", "Hybrid"],
 };
+const location = {
+  name: "location",
+  icon: "MapPin",
+  array: ["All", "Dhaka", "Florida", "Bonani"],
+};
 
 const FilterCard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialSearchParam = searchParams.get("search");
+  const [locationValue, setLocationValue] = useState("");
   const [selectedValue, setSelectedValue] = useState(initialSearchParam);
   const [selectedIndustry, setSelectedIndustry] = useState(() =>
     searchParams.get(industry.paramKey)
@@ -112,6 +121,8 @@ const FilterCard = () => {
     searchParams.get(salary.paramKey)
   );
   const [selectedPosition, setselectedPosition] = useState();
+  const [selectedOnsiteRemote, setSelectedOnsiteRemote] = useState();
+  const [selectedJob, setSelectedJob] = useState();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -140,7 +151,7 @@ const FilterCard = () => {
     });
   };
   const handleSalaryChange = (value) => {
-    console.log("value is ", value)
+    console.log("value is ", value);
     setSelectedSalary(value);
     setSearchParams((prevParams) => {
       prevParams.set("salary", value); // Use the 'value' passed to the handler
@@ -151,6 +162,27 @@ const FilterCard = () => {
     setselectedPosition(value);
     setSearchParams((prevParams) => {
       prevParams.set("position", value); // Use the 'value' passed to the handler
+      return prevParams;
+    });
+  };
+  const handleOnsiteRemoteChange = (value) => {
+    setSelectedOnsiteRemote(value);
+    setSearchParams((prevParams) => {
+      prevParams.set("onsiteRemote", value); // Use the 'value' passed to the handler
+      return prevParams;
+    });
+  };
+  const handleJobChange = (value) => {
+    setSelectedJob(value);
+    setSearchParams((prevParams) => {
+      prevParams.set("jobType", value); // Use the 'value' passed to the handler
+      return prevParams;
+    });
+  };
+  const handleLocationChange = (value) => {
+    setLocationValue(value);
+    setSearchParams((prevParams) => {
+      prevParams.set("location", value); // Use the 'value' passed to the handler
       return prevParams;
     });
   };
@@ -172,6 +204,7 @@ const FilterCard = () => {
       setSelectedValue(currentSearchParam);
     }
   }, [searchParams, selectedIndustry, selectedKeyword, selectedValue]);
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between gap-4 border-b pb-2">
@@ -180,9 +213,27 @@ const FilterCard = () => {
       </div>
       {/* <h1 className="font-bold text-lg">Filter Jobs</h1> */}
       <div className="flex items-center justify-center gap-2 border border-gray-150 rounded-md px-3 py-2 mt-5 text-gray-500">
-        <button className="text-sm font-semibold  flex items-center gap-3">
+        {/* <button className="text-sm font-semibold  flex items-center gap-3">
           Location <ChevronDown size={18} />
-        </button>
+        </button> */}
+
+        <div className="hidden md:block">
+          <Select onValueChange={handleLocationChange}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder={location.name} />
+            </SelectTrigger>
+            <SelectContent>
+              {location.array.map((item, idx) => (
+                <>
+                  <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
+                    <SelectItem value={item}>{item}</SelectItem>
+                  </div>
+                  <Separator className="border-b" />
+                </>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <hr className="mt-3" />
       <RadioGroup value={selectedIndustry} onValueChange={handleIndustryChange}>
@@ -295,7 +346,10 @@ const FilterCard = () => {
           })}
         </div>
       </RadioGroup>
-      <RadioGroup value={selectedValue} onValueChange={changeHandler}>
+      <RadioGroup
+        value={selectedOnsiteRemote}
+        onValueChange={handleOnsiteRemoteChange}
+      >
         <div>
           <h1 className="font-semibold text-Black">{onsiteRemote.name}</h1>
           {onsiteRemote.items.map((item, idx) => {
@@ -322,7 +376,7 @@ const FilterCard = () => {
           })}
         </div>
       </RadioGroup>
-      <RadioGroup value={selectedValue} onValueChange={changeHandler}>
+      <RadioGroup value={selectedJob} onValueChange={handleJobChange}>
         <div>
           <h1 className="font-semibold text-Black">{jobType.name}</h1>
           {jobType.items.map((item, idx) => {
