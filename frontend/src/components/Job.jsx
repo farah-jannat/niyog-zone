@@ -14,6 +14,10 @@ const Job = ({ job }) => {
     const timeDifference = currentTime - createdAt;
     return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
   };
+  const stripHtmlTags = (html) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
 
   return (
     <div
@@ -45,7 +49,9 @@ const Job = ({ job }) => {
       </div>
 
       <h1 className="font-semibold text-Black">{job?.title}</h1>
-      <p className=" text-sm leading-[1.6] text-gray-600">{job?.description}</p>
+      <p className=" text-sm leading-[1.6] text-gray-600 line-clamp-4">
+        {stripHtmlTags(job.description)}
+      </p>
 
       <div className="flex gap-1 items-center text-[12px] font-semibold -mt-[6px]">
         <div className="flex gap-1 items-center text-gray-500 mr-3">
