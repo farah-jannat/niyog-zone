@@ -13,12 +13,13 @@ import { setLoading, setUser } from "@/redux/authSlice";
 import store from "@/redux/store";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import Navbar_two from "../shared/Navbar_two";
 
 const Login = () => {
   const [input, setInput] = useState({
-    email: "",
-    password: "",
-    role: "",
+    email: "mim123@gmail.com",
+    password: "mim",
+    role: "student",
   });
   const { loading, user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const Login = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar_two />
       <div className="flex items-center justify-center max-w-7xl mx-auto">
         <form
           onSubmit={submitHandler}
