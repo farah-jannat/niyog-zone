@@ -21,7 +21,7 @@ module.exports = {
         Blue: "#2524D1",
         White: "#FEFEFF",
         Black: "#333",
-        light_purple:"#EDF2FC",
+        light_purple: "#EDF2FC",
         text_white: "#D2DCFD",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -78,5 +78,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 };
