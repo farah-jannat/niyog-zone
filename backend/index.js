@@ -16,6 +16,9 @@ import { expressMiddleware } from "@apollo/server/express4"; // Import expressMi
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer"; // Recommended for graceful shutdown
 
 import typeDefs from "./graphql/schemas/index.js"; // <--- CHANGE THIS LINE
+import resolvers from "./graphql/resolvers/index.js";
+
+import { graphqlUploadExpress } from "graphql-upload"; // <-- Import this!
 
 dotenv.config({});
 
@@ -33,6 +36,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 })); // Adjust limits as needed
+
 const PORT = process.env.PORT || 3000;
 
 // api's
@@ -43,15 +48,7 @@ app.use("/api/v1/application", applicationRoute);
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers: {
-    Query: {
-      getAllJobs(_, context) {
-
-        return [{id:2}]
-
-      },
-    },
-  },
+  resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
@@ -59,6 +56,7 @@ await server.start();
 
 app.use(
   "/graphql", // This is the path for your GraphQL API
+  express.json({ limit: "1mb" }),
   expressMiddleware(server, {
     context: async ({ req, res }) => {
       // You can pass shared context to your resolvers here
