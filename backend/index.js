@@ -49,6 +49,7 @@ app.use("/api/v1/application", applicationRoute);
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  // csrfPrevention: false,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
