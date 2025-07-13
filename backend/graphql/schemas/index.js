@@ -20,7 +20,7 @@ const typeDefs = `#graphql
   }
 
 
-scalar Upload
+# scalar Upload
 
 
 input RegisterInput {
@@ -29,8 +29,8 @@ input RegisterInput {
   phoneNumber: String!
   password: String!
   role: String!
-  profilePhoto: Upload # Use the Upload scalar for files
-  resume: Upload       # Use the Upload scalar for files
+  profilePhoto: String
+  resume: String
 }
 
 
