@@ -1,8 +1,8 @@
 const applicationSchema = `
 type Application{
     id: ID!
-    job: Job!
-    applicant: User!
+    job: Job
+    applicant: User
     website:String
     status: String
     createdAt: String!
