@@ -116,12 +116,27 @@ export const userMutations = {
   },
   // update not donep
   async update(_, { updateInput }, context) {
-    try {
-      const { fullName, email, phoneNumber, bio, skills, photo } = updateInput;
+    // Extract data
+    const {
+      fullName,
+      email,
+      phoneNumber,
+      bio,
+      skills,
+      userId,
+      profilePhoto,
+      resume,
+    } = updateInput;
 
-      // handle profile photo
+    // Find user
+    let user = await User.findOne({ _id: userId });
+
+    // Handle Profile Photo
+    let uploadPhotoResult = user.Profile?.profilePhoto; // Access existing profilePhoto safely
+
+    if (profilePhoto && user.Profile?.profilePhoto !== profilePhoto) {
+      // Check if new profilePhoto is provided and different
       const profilePublicId = crypto.randomUUID();
-      let uploadPhotoResult;
       try {
         uploadPhotoResult = await uploads(
           profilePhoto,
@@ -136,95 +151,58 @@ export const userMutations = {
 
       if (!uploadPhotoResult.public_id)
         throw new Error("Image upload error. Try again.");
-
-
-
-
-      let cloudResponse_resume;
-      let cloudResponse_profile;
-
-      // Only upload to Cloudinary if the file exists
-      if (resumeFile) {
-        const resumeUri = getDataUri(resumeFile); // Pass the actual file object
-        cloudResponse_resume = await cloudinary.uploader.upload(
-          resumeUri.content
-        );
-        console.log("Cloudinary response for resume:", cloudResponse_resume);
-      }
-
-      if (profilePhotoFile) {
-        const profileUri = getDataUri(profilePhotoFile); // Pass the actual file object
-        cloudResponse_profile = await cloudinary.uploader.upload(
-          profileUri.content
-        );
-        console.log(
-          "Cloudinary response for profile photo:",
-          cloudResponse_profile
-        );
-      }
-
-      let skillsArray;
-      if (skills) {
-        skillsArray = skills.split(",");
-      }
-
-      const userId = req.id; //middleware authentication
-      let user = await User.findOne({ _id: userId });
-
-      if (!user) {
-        return res.status(400).json({
-          message: "User not found.",
-          success: false,
-        });
-      }
-
-      // updating data
-
-
-      // Object.assign(user, updateInput)
-
-
-
-      if (fullName) user.fullName = fullName;
-      if (email) user.email = email;
-      if (phoneNumber) user.phoneNumber = phoneNumber;
-      if (bio) user.Profile.bio = bio;
-      if (skills) user.Profile.skills = skillsArray;
-
-      // Update resume and profile photo URLs only if uploaded
-      if (cloudResponse_resume) {
-        user.Profile.resume = cloudResponse_resume.secure_url;
-        user.Profile.resumeOriginalName = resumeFile.originalname;
-      }
-      if (cloudResponse_profile) {
-        user.Profile.profilePhoto = cloudResponse_profile.secure_url;
-        // No original name for profile photo? Add if needed.
-      }
-
-      await user.save();
-
-      user = {
-        _id: user._id,
-        fullName: user.fullName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        role: user.role,
-        Profile: user.Profile,
-      };
-
-      return res.status(200).json({
-        message: "Profile updated successfully.",
-        user,
-        success: true,
-      });
-    } catch (err) {
-      console.log("error while updating Profile", err);
-      return res.status(500).json({
-        message: "Error updating profile.",
-        success: false,
-        error: err.message, // Provide error message for debugging
-      });
     }
+
+    // Handle resume pdf
+    let uploadPdfResult = user.Profile?.resume; // Access existing resume safely
+    if (resume && user.Profile?.resume !== resume) {
+      // Check if new resume is provided and different
+      const resumePublicId = crypto.randomUUID();
+      try {
+        uploadPdfResult = await uploads(
+          resume,
+          `${resumePublicId}`,
+          true,
+          true
+        );
+      } catch (error) {
+        console.error("Pdf Upload error:", error);
+        throw new Error("Pdf upload error. Try again.");
+      }
+
+      if (!uploadPdfResult.public_id)
+        throw new Error("Pdf upload error. Try again.");
+    }
+
+    // Prepare top-level updates
+    const updates = {};
+    if (fullName !== undefined) updates.fullName = fullName;
+    if (email !== undefined) updates.email = email;
+    if (phoneNumber !== undefined) updates.phoneNumber = phoneNumber;
+
+    // Prepare Profile updates
+    const profileUpdates = {};
+    if (bio !== undefined) profileUpdates.bio = bio;
+    if (skills !== undefined) profileUpdates.skills = skills;
+    if (uploadPhotoResult !== undefined)
+      profileUpdates.profilePhoto = uploadPhotoResult?.secure_url;
+    if (uploadPdfResult !== undefined)
+      profileUpdates.resume = uploadPdfResult?.secure_url;
+
+    // Merge top-level properties
+    Object.assign(user, updates);
+
+    // Initialize Profile if it doesn't exist
+    if (!user.Profile) {
+      user.Profile = {};
+    }
+
+    // Merge Profile properties deeply
+    Object.assign(user.Profile, profileUpdates);
+
+    // Update it
+    await user.save();
+    return user; // Return the updated user object
   },
 
   // logout
