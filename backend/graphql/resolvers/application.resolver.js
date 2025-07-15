@@ -52,3 +52,57 @@ export const applicationQueries = {
     }
   },
 };
+
+export const applicationMutations = {
+  async applyJob(_, { applyJobInput }, context) {
+    const { userId, jobId } = applyJobInput;
+    try {
+      if (!jobId) throw new Error("Job id is required.");
+
+      // check if the user has already applied for the job
+      const existingApplication = await Application.findOne({
+        job: jobId,
+        applicant: userId,
+      });
+
+      if (existingApplication)
+        throw new Error("You have already applied for this jobs");
+
+      // check if the jobs exists
+      const job = await Job.findById(jobId);
+      if (!job) throw new Error("job not found");
+
+      // create a new application
+      const newApplication = await Application.create({
+        job: jobId,
+        applicant: userId,
+      });
+      console.log("new aplicaton", newApplication);
+      job.applications.push(newApplication._id);
+      await job.save();
+      return newApplication;
+    } catch (error) {
+      console.error("Error in applyjob resolver:", error);
+      throw new Error("Failed to apply to job.");
+    }
+  },
+  async updateStatus(_, { updateStatusInput }, context) {
+    try {
+      const { status, applicationId } = updateStatusInput;
+
+      if (!status) throw new Error("status is required");
+
+      // find the application by applicantion id
+      const application = await Application.findOne({ _id: applicationId });
+      if (!application) throw new Error("status is required");
+
+      // update the status
+      application.status = status.toLowerCase();
+      await application.save();
+      return application;
+    } catch (error) {
+      console.error("Error in update resolver:", error);
+      throw new Error("Failed to update application status.");
+    }
+  },
+};
