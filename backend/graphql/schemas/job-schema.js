@@ -9,9 +9,9 @@ type Job {
     location: String!
     jobType: String!
     position: Int!
-    company : Company
+    company : Company!
     created_by: User
-    applications: Application
+    applications: [Application]
     createdAt: String!
     updatedAt: String!
 }
