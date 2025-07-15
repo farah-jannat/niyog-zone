@@ -11,9 +11,9 @@ type Profile {
 
 type User {
     id: ID!
-    fullName: String!
-    email: String!
-    phoneNumber: String!
+    fullName: String
+    email: String
+    phoneNumber: String
     password: String!
     role: String!
     Profile: Profile
