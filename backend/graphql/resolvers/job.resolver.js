@@ -60,4 +60,54 @@ export const jobQueries = {
   },
 };
 
-export const jobMutations = {};
+export const jobMutations = {
+  async postJob(_, { postInput }, context) {
+    try {
+      const {
+        title,
+        userId,
+        description,
+        requirements,
+        salary,
+        location,
+        jobType,
+        experienceLevel,
+        position,
+        companyId,
+      } = postInput;
+      console.log("postinpuot", title, userId, description, salary);
+      if (
+        !title ||
+        !description ||
+        !requirements ||
+        !salary ||
+        !location ||
+        !jobType ||
+        !experienceLevel ||
+        !position ||
+        !companyId
+      )
+        throw new Error("Failed to fetch data");
+
+      const job = await Job.create({
+        title,
+        description,
+        // requirements: requirements.split(","),
+        requirements: requirements,
+        salary: Number(salary),
+        location,
+        jobType,
+        experienceLevel: experienceLevel,
+        position,
+        company: companyId,
+        created_by: userId,
+      });
+      console.log("##########", job);
+      return job;
+    } catch (error) {
+      console.log(error);
+
+      throw new Error("Failed to create job");
+    }
+  },
+};
