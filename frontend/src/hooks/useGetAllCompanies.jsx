@@ -1,27 +1,32 @@
+import { GET_COMPANIES } from "@/graphql/query/getCompanies";
 import { setCompanies } from "@/redux/companySlice";
 import { COMPANY_API_END_POINT } from "@/utils/constant";
+import { useQuery } from "@apollo/client";
 import axios from "axios";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const useGetAllCompanies = () => {
+  const { user } = useSelector((store) => store.auth);
+  const userId = user?._id;
+  const { loading, error, data, refetch } = useQuery(GET_COMPANIES, {
+    variables: { userId },
+  });
+
   const dispatch = useDispatch();
   useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const res = await axios.get(`${COMPANY_API_END_POINT}/get`, {
-          withCredentials: true,
-        });
-        console.log("called");
-        if (res.data.success) {
-          dispatch(setCompanies(res.data.companies));
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchCompanies();
-  }, []);
+    if (data && data.getCompanies) {
+      console.log("companies", data.getCompanies);
+      dispatch(setCompanies(data.getCompanies));
+    }
+
+    if (loading) {
+      console.log("Fetching companies...");
+    }
+    if (error) {
+      console.error("Error fetching compaies:", error.message);
+    }
+  }, [data, loading, error, dispatch]);
 };
 
 export default useGetAllCompanies;
