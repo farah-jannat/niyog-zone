@@ -41,13 +41,13 @@ const LatestJobs = () => {
       </div>
       {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 my-5"> */}
       <div className="flex items-center justify-center  gap-3 flex-wrap ">
-        {allJobs.length <= 0 ? (
+        {allJobs?.length <= 0 ? (
           <span>No Job Available</span>
         ) : (
-          allJobs.slice(0, 6).map((job) => (
+          allJobs?.slice(0, 6).map((job) => (
             <div>
               {" "}
-              <LatestJobsCards key={job._id} job={job} />
+              <LatestJobsCards key={job.id} job={job} />
             </div>
           ))
         )}
