@@ -30,10 +30,16 @@ export const jobQueries = {
   },
 
   async getJobById(_, { jobId }, context) {
+    console.log("jobid", jobId);
     try {
-      const job = await Job.findById(jobId).populate({
-        path: "applications",
-      });
+      const job = await Job.findById(jobId)
+        .populate({
+          path: "applications",
+        })
+        .populate({
+          path: "company",
+          createdAt: -1,
+        });
 
       if (!job) return {};
 
