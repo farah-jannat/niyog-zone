@@ -4,32 +4,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { gql, useQuery } from "@apollo/client";
+import { GET_ALL_JOBS_QUERY } from "@/graphql/query/getAllJobs";
 
-const GET_ALL_JOBS_QUERY = gql`
-  query GetAllJobs($keyword: String) {
-    getAllJobs(keyword: $keyword) {
-      id
-      title
-      description
-      requirements
-      salary
-      experienceLevel
-      location
-      jobType
-      position
-      company {
-        name
-        logo
-      }
-      created_by {
-        fullName
-      }
-
-      createdAt
-      updatedAt
-    }
-  }
-`;
 const useGetAllJobs = () => {
   const { loading, error, data, refetch } = useQuery(GET_ALL_JOBS_QUERY);
   console.log("data", data);

@@ -3,27 +3,35 @@ import { setAllAppliedJobs } from "@/redux/jobSlice";
 import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux"; 
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@apollo/client";
+import { GET_APPLIED_JOBS } from "@/graphql/query/getAppliedJobs";
+import store from "@/redux/store";
 
 const useGetAppliedJobs = () => {
+  const { user } = useSelector((store) => store.auth);
+  const userId = user?._id;
+  console.log("user idddddddddd", userId);
+  const { loading, error, data } = useQuery(GET_APPLIED_JOBS, {
+    variables: { userId },
+  });
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchAppliedJobs = async () => {
-      try {
-        const res = await axios.get(`${APPLICATION_API_END_POINT}/get`, {
-          withCredentials: true,
-        });
-        console.log("all applied jobs",res.data);
-        if (res.data.success) {
-          dispatch(setAllAppliedJobs(res.data.application));
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchAppliedJobs();
-  }, []);
+    console.log("data form applied jobs", data);
+    if (data && data.getAppliedJobs) {
+      dispatch(setAllAppliedJobs(data.getAppliedJobs));
+    }
+    if (loading) {
+      console.log("Fetching applied jobs...");
+    }
+    if (error) {
+      console.error("Error fetching applied jobs:", error.message);
+    }
+
+    
+  }, [data, loading, error, dispatch]);
 };
 
 export default useGetAppliedJobs;
