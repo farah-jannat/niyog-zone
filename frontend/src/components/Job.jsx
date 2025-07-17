@@ -22,7 +22,7 @@ const Job = ({ job }) => {
   return (
     <div
       className="flex-1 p-3 sm:p-5 max-w-[500px] rounded-xl hover:bg-White border border-gray-100 sm:max-w-[250px] flex flex-col gap-4 cursor-pointer"
-      onClick={() => navigate(`/description/${job?._id}`)}
+      onClick={() => navigate(`/description/${job?.id}`)}
     >
       <div className="flex items-center gap-2">
         <div className="flex items-center justify-between  w-full">
