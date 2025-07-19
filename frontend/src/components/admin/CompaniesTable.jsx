@@ -49,7 +49,7 @@ const CompaniesTable = () => {
         </TableHeader>
         <TableBody>
           {filterCompany?.map((company) => (
-            <tr>
+            <tr >
               <TableCell>
                 <Avatar>
                   <AvatarImage src={company.logo} />
@@ -64,7 +64,7 @@ const CompaniesTable = () => {
                   </PopoverTrigger>
                   <PopoverContent
                     className="w-32 hover:bg-gray-200"
-                    onClick={() => navigate(`/admin/companies/${company._id}`)}
+                    onClick={() => navigate(`/admin/companies/${company.id}`)}
                   >
                     <div className="flex items-center gap-2 w-fit cursor-pointer">
                       <Edit2 className="w-4" />
