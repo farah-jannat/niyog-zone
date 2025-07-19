@@ -6,25 +6,31 @@ import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAllApplicants } from "@/redux/applicationSlice";
+import { useQuery } from "@apollo/client";
+import { GET_APPLICANTS } from "@/graphql/query/getApplicants";
 
 const Applicants = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const { applicants } = useSelector((store) => store.application);
+  const jobId = params.id;
+
+  const { loading, data, error } = useQuery(GET_APPLICANTS, {
+    variables: { jobId },
+  });
   useEffect(() => {
-    const fetchAllApplicants = async () => {
-      try {
-        const res = await axios.get(
-          `${APPLICATION_API_END_POINT}/${params.id}/applicants`,
-          { withCredentials: true }
-        );
-        dispatch(setAllApplicants(res.data.job));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchAllApplicants();
-  }, []);
+    if (data && data.getApplicants) {
+      console.log("data and jobs client by grapql", data.getApplicants);
+      dispatch(setAllApplicants(data.getApplicants));
+    }
+
+    if (loading) {
+      console.log("Fetching applicants...");
+    }
+    if (error) {
+      console.error("Error fetching applicants:", error.message);
+    }
+  }, [loading, data, error, dispatch]);
   return (
     <div>
       <div>
