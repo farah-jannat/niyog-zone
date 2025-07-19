@@ -26,6 +26,8 @@ import Navbar_two from "./shared/Navbar_two";
 import { Separator } from "@radix-ui/react-select";
 import Footer from "./shared/Footer";
 import useGetCompanyById from "@/hooks/useGetCompanyById";
+import { gql, useQuery } from "@apollo/client";
+import { GET_JOB_bY_ID } from "@/graphql/query/getJobById";
 
 const JobDescription = () => {
   const params = useParams();
@@ -34,7 +36,8 @@ const JobDescription = () => {
   const { user } = useSelector((store) => store.auth);
   const { allJobs } = useSelector((store) => store.job);
 
-  useGetCompanyById(singleJob?.company);
+  useGetCompanyById(singleJob?.company?.id);
+  console.log("%%%%%%%%%%%%%%%%%%%%%%%", singleJob?.company?.id);
   const { singleCompany } = useSelector((store) => store.company);
   const navigate = useNavigate();
 
@@ -73,29 +76,46 @@ const JobDescription = () => {
     }
   };
 
+  console.log("job id is ", jobId);
+
+  const { loading, error, data } = useQuery(GET_JOB_bY_ID, {
+    variables: { jobId },
+  });
+
+  console.log("data desc of job", data);
+
   useEffect(() => {
-    const fetchSingleJob = async () => {
-      try {
-        const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
-          withCredentials: true,
-        });
-        console.log("this is res of job description", res);
-        if (res.data.success) {
-          dispatch(setSingleJob(res.data.job));
-          setIsApplied(
-            res.data.job.applications.some(
-              (application) => application.applicant === user?._id
-            )
-          ); // Ensure the state is in sync with fetched data
-          console.log("here is the isapplied", isApplied);
-          console.log("songlejob", singleJob);
-          console.log("siglecompany", singleCompany);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchSingleJob();
+    console.log("data desc of job", data);
+    if (data && data.getJobById) {
+      dispatch(setSingleJob(data.getJobById));
+      const isInitiallyApplied =
+        data.getJobById.applications?.some(
+          (application) => application.applicant === user?._id
+        ) || false;
+      setIsApplied(isInitiallyApplied);
+    }
+    // const fetchSingleJob = async () => {
+    //   try {
+    //     const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, {
+    //       withCredentials: true,
+    //     });
+    //     console.log("this is res of job description", res);
+    //     if (res.data.success) {
+    //       dispatch(setSingleJob(res.data.job));
+    //       setIsApplied(
+    //         res.data.job.applications.some(
+    //           (application) => application.applicant === user?._id
+    //         )
+    //       ); // Ensure the state is in sync with fetched data
+    //       console.log("here is the isapplied", isApplied);
+    //       console.log("songlejob", singleJob);
+    //       console.log("siglecompany", singleCompany);
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // fetchSingleJob();
   }, [jobId, dispatch, user?._id]);
 
   // console.log("jlkjljl ========== ",singleJob)
@@ -288,8 +308,6 @@ const JobDescription = () => {
             {/* second  part */}
             <div className="flex flex-col gap-5 mt-5">
               <div className="flex flex-col gap-5">
-              
-
                 <div className="prose">
                   <div
                     dangerouslySetInnerHTML={{ __html: singleJob?.description }}
@@ -414,7 +432,7 @@ const JobDescription = () => {
             <div className="hidden md:flex flex-col gap-3 border border-gray-150 p-4 max-w-full ">
               <div
                 onClick={() => {
-                  navigate(`/companyProfile/${singleCompany?._id}`);
+                  navigate(`/companyProfile/${singleCompany?.id}`);
                 }}
                 className="max-w-[200px]  flex items-center gap-3 cursor-pointer"
               >
@@ -457,7 +475,7 @@ const JobDescription = () => {
                   <>
                     <div
                       className="text-Black cursor-pointer flex-1 flex items-center justify-between min-w-[250px] max-w-[300px] gap-5 border-b"
-                      onClick={() => navigate(`/description/${job?._id}`)}
+                      onClick={() => navigate(`/description/${job?.id}`)}
                     >
                       <div className="flex items-start gap-3 ">
                         <img
