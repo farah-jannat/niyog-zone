@@ -73,17 +73,6 @@ const Signup = () => {
           },
         },
       });
-
-      // const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      //   withCredentials: true,
-      // });
-      // console.log("After axios.post has resolved, before console.log(res)");
-      // console.log("res if tere is any eroor or not", res);
-      // if (res.data.success) {
-      //   navigate("/login");
-      //   toast.success(res.data.message);
-      // }
     } catch (error) {
       console.log("error form signup page", error.message);
       toast.error(error.message);
