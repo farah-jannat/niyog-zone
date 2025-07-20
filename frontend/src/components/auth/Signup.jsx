@@ -13,6 +13,8 @@ import store from "@/redux/store";
 import { setLoading } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
 import Navbar_two from "../shared/Navbar_two";
+import { useMutation } from "@apollo/client";
+import { REGISTER_USER } from "@/graphql/mutation/register";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -23,8 +25,9 @@ const Signup = () => {
     role: "",
     file: "",
   });
+
   const navigate = useNavigate();
-  const { loading, user } = useSelector((store) => store.auth);
+  const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   const changeEvenHandler = (e) => {
@@ -32,47 +35,83 @@ const Signup = () => {
   };
   const changeFileHandler = (e) => {
     setInput({ ...input, file: e.target.files?.[0] });
+
+    
   };
+
+  
+
+  const [register, { loading, data, error }] = useMutation(REGISTER_USER);
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("fullName", input.fullName);
-    formData.append("email", input.email);
-    formData.append("phoneNumber", input.phoneNumber);
-    formData.append("password", input.password);
-    formData.append("role", input.role);
-    if (input.file) {
-      formData.append("file", input.file);
-    }
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
+    // const formData = new FormData();
+    // formData.append("fullName", input.fullName);
+    // formData.append("email", input.email);
+    // formData.append("phoneNumber", input.phoneNumber);
+    // formData.append("password", input.password);
+    // formData.append("role", input.role);
+    // if (input.file) {
+    //   formData.append("file", input.file);
+    // }
+    // for (const pair of formData.entries()) {
+    //   console.log(`${pair[0]}: ${pair[1]}`);
+    // }
+
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
+      console.log("######################", input);
+      const registerResult = await register({
+        variables: {
+          registerInput: {
+            fullName: input.fullName,
+            email: input.email,
+            phoneNumber: input.phoneNumber,
+            password: input.password,
+            role: input.role,
+            profilePhoto: input.file,
+          },
+        },
       });
-      console.log("After axios.post has resolved, before console.log(res)");
-      console.log("res if tere is any eroor or not", res);
-      if (res.data.success) {
-        navigate("/login");
-        toast.success(res.data.message);
-      }
+
+      // const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+      //   headers: { "Content-Type": "multipart/form-data" },
+      //   withCredentials: true,
+      // });
+      // console.log("After axios.post has resolved, before console.log(res)");
+      // console.log("res if tere is any eroor or not", res);
+      // if (res.data.success) {
+      //   navigate("/login");
+      //   toast.success(res.data.message);
+      // }
     } catch (error) {
-      console.log("error form signup page", error);
-      toast.error(error.response.data.message);
+      console.log("error form signup page", error.message);
+      toast.error(error.message);
     } finally {
       dispatch(setLoading(false));
     }
   };
   useEffect(() => {
-    if (user) {
-      navigate("/");
+    if (loading) {
+      console.log("Registering user...");
+      dispatch(setLoading(true));
+    } else {
+      dispatch(setLoading(false));
     }
-  }, []);
+
+    if (data && data.register) {
+      console.log("Registration successful:", data.register);
+      toast.success("Registration successful! Please log in.");
+      navigate("/login");
+    }
+
+    if (error) {
+      console.error("Error registering user (GraphQL error):", error.message);
+      toast.error(`Registration failed: ${error.message}`);
+    }
+  }, [loading, data, error, navigate, dispatch]);
+
   return (
     <div>
       <Navbar_two />
