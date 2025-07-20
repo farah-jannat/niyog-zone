@@ -34,30 +34,29 @@ const Signup = () => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const changeFileHandler = (e) => {
-    setInput({ ...input, file: e.target.files?.[0] });
+    const file = e.target.files?.[0];
 
-    
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setInput({ ...input, file: reader.result });
+      };
+
+      reader.onerror = (error) => {
+        console.error("Error reading file:", error);
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      setInput({ ...input, file: null }); // Clear file if no file is selected
+    }
   };
-
-  
 
   const [register, { loading, data, error }] = useMutation(REGISTER_USER);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    // const formData = new FormData();
-    // formData.append("fullName", input.fullName);
-    // formData.append("email", input.email);
-    // formData.append("phoneNumber", input.phoneNumber);
-    // formData.append("password", input.password);
-    // formData.append("role", input.role);
-    // if (input.file) {
-    //   formData.append("file", input.file);
-    // }
-    // for (const pair of formData.entries()) {
-    //   console.log(`${pair[0]}: ${pair[1]}`);
-    // }
 
     try {
       dispatch(setLoading(true));
