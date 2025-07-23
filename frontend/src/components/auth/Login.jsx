@@ -14,6 +14,8 @@ import store from "@/redux/store";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import Navbar_two from "../shared/Navbar_two";
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "@/graphql/mutation/login";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -21,29 +23,42 @@ const Login = () => {
     password: "mim",
     role: "student",
   });
-  const { loading, user } = useSelector((store) => store.auth);
+  const { user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const changeEvenHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
+  const [login, { loading, error, data }] = useMutation(LOGIN_USER);
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    console.log("input login", input);
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-        headers: {
-          "Content-Type": "application/json",
+
+      const loginResult = await login({
+        variables: {
+          loginInput: {
+            email: input.email,
+            password: input.password,
+            role: input.role,
+          },
         },
-        withCredentials: true,
       });
-      console.log("here is user from login page", res.data.user);
-      if (res.data.succes) {
-        dispatch(setUser(res.data.user));
-        navigate("/");
-        toast.success(res.data.message);
-      }
+
+      // const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   withCredentials: true,
+      // });
+      // console.log("here is user from login page", res.data.user);
+      // if (res.data.succes) {
+      //   dispatch(setUser(res.data.user));
+      //   navigate("/");
+      //   toast.success(res.data.message);
+      // }
     } catch (err) {
       console.log("eroor form login page", err);
     } finally {
@@ -51,10 +66,25 @@ const Login = () => {
     }
   };
   useEffect(() => {
-    if (user) {
+    if (loading) {
+      console.log("logging user...");
+      dispatch(setLoading(true));
+    } else {
+      dispatch(setLoading(false));
+    }
+
+    if (data && data.login) {
+      console.log("login successful:", data.login);
+      toast.success(`login successful! welcome back ${data.login?.fullName} `);
+      dispatch(setUser(data.login));
       navigate("/");
     }
-  }, []);
+
+    if (error) {
+      console.error("Error logging user (GraphQL error):", error.message);
+      toast.error(`login failed: ${error.message}`);
+    }
+  }, [loading, data, error, navigate, dispatch]);
 
   return (
     <div>
