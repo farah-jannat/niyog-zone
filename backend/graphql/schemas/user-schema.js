@@ -5,7 +5,7 @@ type Profile {
     resume: String
     resumeOriginalName: String
     profilePhoto: String
-    company: Company,
+    company: [Company],
 }
 
 

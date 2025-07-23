@@ -37,7 +37,7 @@ const typeDefs = `#graphql
 input RegisterInput {
   fullName: String!
   email: String!
-  phoneNumber: String!
+  phoneNumber: String
   password: String!
   role: String!
   profilePhoto: String
@@ -48,6 +48,7 @@ input loginInput {
   email: String!
   password: String!
   role: String!
+  # userId:ID!
   
 }
 input updateInput {
