@@ -10,7 +10,7 @@ import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import store from "@/redux/store";
-import { setLoading } from "@/redux/authSlice";
+import { setLoading, setUser } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
 import Navbar_two from "../shared/Navbar_two";
 import { useMutation } from "@apollo/client";
@@ -91,6 +91,7 @@ const Signup = () => {
     if (data && data.register) {
       console.log("Registration successful:", data.register);
       toast.success("Registration successful! Please log in.");
+      dispatch(setUser(data.register));
       navigate("/login");
     }
 
