@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogHeader,
@@ -13,12 +13,16 @@ import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
-import { setUser } from "@/redux/authSlice";
+import { setLoading, setUser } from "@/redux/authSlice";
 import { toast } from "sonner";
+import { UPDATE_USER } from "@/graphql/mutation/update";
+import { useMutation } from "@apollo/client";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const { user } = useSelector((store) => store.auth);
+  const userId = user?.id;
+  console.log("userid of current user", userId);
   const [input, setInput] = useState({
     fullName: user?.fullName,
     email: user?.email,
@@ -41,62 +45,101 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
   };
 
   const handleProfilePhotoChange = (e) => {
-    setInput((prevInput) => ({
-      ...prevInput,
-      profilePhoto: e.target.files[0],
-    }));
+    // setInput((prevInput) => ({
+    //   ...prevInput,
+    //   profilePhoto: e.target.files[0],
+    // }));
+
+    const photo = e.target.files?.[0];
+
+    if (photo) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setInput({ ...input, profilePhoto: reader.result });
+      };
+
+      reader.onerror = (error) => {
+        console.error("Error reading file:", error);
+      };
+
+      reader.readAsDataURL(photo);
+    } else {
+      setInput({ ...input, profilePhoto: null }); // Clear file if no file is selected
+    }
   };
   const handleResumeChange = (e) => {
-    setInput((prevInput) => ({
-      ...prevInput,
-      resume: e.target.files[0],
-    }));
+    const resume = e.target.files?.[0];
+
+    if (resume) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setInput({ ...input, resume: reader.result });
+      };
+
+      reader.onerror = (error) => {
+        console.error("Error reading file:", error);
+      };
+
+      reader.readAsDataURL(resume);
+    } else {
+      setInput({ ...input, resume: null });
+    }
   };
+
+  const [update, { loading, data, error }] = useMutation(UPDATE_USER);
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("input  here ", input);
-    const formData = new FormData();
-    formData.append("fullName", input.fullName);
-    formData.append("email", input.email);
-    formData.append("phoneNumber", input.phoneNumber);
-    formData.append("bio", input.bio);
-    formData.append("skills", input.skills);
-    if (input.profilePhoto) {
-      formData.append("profilePhoto", input.profilePhoto);
-    }
 
-    if (input.resume) {
-      // Check if a resume file is selected
-      formData.append("resume", input.resume); // Append the resume file
-    }
-
-    console.log("input from profile update", input);
     try {
-      setLoading(true);
-      const res = await axios.post(
-        `${USER_API_END_POINT}/profile/update`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/formdata",
+      dispatch(setLoading(true));
+      console.log("###################### input inside submithanlder", input);
+      const updateResult = await update({
+        variables: {
+          updateInput: {
+            userId: userId,
+            fullName: input.fullName,
+            email: input.email,
+            bio: input.bio,
+            phoneNumber: input.phoneNumber,
+
+            role: input.role,
+            profilePhoto: input.profilePhoto,
+            resume: input.resume,
           },
-          withCredentials: true,
-        }
-      );
-      console.log("response of updated data:", res);
-      if (res.data.success) {
-        dispatch(setUser(res.data.user));
-        toast.success(res.data.message);
-      }
+        },
+      });
     } catch (error) {
       console.log("errpr while updata data from frontend", error);
-      toast.error(error.response.data.message);
+      toast.error(error.response);
     } finally {
       setLoading(false);
     }
     setOpen(false);
   };
 
+  useEffect(() => {
+    if (loading) {
+      console.log("updating user...");
+      dispatch(setLoading(true));
+    } else {
+      dispatch(setLoading(false));
+    }
+
+    if (data && data.update) {
+      console.log("update successful:", data.update);
+      toast.success("updated successfully");
+      dispatch(setUser(data.update));
+      // navigate("/login");
+    }
+
+    if (error) {
+      console.error("Error updating user (GraphQL error):", error.message);
+      toast.error(`updating failed: ${error.message}`);
+    }
+  }, [loading, data, error, dispatch]);
   //   console.log("input here", input);
   //   console.log("user here", user);
   return (
@@ -181,6 +224,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                   type="file"
                   id="resume"
                   name="resume"
+                  accept="application/pdf"
                   onChange={handleResumeChange}
                   className="col-span-3"
                 />
