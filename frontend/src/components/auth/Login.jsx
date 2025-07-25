@@ -30,61 +30,7 @@ const Login = () => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
   const [login, { loading, error, data }] = useMutation(LOGIN_USER);
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    console.log("input login", input);
-    try {
-      dispatch(setLoading(true));
-
-      const loginResult = await login({
-        variables: {
-          loginInput: {
-            email: input.email,
-            password: input.password,
-            role: input.role,
-          },
-        },
-      });
-
-      // const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   withCredentials: true,
-      // });
-      // console.log("here is user from login page", res.data.user);
-      // if (res.data.succes) {
-      //   dispatch(setUser(res.data.user));
-      //   navigate("/");
-      //   toast.success(res.data.message);
-      // }
-    } catch (err) {
-      console.log("eroor form login page", err);
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
-  useEffect(() => {
-    if (loading) {
-      console.log("logging user...");
-      dispatch(setLoading(true));
-    } else {
-      dispatch(setLoading(false));
-    }
-
-    if (data && data.login) {
-      console.log("login successful:", data.login);
-      toast.success(`login successful! welcome back ${data.login?.fullName} `);
-      dispatch(setUser(data.login));
-      navigate("/");
-    }
-
-    if (error) {
-      console.error("Error logging user (GraphQL error):", error.message);
-      toast.error(`login failed: ${error.message}`);
-    }
-  }, [loading, data, error, navigate, dispatch]);
+  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7777777777777", data);
 
   return (
     <div>
@@ -168,6 +114,31 @@ const Login = () => {
       </div>
     </div>
   );
+
+  async function submitHandler(e) {
+    e.preventDefault();
+    await login({
+      variables: {
+        email: input.email,
+        password: input.password,
+        role: input.role,
+      },
+
+      onCompleted: (result) => {
+        console.log("login successful ******************:", result);
+        toast.success(
+          `login successful! welcome back ${result.login?.fullName} `
+        );
+        dispatch(setUser(result.login));
+        navigate("/");
+      },
+      onError: (error) => {
+        toast.error(error.message);
+
+        // console.error("Specific mutation failed:", err);
+      },
+    });
+  }
 };
 
 export default Login;

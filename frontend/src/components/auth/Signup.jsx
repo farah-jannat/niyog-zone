@@ -55,52 +55,6 @@ const Signup = () => {
 
   const [register, { loading, data, error }] = useMutation(REGISTER_USER);
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
-    try {
-      dispatch(setLoading(true));
-      console.log("######################", input);
-      const registerResult = await register({
-        variables: {
-          registerInput: {
-            fullName: input.fullName,
-            email: input.email,
-            phoneNumber: input.phoneNumber,
-            password: input.password,
-            role: input.role,
-            profilePhoto: input.file,
-          },
-        },
-      });
-    } catch (error) {
-      console.log("error form signup page", error.message);
-      toast.error(error.message);
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
-  useEffect(() => {
-    if (loading) {
-      console.log("Registering user...");
-      dispatch(setLoading(true));
-    } else {
-      dispatch(setLoading(false));
-    }
-
-    if (data && data.register) {
-      console.log("Registration successful:", data.register);
-      toast.success("Registration successful! Please log in.");
-      dispatch(setUser(data.register));
-      navigate("/login");
-    }
-
-    if (error) {
-      console.error("Error registering user (GraphQL error):", error.message);
-      toast.error(`Registration failed: ${error.message}`);
-    }
-  }, [loading, data, error, navigate, dispatch]);
-
   return (
     <div>
       <Navbar_two />
@@ -210,6 +164,59 @@ const Signup = () => {
       </div>
     </div>
   );
+
+  async function submitHandler(e) {
+    e.preventDefault();
+
+    // dispatch(setLoading(true));
+    // console.log("######################", input);
+    await register({
+      variables: {
+        // registerInput: {
+        fullName: input.fullName,
+        email: input.email,
+        phoneNumber: input.phoneNumber,
+        password: input.password,
+        role: input.role,
+        profilePhoto: input.file,
+        // },
+      },
+
+      onCompleted: (result) => {
+        // console.log("Specific mutation completed:", result);
+        toast.success("Registration successful! Please log in.");
+        dispatch(setUser(data.register));
+
+        navigate("/login");
+      },
+      onError: (err) => {
+        toast.error(error.message);
+
+        // console.error("Specific mutation failed:", err);
+      },
+    });
+  }
 };
 
 export default Signup;
+
+// useEffect(() => {
+//   if (loading) {
+//     console.log("Registering user...");
+//     dispatch(setLoading(true));
+//   } else {
+//     dispatch(setLoading(false));
+//   }
+
+//   if (data && data.register) {
+//     console.log("Registration successful:", data.register);
+//     toast.success("Registration successful! Please log in.");
+//     dispatch(setUser(data.register));
+//     navigate("/login");
+//   }
+
+//   if (error) {
+//     console.error("Error registering user (GraphQL error):", error.message);
+//     toast.error(`Registration failed: ${error.message}`);
+//   }
+// }, [loading, data, error, navigate, dispatch]);
