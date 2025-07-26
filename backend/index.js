@@ -26,8 +26,11 @@ const app = express();
 const httpServer = http.createServer(app); // Create an HTTP server from your Express app
 
 // middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(
+  express.json({ limit: "50mb" }), // <--- ADD THIS OPTION
+  express.urlencoded({ limit: "50mb", extended: true })
+);
+// app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 const corsOptions = {
   origin: "http://localhost:5173",
