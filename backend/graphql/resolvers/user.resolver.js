@@ -23,43 +23,53 @@ export const userMutations = {
       // find the suer
       const userExists = await User.findOne({ email });
       if (userExists) throw new Error("User already exists.");
-
+      console.log("imageeeeeeeeeeeeeeeeeeeeeeeee", profilePhoto);
       // handle profile photo
-      const profilePublicId = crypto.randomUUID();
+
       let uploadPhotoResult;
-      try {
-        uploadPhotoResult = await uploads(
-          profilePhoto,
-          `${profilePublicId}`,
-          true,
-          true
-        );
-      } catch (error) {
-        console.error("Upload error:", error);
-        throw new Error("Image upload error. Try again.");
+      if (profilePhoto) {
+        const profilePublicId = crypto.randomUUID();
+        // let uploadPhotoResult;
+        try {
+          uploadPhotoResult = await uploads(
+            profilePhoto,
+            `${profilePublicId}`,
+            true,
+            true
+          );
+        } catch (error) {
+          console.error("Upload error:", error);
+          throw new Error("Image upload error. Try again.");
+        }
+
+        if (!uploadPhotoResult.public_id)
+          throw new Error("Image upload error. Try again.");
+      } else {
+        console.log("no profile photo");
       }
-
-      if (!uploadPhotoResult.public_id)
-        throw new Error("Image upload error. Try again.");
-
       // handle resume
-      const resumePublicId = crypto.randomUUID();
       let uploadPdfResult;
-      try {
-        uploadPdfResult = await uploads(
-          resume,
-          `${resumePublicId}`,
-          true,
-          true
-        );
-      } catch (error) {
-        console.error("Pdf Upload error:", error);
-        throw new Error("Pdf upload error. Try again.");
+
+      if (resume) {
+        const resumePublicId = crypto.randomUUID();
+        // let uploadPdfResult;
+        try {
+          uploadPdfResult = await uploads(
+            resume,
+            `${resumePublicId}`,
+            true,
+            true
+          );
+        } catch (error) {
+          console.error("Pdf Upload error:", error);
+          throw new Error("Pdf upload error. Try again.");
+        }
+
+        if (!uploadPdfResult.public_id)
+          throw new Error("Pdf upload error. Try again.");
+      } else {
+        console.log("no resume");
       }
-
-      if (!uploadPdfResult.public_id)
-        throw new Error("Pdf upload error. Try again.");
-
       // has the password
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -88,15 +98,20 @@ export const userMutations = {
   async login(_, { loginInput }, context) {
     try {
       const { email, password, role } = loginInput;
-      console.log("data", email, password, role);
+      // console.log("data", email, password, role);
       // validate Data
       if (!email || !password || !role) {
         throw new Error("All required fields must be provided.");
       }
-
-      // find the user
-      let user = await User.findOne({ email });
+      // ** --- working here --
+      
+      let user = await User.findOne({ email }).populate({
+        path: "Profile.company",
+        options: { sort: { createdAt: -1 } },
+      });
       if (!user) throw new Error("User not found.");
+
+      console.log("user is ", user);
 
       const isPasswordMatch = await bcrypt.compare(password, user.password);
       if (!isPasswordMatch) throw new Error("password does not match");
@@ -105,7 +120,7 @@ export const userMutations = {
       if (role !== user.role) {
         throw new Error("Account doesn't exist with current role.");
       }
-
+      // console.log("userrerererr from logoin", user);
       return user;
     } catch (err) {
       console.error("Error while login:", err);
@@ -129,8 +144,19 @@ export const userMutations = {
     } = updateInput;
 
     // Find user
+    // console.log(
+    //   "update input console %%%%%%%%%%%%%%%%%%%%%%",
+    //   fullName,
+    //   email,
+    //   phoneNumber,
+    //   bio,
+    //   skills,
+    //   userId,
+    //   profilePhoto,
+    //   resume
+    // );
     let user = await User.findOne({ _id: userId });
-
+    console.log("phorifle####################", resume);
     // Handle Profile Photo
     let uploadPhotoResult = user.Profile?.profilePhoto; // Access existing profilePhoto safely
 
@@ -145,7 +171,7 @@ export const userMutations = {
           true
         );
       } catch (error) {
-        console.error("Upload error:", error);
+        console.error("Upload error:", error?.message || error);
         throw new Error("Image upload error. Try again.");
       }
 
