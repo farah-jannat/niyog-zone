@@ -1,4 +1,5 @@
 import { Company } from "../../models/company.model.js";
+import { User } from "../../models/user.model.js";
 import { uploads } from "../../utils/new-cloudinary.js";
 
 export const companyQueries = {
@@ -38,10 +39,18 @@ export const companyMutations = {
 
       let company = await Company.findOne({ name: companyName });
       if (company) throw new Error("company with this name already exist");
+
+      // check if the jobs exists
+      const user = await User.findById(userId);
+      if (!user) throw new Error("User not found");
+
       company = await Company.create({
         name: companyName,
         userId,
       });
+
+      user.Profile.company.push(company._id);
+      await user.save();
       return company;
     } catch (error) {
       console.error("Error in registerCompany resolver:", error);
@@ -54,7 +63,7 @@ export const companyMutations = {
       updateCompanyInput;
     try {
       console.log(
-        "this are datas coming from frontend:",
+        "this are datas coming from frontend:", 
         name,
         description,
         website,
