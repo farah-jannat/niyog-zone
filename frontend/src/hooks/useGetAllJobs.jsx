@@ -5,26 +5,40 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { gql, useQuery } from "@apollo/client";
 import { GET_ALL_JOBS_QUERY } from "@/graphql/query/getAllJobs";
+import { toast } from "sonner";
 
 const useGetAllJobs = () => {
-  const { loading, error, data, refetch } = useQuery(GET_ALL_JOBS_QUERY);
-  console.log("data", data);
-  // console.log("hello")
   const dispatch = useDispatch();
   const { searchedQuery } = useSelector((store) => store.job);
-  useEffect(() => {
-    if (data && data.getAllJobs) {
-      console.log("data and jobs client by grapql", data.getAllJobs);
+  const { loading, error, data, refetch } = useQuery(GET_ALL_JOBS_QUERY, {
+    variables: { searchedQuery },
+    onCompleted: (data) => {
+      // console.log("alljlobs successful ******************:", data);
+      // toast.success("fetched all jobs succesfully");
       dispatch(setAllJobs(data.getAllJobs));
-    }
+    },
+    onError: (error) => {
+      toast.error(error.message);
 
-    if (loading) {
-      console.log("Fetching jobs...");
-    }
-    if (error) {
-      console.error("Error fetching jobs:", error.message);
-    }
-  }, [data, loading, error, dispatch]);
+      // console.error("Specific mutation failed:", err);
+    },
+  });
+
+  // console.log("hello")
+
+  //   useEffect(() => {
+  //     if (data && data.getAllJobs) {
+  //       console.log("data and jobs client by grapql", data.getAllJobs);
+  //       dispatch(setAllJobs(data.getAllJobs));
+  //     }
+
+  //     if (loading) {
+  //       console.log("Fetching jobs...");
+  //     }
+  //     if (error) {
+  //       console.error("Error fetching jobs:", error.message);
+  //     }
+  //   }, [data, loading, error, dispatch]);
+  // };
 };
-
 export default useGetAllJobs;

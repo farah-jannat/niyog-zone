@@ -5,38 +5,32 @@ import { useQuery } from "@apollo/client";
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 const useGetAllAdminJobs = (adminId) => {
+  const dispatch = useDispatch();
   const { loading, data, error } = useQuery(GET_ALL_ADMIN_JOBS, {
     variables: { adminId },
-  });
-  const dispatch = useDispatch();
-  useEffect(() => {
-    console.log("allllal jobs admn created", data)
-    if (data && data.getAdminJobs) {
+    onCompleted: (data) => {
       dispatch(setAllAdminJobs(data.getAdminJobs));
-    }
-    if (loading) {
-      console.log("Fetching admin jobs...");
-    }
-    if (error) {
-      console.error("Error fetching admin jobs:", error.message);
-    }
-
-    // const fetchAllAdminJobs = async () => {
-    //   try {
-    //     const res = await axios.get(`${JOB_API_END_POINT}/getadminjobs`, {
-    //       withCredentials: true,
-    //     });
-    //     if (res.data.success) {
-    //       dispatch(setAllAdminJobs(res.data.jobs));
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-    // fetchAllAdminJobs();
-  }, [loading, data, error, dispatch]);
+    },
+    onError: (err) => {
+      toast.error(error.message);
+    },
+  });
 };
 
 export default useGetAllAdminJobs;
+
+// useEffect(() => {
+//   console.log("allllal jobs admn created", data);
+//   if (data && data.getAdminJobs) {
+//     dispatch(setAllAdminJobs(data.getAdminJobs));
+//   }
+//   if (loading) {
+//     console.log("Fetching admin jobs...");
+//   }
+//   if (error) {
+//     console.error("Error fetching admin jobs:", error.message);
+//   }
+// }, [loading, data, error, dispatch]);
