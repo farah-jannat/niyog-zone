@@ -101,7 +101,7 @@ import imageResize from "quill-image-resize-module-react";
 import { Button } from "../ui/button";
 
 // Quill.register("modules/imageResize", ImageResize);
-Quill.register("modules/imageResize", imageResize);
+// Quill.register("modules/imageResize", imageResize);
 
 const modules = {
   toolbar: [
@@ -115,7 +115,7 @@ const modules = {
     ["clean"],
   ],
   clipboard: { matchVisual: false },
-  imageResize: {},
+  // imageResize: {},
 };
 
 const AdminJobDescription = ({ onDescriptionChange }) => {
