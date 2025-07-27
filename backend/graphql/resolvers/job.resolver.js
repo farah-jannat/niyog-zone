@@ -35,6 +35,8 @@ export const jobQueries = {
       const job = await Job.findById(jobId)
         .populate({
           path: "applications",
+          populate: {
+            path: "applicant",}
         })
         .populate({
           path: "company",
@@ -81,7 +83,10 @@ export const jobMutations = {
         position,
         companyId,
       } = postInput;
-      console.log("postinpuot", title, userId, description, salary);
+      console.log("title", title);
+      console.log("description", description);
+      console.log("title", userId);
+      // console.log("title", title);
       if (
         !title ||
         !description ||
