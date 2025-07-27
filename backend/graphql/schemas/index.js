@@ -56,11 +56,13 @@ input updateInput {
   fullName: String
   userId: ID!
   email: String
+  bio: String
   phoneNumber: String
-  password: String
+  # password: String
   role: String
   profilePhoto: String
   resume: String
+  # resumeOriginalName: String
   
 }
 
@@ -74,7 +76,8 @@ input postInput {
     location: String!
     jobType: String!
     position: Int!
-    companyId : String!
+    companyId: String!
+    # companyId : String!
     
 }
 input companyRegisterInput {
@@ -98,12 +101,13 @@ input updateStatusInput {
 input updateCompanyInput {
     
     
-    name:String!
+    name:String
     description:String
     website:String
     location:String
     logo:String
-    companyId :String
+    companyId: String!
+    
     
 }
 
