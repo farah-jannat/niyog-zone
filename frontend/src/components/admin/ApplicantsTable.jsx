@@ -14,26 +14,43 @@ import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
+import { useMutation } from "@apollo/client";
+import { UPDATE_STATUS } from "@/graphql/mutation/updateStatus";
 
 const shortlisingStatus = ["Accepted", "Rejected"];
 const ApplicantsTable = () => {
   const { applicants } = useSelector((store) => store.application);
-
+console.log("***************",applicants)
+  const [updateStatus, { loading, error, data }] = useMutation(UPDATE_STATUS);
   const statusHandler = async (status, id) => {
+    console.log("applicationid((((((((((((((", id, status)
+    await updateStatus({
+      variables: {
+        applicationId: id,
+        status: status,
+      },
+      onCompleted: (data) => {
+        toast.success("updated application status successfully");
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
     console.log("called");
-    try {
-      axios.defaults.withCredentials = true;
-      const res = await axios.post(
-        `${APPLICATION_API_END_POINT}/status/${id}/update`,
-        { status }
-      );
-      console.log(res);
-      if (res.data.success) {
-        toast.success(res.data.message);
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
+    // try {
+    //   axios.defaults.withCredentials = true;
+    //   const res = await axios.post(
+    //     `${APPLICATION_API_END_POINT}/status/${id}/update`,
+    //     { status }
+    //   );
+    //   console.log(res);
+    //   if (res.data.success) {
+    //     toast.success(res.data.message);
+    //   }
+    // } catch (error) {
+    //   toast.error(error.response.data.message);
+    // }
   };
 
   return (
@@ -81,7 +98,7 @@ const ApplicantsTable = () => {
                         {shortlisingStatus.map((status, index) => {
                           return (
                             <div
-                              onClick={() => statusHandler(status, item?._id)}
+                              onClick={() => statusHandler(status, item?.id)}
                               key={index}
                               className="flex w-fit items-center my-2 cursor-pointer"
                             >

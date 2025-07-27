@@ -12,7 +12,7 @@ import store from "@/redux/store";
 
 const AdminJobs = () => {
   const { user } = useSelector((store) => store.auth);
-  const adminId = user?._id
+  const adminId = user?.id;
   useGetAllAdminJobs(adminId);
   const [input, setInput] = useState("");
   const navigate = useNavigate();

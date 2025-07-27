@@ -17,20 +17,27 @@ const Applicants = () => {
 
   const { loading, data, error } = useQuery(GET_APPLICANTS, {
     variables: { jobId },
-  });
-  useEffect(() => {
-    if (data && data.getApplicants) {
+    onCompleted: (data) => {
       console.log("data and jobs client by grapql", data.getApplicants);
       dispatch(setAllApplicants(data.getApplicants));
-    }
-
-    if (loading) {
-      console.log("Fetching applicants...");
-    }
-    if (error) {
+    },
+    onError: (error) => {
       console.error("Error fetching applicants:", error.message);
-    }
-  }, [loading, data, error, dispatch]);
+    },
+  });
+  // useEffect(() => {
+  //   if (data && data.getApplicants) {
+  //     console.log("data and jobs client by grapql", data.getApplicants);
+  //     dispatch(setAllApplicants(data.getApplicants));
+  //   }
+
+  //   if (loading) {
+  //     console.log("Fetching applicants...");
+  //   }
+  //   if (error) {
+  //     console.error("Error fetching applicants:", error.message);
+  //   }
+  // }, [loading, data, error, dispatch]);
   return (
     <div>
       <div>
