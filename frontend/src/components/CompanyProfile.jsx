@@ -9,7 +9,6 @@ import AppliedJobTable from "./AppliedJobTable";
 import { useState } from "react";
 import UpdateProfileDialog from "./updateProfileDialog";
 import { useSelector } from "react-redux";
-import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 import Navbar_two from "./shared/Navbar_two";
 
 const skills = ["Html", "javascript", "python", "c++", "css"];
