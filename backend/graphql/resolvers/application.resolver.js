@@ -80,7 +80,23 @@ export const applicationMutations = {
       console.log("new aplicaton", newApplication);
       job.applications.push(newApplication._id);
       await job.save();
-      return newApplication;
+      console.log("newapplicationijob", job);
+      const populatedApplication = await Application.findById(
+        newApplication._id
+      ).populate({
+        path: "job",
+        populate: {
+          path: "applications",
+          populate: {
+            path: "applicant",
+            // model: "User",
+            // select: "fullName email", // optional: only return what you need
+          },
+        },
+      });
+
+      return populatedApplication;
+      // return newApplication;
     } catch (error) {
       console.error("Error in applyjob resolver:", error);
       throw new Error("Failed to apply to job.");
