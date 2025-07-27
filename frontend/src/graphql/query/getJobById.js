@@ -23,12 +23,13 @@ export const GET_JOB_bY_ID = gql`
         createdAt
         updatedAt
       }
-      created_by {
-        fullName
-      }
+      # created_by {
+      #   fullName
+      # }
       applications {
         applicant {
           fullName
+          id
         }
       }
       createdAt
