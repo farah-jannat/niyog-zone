@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Select,
   SelectContent,
@@ -20,33 +20,50 @@ import { Loader2 } from "lucide-react";
 import JobDescription from "./AdminJobDescription";
 import AdminJobDescription from "./AdminJobDescription";
 import Navbar_two from "../shared/Navbar_two";
+import { useMutation } from "@apollo/client";
+import { POST_JOB } from "@/graphql/mutation/postJob";
+import { setLoading, setUser } from "@/redux/authSlice";
 
 const PostJob = () => {
   const [input, setInput] = useState({
     title: "",
     description: "",
     requirements: "",
-    salary: "",
+    salary: 0,
     location: "",
     jobType: "",
-    experience: "",
+    experience: 0,
     position: 0,
     companyId: "",
   });
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { companies } = useSelector((store) => store.company);
+  const { user } = useSelector((store) => store.auth);
+  const userId = user?.id;
+  const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
+
+  // const changeEventHandler = (e) => {
+  //   const { name, value } = e.target;
+
+  //   const numericFields = ["salary", "experience", "position"];
+  //   const parsedValue = numericFields.includes(name)
+  //     ? parseInt(value, 10)
+  //     : value;
+
+  //   setInput({ ...input, [name]: parsedValue });
+  // };
   const selectChangeHandler = (value) => {
     const selectedCompany = companies.find(
       (company) => company.name.toLowerCase() === value
     );
-    setInput({ ...input, companyId: selectedCompany._id });
+    setInput({ ...input, companyId: selectedCompany.id });
+    console.log("(((((((((((((", selectedCompany.id);
   };
-  // console.log("input for post job", input);
 
   const handleDescriptionChange = (html) => {
     // This function will be called by AdminJobDescription with the Quill content
@@ -57,27 +74,62 @@ const PostJob = () => {
     // console.log("content came from description", html);
   };
 
+  // console.log("input of job", input);
+  const [postJob, { loading, error, data }] = useMutation(POST_JOB);
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    // console.log("input of job", input);
-    try {
-      setLoading(true);
-      const res = await axios.post(`${JOB_API_END_POINT}/post`, input, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-      if (res.data.success) {
-        toast.success(res.data.message);
+
+    await postJob({
+      variables: {
+        userId: userId,
+        title: input.title,
+        description: input.description,
+        requirements: input.requirements,
+        salary: Number(input.salary),
+        location: input.location,
+        jobType: input.jobType,
+        experienceLevel: Number(input.experience),
+        position: Number(input.position),
+        companyId: input.companyId,
+      },
+      onCompleted: (data) => {
+        console.log("postjob successful:", data.postJob);
+        toast.success("successfully posted job");
         navigate("/admin/jobs");
-      }
-    } catch (error) {
-      toast.error(error.response.data.message);
-    } finally {
-      setLoading(false);
-    }
+      },
+      onError: (error) => {
+        console.error("Error psting job (GraphQL error):", error.message);
+        toast.error(`postjob failed: ${error.message}`);
+      },
+    });
+    // } catch (error) {
+    //   console.log("error", error.response);
+    //   toast.error(error.response);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
+  // useEffect(() => {
+  //   if (loading) {
+  //     console.log("posting job...");
+  //     dispatch(setLoading(true));
+  //   } else {
+  //     dispatch(setLoading(false));
+  //   }
+
+  //   if (data && data.postJob) {
+  //     console.log("postjob successful:", data.postJob);
+  //     toast.success("successfully posted job");
+  //     dispatch(setUser(data.postJob));
+  //     navigate("/admin/jobs");
+  //   }
+
+  //   if (error) {
+  //     console.error("Error psting job (GraphQL error):", error.message);
+  //     toast.error(`postjob failed: ${error.message}`);
+  //   }
+  // }, [loading, data, error, navigate, dispatch]);
 
   return (
     <div>
@@ -122,11 +174,11 @@ const PostJob = () => {
             <div>
               <Label>Salary</Label>
               <Input
-                type="text"
+                type="number"
                 name="salary"
                 value={input.salary}
                 onChange={changeEventHandler}
-                placeholder="300k"
+                placeholder=""
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               />
             </div>
@@ -155,11 +207,11 @@ const PostJob = () => {
             <div>
               <Label>Experience Level</Label>
               <Input
-                type="text"
+                type="number"
                 name="experience"
                 value={input.experience}
                 onChange={changeEventHandler}
-                placeholder="2 years"
+                placeholder="2"
                 className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
               />
             </div>
