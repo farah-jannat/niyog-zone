@@ -11,10 +11,13 @@ import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import useGetCompanyById from "@/hooks/useGetCompanyById";
 import Navbar_two from "../shared/Navbar_two";
+import { useMutation } from "@apollo/client";
+import { UPDATE_COMPANY } from "@/graphql/mutation/updateCompany";
 
 const CompanySetup = () => {
   const params = useParams();
-  useGetCompanyById(params.id);
+  const companyId = params.id;
+  useGetCompanyById(companyId);
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -23,52 +26,62 @@ const CompanySetup = () => {
     file: null,
   });
   const { singleCompany } = useSelector((store) => store.company);
-  console.log("singlecompany is :", singleCompany);
-  const [loading, setLoading] = useState(false);
+  // console.log("singlecompany is :", singleCompany);
+
+  // const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
+  // const changeFileHandler = (e) => {
+  //   const file = e.target.files?.[0];
+  //   setInput({ ...input, file });
+  // };
   const changeFileHandler = (e) => {
     const file = e.target.files?.[0];
-    setInput({ ...input, file });
-  };
 
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setInput({ ...input, file: reader.result });
+      };
+
+      reader.onerror = (error) => {
+        console.error("Error reading file:", error);
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      setInput({ ...input, file: null }); // Clear file if no file is selected
+    }
+  };
+  console.log("{{{{{{{{{{{{{{{{{{{{{", singleCompany.logo);
+  const [updateCompany, { loading, data, error }] = useMutation(UPDATE_COMPANY);
+  console.log("input(((((((((((", input);
   const submitHandler = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", input.name);
-    formData.append("description", input.description);
-    formData.append("website", input.website);
-    formData.append("location", input.location);
-    if (input.file) {
-      formData.append("file", input.file);
-    }
-    try {
-      setLoading(true);
-      const res = await axios.put(
-        `${COMPANY_API_END_POINT}/update/${params.id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
-      console.log("this is updates data :", res);
-      if (res.data.success) {
-        toast.success(res.data.message);
+    await updateCompany({
+      variables: {
+        name: input.name,
+        description: input.description,
+        website: input.website,
+        location: input.location,
+        logo: input.file,
+        companyId: companyId,
+      },
+      onCompleted: (data) => {
+        toast.success("succesffly updated company");
+
         navigate("/admin/companies");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
-    } finally {
-      setLoading(false);
-    }
+      },
+      onError: (error) => {
+        console.log(error);
+        toast.error(`update company failed: ${error.message}`);
+      },
+    });
   };
   useEffect(() => {
     setInput({
@@ -76,7 +89,7 @@ const CompanySetup = () => {
       description: singleCompany.description || "",
       website: singleCompany.website || "",
       location: singleCompany.location || "",
-      file: singleCompany.file || null,
+      file: singleCompany.logo || null,
     });
   }, [singleCompany]);
   return (
@@ -158,3 +171,36 @@ const CompanySetup = () => {
 };
 
 export default CompanySetup;
+
+// e.preventDefault();
+// const formData = new FormData();
+// formData.append("name", input.name);
+// formData.append("description", input.description);
+// formData.append("website", input.website);
+// formData.append("location", input.location);
+// if (input.file) {
+//   formData.append("file", input.file);
+// }
+// try {
+//   setLoading(true);
+//   const res = await axios.put(
+//     `${COMPANY_API_END_POINT}/update/${params.id}`,
+//     formData,
+//     {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//       },
+//       withCredentials: true,
+//     }
+//   );
+//   console.log("this is updates data :", res);
+//   if (res.data.success) {
+//     toast.success(res.data.message);
+//     navigate("/admin/companies");
+//   }
+// } catch (error) {
+//   console.log(error);
+//   toast.error(error.response.data.message);
+// } finally {
+//   setLoading(false);
+// }
