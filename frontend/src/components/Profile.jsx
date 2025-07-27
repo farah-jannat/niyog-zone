@@ -19,7 +19,7 @@ const Profile = () => {
   useGetAppliedJobs();
   const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.auth);
-  console.log("user from updateuprofile", user);
+  // console.log("user from updateuprofile", user);
 
   return (
     <div>
@@ -58,8 +58,8 @@ const Profile = () => {
             <div className="my-4">
               <h1>Skills</h1>
               <div className="flex items-center gap-2 ">
-                {user?.Profile?.skills.length != 0 ? (
-                  user?.Profile?.skills.map((item, index) => (
+                {user?.Profile?.skills?.length != 0 ? (
+                  user?.Profile?.skills?.map((item, index) => (
                     <Badge className="px-3 py-1" key={index}>
                       {item}
                     </Badge>
@@ -77,7 +77,8 @@ const Profile = () => {
                   href={user?.Profile?.resume}
                   className="text-blue-500 w-full hover:underline cursor-pointer "
                 >
-                  {user?.Profile?.resumeOriginalName}
+                  {/* {user?.Profile?.resume} */}
+                  My resume
                 </a>
               ) : (
                 <span>NA</span>
