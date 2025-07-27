@@ -93,55 +93,63 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    try {
-      dispatch(setLoading(true));
-      console.log("###################### input inside submithanlder", input);
-      const updateResult = await update({
-        variables: {
-          updateInput: {
-            userId: userId,
-            fullName: input.fullName,
-            email: input.email,
-            bio: input.bio,
-            phoneNumber: input.phoneNumber,
+    dispatch(setLoading(true));
+    console.log("###################### input inside submithanlder", input);
+    await update({
+      variables: {
+        userId: userId,
+        fullName: input.fullName,
+        email: input.email,
+        bio: input.bio,
+        phoneNumber: input.phoneNumber,
 
-            role: input.role,
-            profilePhoto: input.profilePhoto,
-            resume: input.resume,
-          },
-        },
-      });
-    } catch (error) {
-      console.log("errpr while updata data from frontend", error);
-      toast.error(error.response);
-    } finally {
-      setLoading(false);
-    }
+        role: input.role,
+        profilePhoto: input.profilePhoto,
+        resume: input.resume,
+      },
+      onCompleted: (data) => {
+        console.log("update successful:", data.update);
+        toast.success("updated successfully");
+        dispatch(setUser(data.update));
+      },
+      onError: (error) => {
+        console.error("Error updating user (GraphQL error):", error.message);
+        toast.error(`updating failed: ${error.message}`);
+      },
+    });
     setOpen(false);
+    //   } catch (error) {
+    //     console.log("errpr while updata data from frontend", error);
+    //     toast.error(error.response);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    //   setOpen(false);
+    // };
+
+    // useEffect(() => {
+    //   if (loading) {
+    //     console.log("updating user...");
+    //     dispatch(setLoading(true));
+    //   } else {
+    //     dispatch(setLoading(false));
+    //   }
+
+    //   if (data && data.update) {
+    //     console.log("update successful:", data.update);
+    //     toast.success("updated successfully");
+    //     dispatch(setUser(data.update));
+    //     // navigate("/login");
+    //   }
+
+    //   if (error) {
+    //     console.error("Error updating user (GraphQL error):", error.message);
+    //     toast.error(`updating failed: ${error.message}`);
+    //   }
+    // }, [loading, data, error, dispatch]);
+    //   console.log("input here", input);
+    //   console.log("user here", user);
   };
-
-  useEffect(() => {
-    if (loading) {
-      console.log("updating user...");
-      dispatch(setLoading(true));
-    } else {
-      dispatch(setLoading(false));
-    }
-
-    if (data && data.update) {
-      console.log("update successful:", data.update);
-      toast.success("updated successfully");
-      dispatch(setUser(data.update));
-      // navigate("/login");
-    }
-
-    if (error) {
-      console.error("Error updating user (GraphQL error):", error.message);
-      toast.error(`updating failed: ${error.message}`);
-    }
-  }, [loading, data, error, dispatch]);
-  //   console.log("input here", input);
-  //   console.log("user here", user);
   return (
     <div>
       <Dialog open={open}>
