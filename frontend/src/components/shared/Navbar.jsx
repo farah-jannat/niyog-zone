@@ -33,15 +33,15 @@ const Navbar = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center w-[80%] mx-auto h-16 text-white">
+      <div className="flex justify-between items-center bg-[#FAF2E9] py-[12px] px-[16px] mx-auto h-[60px] text-[#35373F]">
         <div>
-          <h1 className="text-2xl font-bold">
-            Niyog<span className="text-blue-300">Zone</span>
+          <h1 className="text-[18px]  ">
+            <span className="text-[#287992]">Niyog</span><span className="text-[#E8C092]">Zone</span>
           </h1>
         </div>
 
         <div>
-          <ul className="hidden md:flex font-medium items-center  gap-7">
+          <ul className="text-[14px] flex items-center  gap-7">
             {user && user.role == "recruiter" ? (
               <>
                 <li>
@@ -55,21 +55,18 @@ const Navbar = () => {
               <>
                 <li>
                   <Link
-                    to="/"
+                    to="/jobs"
                     className={` ${
                       location.pathname === "/"
-                        ? "border-b border-White" // Active style
+                        ? "border-b border-[#A1DD5F]" // Active style
                         : "text-gray-700 hover:text-blue-500"
                     }`}
                   >
-                    Home
+                   Jobs 
                   </Link>
                 </li>
                 <li>
-                  <Link to="/jobs">Find a job</Link>
-                </li>
-                <li>
-                  <Link to="/company">My Network</Link>
+                  <Link to="">Sign In</Link>
                 </li>
               </>
             )}
@@ -78,6 +75,7 @@ const Navbar = () => {
         <div>
           {!user ? (
             <div className="flex items-center gap-2">
+        
               <Link to="/signup">
                 <Button variant="none" className="underline">
                   Signup
@@ -109,6 +107,7 @@ const Navbar = () => {
                     <AvatarImage
                       src={user?.Profile?.profilePhoto}
                       alt="@shadcn"
+                      className = "w-[35px] h-[35px] rounded-full"
                     />
                   </Avatar>
                 </PopoverTrigger>
