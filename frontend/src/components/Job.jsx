@@ -21,85 +21,96 @@ const Job = ({ job }) => {
 
   return (
     <div
-      className="flex-1 p-3 sm:p-5 max-w-[500px] rounded-xl hover:bg-White border border-gray-100 sm:max-w-[250px] flex flex-col gap-4 cursor-pointer"
+      className="flex flex-col items-start gap-[14px] p-[24px]  w-full bg-[#FEFEFF] rounded-[8px] "
       onClick={() => navigate(`/description/${job?.id}`)}
     >
-      <div className="flex items-center gap-2">
-        <div className="flex items-center justify-between  w-full">
-          <div className="flex items-center gap-3">
-            <div className="w-[40px] h-[40px]">
-              <img
-                src={job?.company?.logo}
-                alt=""
-                className="w-full h-full rounded-md"
-              />
-            </div>
-
+      <div className="flex items-center gap-[12px]">
+        <div className="w-[34px] h-[34px] bg-[#B60E0E87] border border-black rounded-full">
+          <img
+            src={job?.company?.logo}
+            alt=""
+            // className="w-full h-full rounded-full"
+          />
+        </div>
+        <h1 className="text-[16px] font-medium text-[#03050F] capitalize">
+          {job?.company?.name}
+        </h1>
+        {/* 
             <div>
-              <h1 className="font-semibold text-Black capitalize">
-                {job?.company?.name}
-              </h1>
               <p className="text-[12px] text-gray-500">Bangladesh</p>
-            </div>
+            </div> */}
+      </div>
+      {/* <Button variant="outline" className="rounded-full" size="icon"> */}
+      {/* <Bookmark className="text-green-500 " size={18} /> */}
+      {/* </Button> */}
+      <div className="flex flex-col gap-[1px]">
+        <div className="flex  items-center gap-[13px]">
+          <p className="text-[14px] text-[#35373F]">Posted</p>
+          <div className="flex gap-1 items-center text-[10px] text-[#68696F]">
+            <Clock7 size={15} />
+            <p>
+              {/* {daysAgoFunction(job?.createdAt) == 0
+                ? "Today"
+                : `${daysAgoFunction(job?.createdAt)} days ago`} */}
+              5 days ago
+            </p>
           </div>
-          {/* <Button variant="outline" className="rounded-full" size="icon"> */}
-          <Bookmark className="text-green-500 " size={18} />
-          {/* </Button> */}
         </div>
+
+        <h1 className="font-bold text-[20px] text-[#03050F] capitalize">
+          {job?.title}
+        </h1>
       </div>
 
-      <h1 className="font-semibold text-Black">{job?.title}</h1>
-      <p className=" text-sm leading-[1.6] text-gray-600 line-clamp-4">
-        {stripHtmlTags(job.description)}
-      </p>
-
-      <div className="flex gap-1 items-center text-[12px] font-semibold -mt-[6px]">
-        <div className="flex gap-1 items-center text-gray-500 mr-3">
-          <BriefcaseBusiness size={15} />
-          Fulltime
-        </div>
-        <div className="flex gap-1 items-center text-gray-500">
-          <Clock7 size={15} />
-          <p>
-            {daysAgoFunction(job?.createdAt) == 0
-              ? "Today"
-              : `${daysAgoFunction(job?.createdAt)} days ago`}
-          </p>
-        </div>
-      </div>
-
-      <div className="flex  flex-wrap items-center gap-2 ">
-        {[1, 2].map((item, idx) => (
-          <Badge
-            className={
-              "text-gray-500 text-[10px] md:text-[12px] rounded-md border-none  bg-light_purple py-1 px-3 "
-            }
-            variant="outline"
-          >
-            {/* {job?.position} */}
-            Next
-          </Badge>
-        ))}
-      </div>
-      <div className="flex items-end justify-between">
-        <div className="text-blue-700 font-bold capitalize p-0 border-none flex flex-col items-end">
-          <h1 className="text-Blue font-semibold text-lg">
-            ${job?.salary}
-            <span className="text-[12px] font-semibold text-gray-500">
-              /Hour
-            </span>
-          </h1>
-        </div>
-        {/* <div className="flex items-center gap-4 mt-4">
-        <Button
-          onClick={() => navigate(`/description/${job?._id}`)}
+      <div className="flex items-center gap-[8px] ">
+        <Badge
+          className={
+            "text-[#35373F] text-[12px] font-medium rounded-[4px] border-none  bg-[#ECF8DF] p-[8px] capitalize "
+          }
           variant="outline"
         >
-          Details
-        </Button>
-        <Button className="bg-[#7209b7]">Save For Later</Button>
-      </div> */}
-        <button className="px-4 py-2 bg-light_purple text-Blue font-semibold text-sm rounded-md hover:bg-Blue hover:text-White">
+          {/* {job?.experienceLevel} years */}
+          Senior
+        </Badge>
+        <Badge
+          className={
+            "text-[#35373F] text-[12px] font-medium rounded-[4px] border-none  bg-[#ECF8DF] p-[8px] capitalize "
+          }
+          variant="outline"
+        >
+          {/* position {job?.position} */}
+          Remote
+        </Badge>
+        <Badge
+          className={
+            "text-[#35373F] text-[12px] font-medium rounded-[4px] border-none  bg-[#ECF8DF] p-[8px] capitalize "
+          }
+          variant="outline"
+        >
+          {/* position {job?.position} */}
+          PartTime
+        </Badge>
+      </div>
+
+      <div className="max-w-[full] p-[16px] leading-[20px] rounded-[4px] bg-[#FDF9F4] text-[14px] text-[#35373F]">
+        <p>
+          It is a long established fact that a reader will be distracted by the
+          readable content of a page when looking at its{" "}
+        </p>
+      </div>
+
+      <div className="flex items-center justify-between  w-full ">
+        <div className=" font-bold flex flex-col gap-[4px]">
+          <h1 className="text-Blue  text-md text-[20px] text-[#03050F]">
+            ${job?.salary}
+            <span className=" text-Apple_Green">/hr</span>
+          </h1>
+          <p className="text-[14px] text-[#68696F] font-normal">
+            San Francisco, CA
+          </p>
+        </div>
+
+        <button className=" bg-[#5394A8] text-[#F5F6FD]  w-[89px] h-[33px]  rounded-[4px] text-[14px]">
           Apply Now
         </button>
       </div>
