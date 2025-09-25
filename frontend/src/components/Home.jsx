@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Navbar from "./shared/Navbar";
-import HeroSection from "./HeroSection";
+import HeroSection from "./hero";
 import CategoryCarousel from "./categoryCarousel";
 import LatestJobs from "./LatestJobs";
 import Footer from "./shared/Footer";
@@ -8,6 +8,7 @@ import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import HomeCreateProfile from "./HomeCreateProfile";
+import Container from "./container";
 
 const Home = () => {
   useGetAllJobs();
@@ -20,15 +21,20 @@ const Home = () => {
     }
   }, []);
   return (
-    <div>
-      <div className="h-screen bg-Blue">
-        <Navbar />
-        <HeroSection />
-        <CategoryCarousel />
-      </div>
+    <div className="bg-[#F5F6FD] font-lato">
+      <Navbar />
 
-      <LatestJobs />
-      {!user && <HomeCreateProfile />}
+      <Container className={" bg-gradient"}>
+        <HeroSection />
+      </Container>
+
+      <Container>
+        <LatestJobs />
+      </Container>
+
+      <Container className={"bg-[#FBFBFE]"}>
+        {!user && <HomeCreateProfile />}
+      </Container>
 
       <Footer />
     </div>
