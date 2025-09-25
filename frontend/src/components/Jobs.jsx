@@ -4,7 +4,8 @@ import FilterCard from "./FilterCard";
 import Job from "./Job";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import Navbar_two from "./shared/Navbar_two";
+
+import Footer from "./shared/Footer";
 import {
   AlignLeft,
   ChevronDown,
@@ -17,9 +18,9 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Popover } from "./ui/popover";
 import { PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
+
 import FilterCard_two from "./FilterCard_two";
 
-import Footer from "./shared/Footer";
 import { useSearchParams } from "react-router-dom";
 import {
   Select,
@@ -30,6 +31,8 @@ import {
 } from "./ui/select";
 import { Separator } from "@radix-ui/react-select";
 import { setSearchedQuery } from "@/redux/jobSlice";
+import Navbar from "./shared/Navbar";
+import Container from "./container";
 
 const filter1 = {
   name: "Industry",
@@ -236,189 +239,99 @@ const Jobs = () => {
     onsiteRemoteValue,
     jobTypeValue,
   ]); // Add industryValue and locationValue to dependencies
-
   return (
-    <div>
-      <Navbar_two />
-      <div className="w-[90%] md:w-[80%] mx-auto">
-        <div className="flex gap-5 p-3 items-end justify-center bg-light_purple mt-5 rounded-md">
-          <div className="hidden md:block w-[150px] h-[150px]">
-            <img
-              src="../../public/jobs-banner.png"
-              alt=""
-              className="w-full h-full"
-            />
-          </div>
-          <div className="flex-1 flex flex-col gap-3 my-10">
-            <h2 className="text-2xl font-semibold text-center text-Black">
-              <span className="text-Blue">2200 Jobs</span> Available Now
-            </h2>
-            <p className="text-gray-500 text-center">
-              Find the job thats prfect for you, about 800+ new jobs everyday.
-              Lorem ipsum dolor, sit amet consectetur
-            </p>
-
-            {/* <div className=" bg-White shadow-md text-gray-500 rounded-md py-2 pl-5 flex items-center gap-3  mx-auto w-[full] ">
-              <div className="flex flex-1 items-center gap-2 ">
-                <Search size={20} />
-                <Input
-                  type="text"
-                  placeholder="Your Keyword"
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="border-none w-full px-0"
-                />
-              </div>
-              <span className="hidden md:block">|</span>
-              <div className="hidden md:flex  items-center gap-2 ">
-                <Home size={20} className="" />
-                <span className="">Industry</span>
-                <ChevronDown size={17} />
-              </div>
-              <span className="hidden md:block">|</span>
-              <div className="hidden md:flex  items-center gap-2 ">
-                <MapPin size={20} className="" />
-                <span>location</span>
-                <ChevronDown size={17} />
-              </div>
-              <Button onClick={searchJobHandler} className="rounded-md bg-Blue">
-                search
-              </Button>
-            </div> */}
-            <div className="bg-White border border-gray-200 text-gray-500 rounded-md py-2 pl-5 flex items-center gap-3 shadow-lg  mx-auto w-[full] ">
-              <div className="flex flex-1 items-center gap-2 ">
-                <Search size={20} />
-                <Input
-                  type="text"
-                  placeholder="Your Keyword"
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="border-none w-full px-0"
-                />
-              </div>
-              {/* <span className="hidden md:block">|</span> */}
-
-              {/* Industry */}
-              <div className="hidden md:block">
-                <Select onValueChange={(value) => setIndustry(value)}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder={filter1.name} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {filter1.array.map((item, idx) => (
-                      <>
-                        <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
-                          <SelectItem value={item}>{item}</SelectItem>
-                        </div>
-
-                        <Separator className="border-b" />
-                      </>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              {/* filter 2 */}
-              <div className="hidden md:block">
-                <Select onValueChange={(value) => setLocation(value)}>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder={filter2.name} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {filter2.array.map((item, idx) => (
-                      <>
-                        <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
-                          <SelectItem value={item}>{item}</SelectItem>
-                        </div>
-                        <Separator className="border-b" />
-                      </>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button onClick={searchJobHandler} className="rounded-md bg-Blue">
-                search
-              </Button>
-            </div>
-          </div>
-          <div className="hidden md:block w-[150px]">
-            <img
-              src="../../public/jobs-banner.png"
-              alt=""
-              className="w-full h-full"
-            />
-          </div>
-        </div>
-
-        {/* filter  */}
-        <div className="flex flex-col lg:flex-row gap-20 mt-10">
-          <div className="hidden lg:block">
-            <FilterCard />
-          </div>
-
-          {/* <div className="flex items-center justify-center flex-wrap gap-3 sm:gap-4 text-Black my-10"> */}
-
-          {/* </div> */}
-
-          {/* show cards  */}
-          <div className="flex-1 ">
-            <div className="flex items-center gap-3">
-              <Popover>
-                <PopoverTrigger asChild>
-                  {/* <Button> open </Button> */}
-                  <div className="lg:hidden flex items-center justify-center gap-3 w-[200px] border border-blue-150 rounded-md px-3 py-2 text-Blue mx-auto ">
-                    <button className="text-sm font-semibold">
-                      Advanced Filter
-                    </button>
-                    <AlignLeft className="text-Blue" />
-                  </div>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div className="bg-White shadow-lg p-10">
-                    <FilterCard_two />
-                  </div>
-                </PopoverContent>
-              </Popover>
-
-              <div className="hidden sm:flex flex-1  justify-between items-center border-b pb-2">
-                <span className="text-sm text-gray-500">
-                  Showing 41-60 of 680 jobs
-                </span>
-                <div className="flex gap-2">
-                  <button className="flex gap-2 items-center border border-gray-200 rounded-md px-2 py-1 text-sm text-gray-500">
-                    Show 12 <ChevronDown size={16} />
-                  </button>
-                  <button className="flex gap-2 items-center border border-gray-200 rounded-md px-2 py-1 text-sm text-gray-500">
-                    Sort by Newest <ChevronDown size={16} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-5">
-              {filterJobs.length <= 0 ? (
-                <span>Job not found</span>
-              ) : (
-                // <div className="flex-1 bg-green-900 h-[88vh] overflow-y-auto pb-5 ">
-                <div className="flex  items-center justify-center  gap-3 flex-wrap ">
-                  {filterJobs.map((job) => (
-                    <motion.div
-                      initial={{ opacity: 0, x: 100 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -100 }}
-                      transition={{ duration: 0.3 }}
-                      key={job?._id}
-                    >
-                      <Job job={job} />
-                    </motion.div>
+    <>
+      <div className="bg-[#F5F6FD]">
+        <Navbar />
+        <Container className={"bg-[#F5F6FD]"}>
+          <div className="grid grid-cols-4 md:grid-cols-8 my-[40px] xl:grid-cols-12 gap-[16px] p-[12px] bg-[#FEFEFF]">
+            {["Category", "Job Type", "Job Label"].map((item) => (
+              <Select onValueChange={(value) => setIndustry(value)}>
+                <SelectTrigger className="bg-[#F5F6FD] border-none hidden xl:flex py-[12px] px-[14px]">
+                  <SelectValue placeholder={item} />
+                </SelectTrigger>
+                <SelectContent>
+                  {filter1.array.map((item, idx) => (
+                    <>
+                      <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
+                        <SelectItem value={item}>{item}</SelectItem>
+                      </div>
+                    </>
                   ))}
-                </div>
-                // </div>
-              )}
-            </div>
+                </SelectContent>
+              </Select>
+            ))}
+
+            <Input
+              type="text"
+              placeholder="Search Job Keywords.."
+              className="py-[12px] px-[14px] col-span-2 md:col-span-4 border-none bg-[#F5F6FD]"
+            />
+
+            {["Experience", "Expected Sallary"].map((item) => (
+              <Select onValueChange={(value) => setIndustry(value)}>
+                <SelectTrigger className="py-[12px] px-[14px]  hidden md:flex xl:col-span-2 border-none bg-[#F5F6FD]">
+                  <SelectValue placeholder={item} />
+                </SelectTrigger>
+                <SelectContent>
+                  {filter1.array.map((item, idx) => (
+                    <>
+                      <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
+                        <SelectItem value={item}>{item}</SelectItem>
+                      </div>
+                    </>
+                  ))}
+                </SelectContent>
+              </Select>
+            ))}
+
+            <Select onValueChange={(value) => setIndustry(value)}>
+              <SelectTrigger className="bg-[#F5F6FD] border-none xl:hidden py-[12px] px-[14px]">
+                <SelectValue placeholder="More" />
+              </SelectTrigger>
+              <SelectContent>
+                {filter1.array.map((item, idx) => (
+                  <>
+                    <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
+                      <SelectItem value={item}>{item}</SelectItem>
+                    </div>
+                  </>
+                ))}
+              </SelectContent>
+            </Select>
+            <button className=" bg-[#E8C092] text-[#03050F] px-[14px] h-[42px] rounded-[4px] text-[14px]">
+              Reset
+            </button>
           </div>
-        </div>
+          {/* </div> */}
+          <div className="mb-[100px]">
+            {filterJobs.length <= 0 ? (
+              <span>Job not found</span>
+            ) : (
+              // <div className="flex-1 bg-green-900 h-[88vh] overflow-y-auto pb-5 ">
+              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-[16px] ">
+                {filterJobs.map((job) => (
+                  <motion.div
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.3 }}
+                    key={job?._id}
+                  >
+                    <Job job={job} />
+                  </motion.div>
+                ))}
+              </div>
+              // </div>
+            )}
+          </div>
+        </Container>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
+
+ 
 };
 
 export default Jobs;
