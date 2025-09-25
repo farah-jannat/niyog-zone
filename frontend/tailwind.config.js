@@ -17,12 +17,17 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        lato: ["Lato", "sans-serif"],
+      },
       colors: {
-        Blue: "#2524D1",
+        Linen: "#FAF2E9",
+        Apple_Green: "#A1DD5F",
+        Teal: "#287992",
+        Sky_Blue: "#EAF2F4",
+        Black: "#03050F",
+        Backgroud: "#F5F6FD",
         White: "#FEFEFF",
-        Black: "#333",
-        light_purple: "#EDF2FC",
-        text_white: "#D2DCFD",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
