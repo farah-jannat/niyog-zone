@@ -2,80 +2,42 @@ import { BadgeCheck } from "lucide-react";
 import React from "react";
 import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router-dom";
+import { Badge } from "./ui/badge";
 
 const HomeCreateProfile = () => {
   const navigate = useNavigate();
-  return (
-    <div className="bg-[#EDF2FC] mt-10 flex items-center justify-center">
-      <div className="flex flex-col gap-10 w-[90%] sm:flex-row items-center sm:gap-20 sm:w-[80%] mx-auto  my-10   ">
-        <div className="flex-1 ">
-          <img
-            src="../../public/Home_Create_profile.png"
-            alt=""
-            className="w-[full] h-[full]"
-          />
-        </div>
 
-        <div className="flex-1  flex flex-col gap-10">
-          <h2 className="text-2xl font-semibold ">
-            Job search for people <br /> passionate about startup
-          </h2>
-          <div className="flex flex-col gap-5">
-            <div className="flex items-start gap-3 ">
-              <div>
-                <BadgeCheck size={20} className="text-green-500" />
-              </div>
-              <div className="flex flex-col gap-1">
-                <h1 className="font-semibold capitalize text-normal">
-                  Create an account
-                </h1>
-                <p className="text-gray-500 ">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Numquam nulla aperiam, Lorem ipsum dolor sit amet. Lorem ipsum
-                  dolor sit amet consectetur adipisicing.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 ">
-              <div>
-                <BadgeCheck size={20} className="text-green-500" />
-              </div>
-              <div className="flex flex-col gap-1">
-                <h1 className="font-semibold capitalize text-normal">
-                  Search for jobs
-                </h1>
-                <p className="text-gray-500 ">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Numquam nulla aperiam, Lorem ipsum dolor sit amet.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3 ">
-              <div>
-                <BadgeCheck size={20} className="text-green-500" />
-              </div>
-              <div className="flex flex-col gap-1">
-                <h1 className="font-semibold capitalize text-normal">
-                  Save & Apply
-                </h1>
-                <p className="text-gray-500 ">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Numquam nulla aperiam, Lorem ipsum dolor sit amet.
-                </p>
-              </div>
-            </div>
-          </div>
-          <Link to="/signup">
-            <Button
-              onClick={() => {}}
-              className="bg-green-700 hover:bg-green-800 w-[200px]"
-            >
-              Create an Account
-            </Button>
-          </Link>
-        </div>
+  return (
+    <div className="mt-[68px] pt-[40px] pb-[100px]">
+      <div className="grid place-items-center pb-[40px]">
+        <p className="text-[#3E3F47] text-[12px]">Start Your Jouney</p>
+        <h2 className="text-[32px] text-[#0E0F19] font-medium">How It Works</h2>
       </div>
-      //{" "}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-[16px]">
+        {[1, 2, 3, 4].map(() => (
+          <div className="bg-[#EAF2F4] grid gap-[70px] rounded-[8px] p-[18px] relative">
+            <Badge
+              className={
+                "text-[#03050F] text-[24px] font-medium rounded-[8px] border-none  bg-[#A1DD5F] h-[45px] w-[44px] grid place-items-center"
+              }
+              variant="outline"
+            >
+              1
+            </Badge>
+            <div className="grid gap-[21px]">
+              <h2 className="text-[#0E0F19] font-medium text-[19px]">
+                Create a Gig
+              </h2>
+              <p className="text-[14px] text-[#3E3F47]">
+                Sign up for free, set up your Gig, and offer your work to our
+                global audience.
+              </p>
+            </div>
+
+            <div className="rounded-bl-full  bg-[#F6FCEF] w-[160px] h-[160px] absolute top-0 right-0"></div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
