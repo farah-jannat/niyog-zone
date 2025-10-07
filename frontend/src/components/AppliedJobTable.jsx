@@ -13,28 +13,39 @@ import { useSelector } from "react-redux";
 
 const AppliedJobTable = () => {
   const { allAppliedJobs } = useSelector((store) => store.job);
-  console.log("all jobs mim applied to :", allAppliedJobs)
+  console.log("all jobs mim applied to :", allAppliedJobs);
   return (
-    <div>
+    <div className="rounded-[8px] border border-[#E6E6E7] capitalize">
       <Table>
-        <TableCaption>A list of your applied jobs</TableCaption>
+        {/* <TableCaption>A list of your applied jobs</TableCaption> */}
         <TableHeader>
-          <TableRow>
-            <TableHead>Data</TableHead>
-            <TableHead>Job role</TableHead>
-            <TableHead>company</TableHead>
-            <TableHead className="text-right">Status</TableHead>
+          <TableRow className="bg-[#287992] hover:bg-[#287992]">
+            <TableHead className="text-[#F7F7FA] text-[12px] font-semibold ">
+              JOB ROLE
+            </TableHead>
+            <TableHead className="text-[#F7F7FA] text-[12px] font-semibold">
+              COMPANY
+            </TableHead>
+            {/* <TableHead className="text-[#F7F7FA] text-[12px] font-semibold">
+              JOB ROLE
+            </TableHead> */}
+            <TableHead className="text-[#F7F7FA] text-[12px] font-semibold">
+              DATE
+            </TableHead>
+            <TableHead className="text-[#F7F7FA] text-[12px] font-semibold text-right">
+              STATUS
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {allAppliedJobs.length <= 0 ? (
-            <span>You haven't applied any job yet.</span>
+            <p className="mt-[20px]">You haven't applied any job yet.</p>
           ) : (
             allAppliedJobs.map((appliedJob) => (
               <TableRow key={appliedJob._id}>
-                <TableCell>{appliedJob?.createdAt?.split("T")[0]}</TableCell>
                 <TableCell>{appliedJob.job?.title}</TableCell>
                 <TableCell>{appliedJob.job?.company?.name}</TableCell>
+                <TableCell>{appliedJob?.createdAt?.split("T")[0]}</TableCell>
                 <TableCell className="text-right">
                   <Badge
                     className={`${
