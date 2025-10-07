@@ -96,7 +96,7 @@ const CompanyCreate = () => {
   // }, [loading, data, error, navigate, dispatch]);
   return (
     <div>
-      <Navbar_two />
+      <Navbar />
       <div className="max-w-4xl mx-auto">
         <div className="my-10">
           <h1 className="font-bold text-2xl">Your Company Name</h1>
@@ -115,12 +115,13 @@ const CompanyCreate = () => {
         />
         <div className="flex items-center gap-2 my-10">
           <Button
+          className=""
             variant="outline"
             onClick={() => navigate("/admin/companies")}
           >
             Cancel
           </Button>
-          <Button onClick={registerNewCompany}>Continue</Button>
+          <Button className='bg-[#287992] text-white hover:bg-[#216377] hover:text-white' onClick={registerNewCompany}>Continue</Button>
         </div>
       </div>
     </div>
