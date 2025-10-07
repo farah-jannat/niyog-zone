@@ -26,7 +26,7 @@ const CompanySetup = () => {
     file: null,
   });
   const { singleCompany } = useSelector((store) => store.company);
-  // console.log("singlecompany is :", singleCompany);
+  console.log("singlecompany is :", singleCompany);
 
   // const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const CompanySetup = () => {
       setInput({ ...input, file: null }); // Clear file if no file is selected
     }
   };
-  console.log("{{{{{{{{{{{{{{{{{{{{{", singleCompany.logo);
+  console.log("{{{{{{{{{{{{{{{{{{{{{", singleCompany);
   const [updateCompany, { loading, data, error }] = useMutation(UPDATE_COMPANY);
   console.log("input(((((((((((", input);
   const submitHandler = async (e) => {
@@ -75,7 +75,7 @@ const CompanySetup = () => {
       onCompleted: (data) => {
         toast.success("succesffly updated company");
 
-        navigate("/admin/companies");
+        navigate("/profile");
       },
       onError: (error) => {
         console.log(error);
@@ -85,21 +85,21 @@ const CompanySetup = () => {
   };
   useEffect(() => {
     setInput({
-      name: singleCompany.name || "",
-      description: singleCompany.description || "",
-      website: singleCompany.website || "",
-      location: singleCompany.location || "",
-      file: singleCompany.logo || null,
+      name: singleCompany?.name || "",
+      description: singleCompany?.description || "",
+      website: singleCompany?.website || "",
+      location: singleCompany?.location || "",
+      file: singleCompany?.logo || null,
     });
   }, [singleCompany]);
   return (
     <div>
-      <Navbar_two />
+      <Navbar />
       <div className="max-w-xl mx-auto my-10">
         <form onSubmit={submitHandler}>
           <div className="flex items-center gap-5 p-8">
             <Button
-              onClick={() => navigate("/admin/companies")}
+              onClick={() => navigate("/profile")}
               variant="outline"
               className="flex items-center gap-2 text-gray-500 font-semibold"
             >
@@ -155,12 +155,15 @@ const CompanySetup = () => {
             </div>
           </div>
           {loading ? (
-            <Button className="w-full my-4">
+            <Button className="w-full my-4 bg-[#287992] text-white hover:bg-[#216377] hover:text-white">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Please wait
             </Button>
           ) : (
-            <Button type="submit" className="w-full my-4">
+            <Button
+              type="submit"
+              className="bg-[#287992] w-full my-4 text-white hover:bg-[#216377] hover:text-white"
+            >
               Update
             </Button>
           )}
