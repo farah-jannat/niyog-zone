@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Badge } from "./ui/badge";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Bookmark,
   BriefcaseBusiness,
@@ -10,6 +10,10 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Separator } from "@radix-ui/react-select";
+import { useMutation } from "@apollo/client";
+import { APPLY_JOB } from "@/graphql/mutation/applyJob";
+import { useSelector } from "react-redux";
+import { setSingleJob } from "@/redux/jobSlice";
 
 const LatestJobsCards = ({ job }) => {
   const navigate = useNavigate();
@@ -27,17 +31,12 @@ const LatestJobsCards = ({ job }) => {
 
   return (
     <div
-      className="flex flex-col items-start gap-[14px] p-[24px]  w-full bg-[#FEFEFF] rounded-[8px] "
+      className="flex flex-col cursor-pointer items-start gap-[14px] p-[24px]  w-full bg-[#FEFEFF] rounded-[8px] "
       onClick={() => navigate(`/description/${job?.id}`)}
     >
       <div className="flex items-center gap-[12px]">
         <div className="w-[34px] h-[34px] bg-[#B60E0E87] border border-black rounded-full">
-          <img
-            src={job?.company?.logo}
-            alt=""
-            
-            className=" rounded-full"
-          />
+          <img src={job?.company?.logo} alt="" className=" rounded-full" />
         </div>
         <h1 className="text-[16px] font-medium text-[#03050F] capitalize">
           {job?.company?.name}
@@ -54,12 +53,12 @@ const LatestJobsCards = ({ job }) => {
         <div className="flex  items-center gap-[13px]">
           <p className="text-[14px] text-[#35373F]">Posted</p>
           <div className="flex gap-1 items-center text-[10px] text-[#68696F]">
-            <Clock7 size={15} />
+            {/* <Clock7 size={15} /> */}
             <p>
               {/* {daysAgoFunction(job?.createdAt) == 0
                 ? "Today"
                 : `${daysAgoFunction(job?.createdAt)} days ago`} */}
-                5 days ago
+              5 days ago
             </p>
           </div>
         </div>
@@ -117,14 +116,12 @@ const LatestJobsCards = ({ job }) => {
           </p>
         </div>
 
-        <button className=" bg-[#5394A8] text-[#F5F6FD]  w-[89px] h-[33px]  rounded-[4px] text-[14px]">
-          Apply Now
+        <button className=" bg-[#5394A8] hover:bg-[#488091] text-[#F5F6FD]  w-[89px] h-[33px]  rounded-[4px] text-[14px]">
+          View
         </button>
       </div>
     </div>
   );
-
-  
 };
 
 export default LatestJobsCards;

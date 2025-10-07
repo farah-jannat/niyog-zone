@@ -21,7 +21,7 @@ const LatestJobs = () => {
           </h2>
         </div>
        
-        <button className=" bg-[#E8C092] text-[#03050F]  w-[89px] h-[33px]  rounded-[4px] text-[14px]">
+        <button onClick={()=>navigate('/jobs')} className=" bg-[#E8C092] text-[#03050F]  w-[89px] h-[33px]  rounded-[4px] text-[14px]">
           Explore
         </button> 
       </div>
