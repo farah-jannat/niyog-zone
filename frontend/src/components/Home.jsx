@@ -15,13 +15,14 @@ const Home = () => {
   const { user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user?.role == "recruiter") {
-      navigate("/admin/companies");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (user?.role == "recruiter") {
+  //     navigate("/admin/companies");
+  //   }
+  // }, []);
+
   return (
-    <div className="bg-[#F5F6FD] font-lato">
+    <div className="bg-[#F5F6FD] ">
       <Navbar />
 
       <Container className={" bg-gradient"}>
@@ -33,7 +34,8 @@ const Home = () => {
       </Container>
 
       <Container className={"bg-[#FBFBFE]"}>
-        {!user && <HomeCreateProfile />}
+        {/* {!user && <HomeCreateProfile />} */}
+        <HomeCreateProfile/>
       </Container>
 
       <Footer />
