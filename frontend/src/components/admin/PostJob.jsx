@@ -67,11 +67,18 @@ const PostJob = () => {
 
   const handleDescriptionChange = (html) => {
     // This function will be called by AdminJobDescription with the Quill content
+    console.log("thmls is ", html);
+
     setInput((prevInput) => ({
       ...prevInput,
       description: html,
     }));
+
     // console.log("content came from description", html);
+    // setInput((prevInput) => ({
+    //   ...prevInput,
+    //   description: html,
+    // }));
   };
 
   // console.log("input of job", input);
@@ -96,7 +103,7 @@ const PostJob = () => {
       onCompleted: (data) => {
         console.log("postjob successful:", data.postJob);
         toast.success("successfully posted job");
-        navigate("/admin/jobs");
+        navigate("/profile");
       },
       onError: (error) => {
         console.error("Error psting job (GraphQL error):", error.message);
@@ -133,7 +140,7 @@ const PostJob = () => {
 
   return (
     <div>
-      <Navbar_two />
+      <Navbar />
       <div className="flex items-center justify-center mx-auto my-5  w-[80%]">
         <form onSubmit={submitHandler} className=" w-full">
           <div className="grid grid-cols-1 gap-2">
@@ -246,12 +253,15 @@ const PostJob = () => {
             )}
           </div>
           {loading ? (
-            <Button className="w-full my-4">
+            <Button className="bg-[#287992] text-[#F5F6FD]  w-full my-4  hover:bg-[#216377] hover:text-white">
               {" "}
               <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
             </Button>
           ) : (
-            <Button type="submit" className="w-full my-4">
+            <Button
+              className="bg-[#287992] text-[#F5F6FD]  w-full my-4  hover:bg-[#216377] hover:text-white"
+              type="submit"
+            >
               Post New Job
             </Button>
           )}
