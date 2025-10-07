@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Bookmark, BriefcaseBusiness, Clock7 } from "lucide-react";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Badge } from "./ui/badge";
-import { useNavigate } from "react-router-dom";
+import { APPLY_JOB } from "@/graphql/mutation/applyJob";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { useDispatch, useSelector } from "react-redux";
+import { setSingleJob } from "@/redux/jobSlice";
 
 const Job = ({ job }) => {
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
   const daysAgoFunction = (mongodbTime) => {
     const createdAt = new Date(mongodbTime);
     const currentTime = new Date();
@@ -21,7 +26,7 @@ const Job = ({ job }) => {
 
   return (
     <div
-      className="flex flex-col items-start gap-[14px] p-[24px]  w-full bg-[#FEFEFF] rounded-[8px] "
+      className="flex flex-col items-start gap-[14px] p-[24px] cursor-pointer w-full bg-[#FEFEFF] rounded-[8px] "
       onClick={() => navigate(`/description/${job?.id}`)}
     >
       <div className="flex items-center gap-[12px]">
@@ -47,7 +52,7 @@ const Job = ({ job }) => {
         <div className="flex  items-center gap-[13px]">
           <p className="text-[14px] text-[#35373F]">Posted</p>
           <div className="flex gap-1 items-center text-[10px] text-[#68696F]">
-            <Clock7 size={15} />
+            {/* <Clock7 size={15} /> */}
             <p>
               {/* {daysAgoFunction(job?.createdAt) == 0
                 ? "Today"
@@ -109,9 +114,8 @@ const Job = ({ job }) => {
             San Francisco, CA
           </p>
         </div>
-
-        <button className=" bg-[#5394A8] text-[#F5F6FD]  w-[89px] h-[33px]  rounded-[4px] text-[14px]">
-          Apply Now
+        <button className=" bg-[#5394A8] hover:bg-[#488091] text-[#F5F6FD]  w-[89px] h-[33px]  rounded-[4px] text-[14px]">
+          View
         </button>
       </div>
     </div>
