@@ -6,10 +6,14 @@ export const GET_APPLIED_JOBS = gql`
       id
       job {
         title
+        company {
+          name
+        }
       }
       applicant {
         fullName
       }
+
       website
       status
       createdAt
