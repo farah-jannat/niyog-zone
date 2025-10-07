@@ -84,7 +84,8 @@
       to right,
       rgba(0, 0, 0, 0.02) 0px 1px,
       transparent 1px 100%
-    );
+    ),
+    #fbfbfe;
 
   background-size: 40px 40px;
 }
