@@ -15,6 +15,8 @@ import { Loader2 } from "lucide-react";
 import Navbar_two from "../shared/Navbar_two";
 import { useMutation } from "@apollo/client";
 import { REGISTER_USER } from "@/graphql/mutation/register";
+import Container from "../container";
+import Footer from "../shared/Footer";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -54,6 +56,160 @@ const Signup = () => {
   };
 
   const [register, { loading, data, error }] = useMutation(REGISTER_USER);
+  return (
+    <>
+      <div className="bg-[#F5F6FD]">
+        <Navbar />
+        <Container className=" bg-[#FEFEFF]">
+          <div className="grid xl:grid-cols-2 gap-[80px] min-h-[725px] items-center  my-[68px] pt-[8px] pl-[8px] pb-[8px]">
+            <div className="hidden  xl:flex flex-col items-center h-full justify-center  gap-[22px] text-[#35373F] text-[16px] rounded-[8px] card-gradient-bluish bg-[#EAF2F4]">
+              {/* <div className="rounded-full w-[223px] h-[223px] bg-[#F6FCEF] absolute bottom-10 left-0 overflow-hidden"></div> */}
+              <h3 className="text-[40px] font-bold">Welcome</h3>
+              <p className="max-w-[431px] text-center">
+                Connect with top companies and grow your career. Discover
+                thousands of verified job listings, build your professional
+                network, and get personalized recommendations that match your
+                skills and ambition.
+              </p>
+            </div>
+
+            <div className="text-[#03050F]  xl:pr-[24px] text-[16px] flex flex-col gap-[42px] items-start">
+              <div className="flex flex-col gap-[20px] items-start">
+                <h2 className="text-[40px]">Sign Up</h2>
+                <p>
+                  Already have an account?{" "}
+                  <Link to="/login" className="text-[#A1DD5F] underline">sign in</Link>
+                </p>
+              </div>
+              <form
+                onSubmit={submitHandler}
+                className="w-full text-[#03050F] text-[16px] grid  md:grid-cols-12 gap-[34px]"
+              >
+                <div className="grid gap-[8px] md:col-span-6">
+                  <Label className="font-normal text-[#03050F]">
+                    Full Name
+                  </Label>
+                  <Input
+                    type="text"
+                    placeholder="your name"
+                    value={input.fullName}
+                    name="fullName"
+                    onChange={changeEvenHandler}
+                    className="bg-[#FBFBFE]"
+                  />
+                </div>
+                <div className=" grid gap-[8px] md:col-span-6">
+                  <Label className="font-normal text-[#03050F]">Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="farah@gmail.com"
+                    value={input.email}
+                    name="email"
+                    onChange={changeEvenHandler}
+                    className="bg-[#FBFBFE]"
+                  />
+                </div>
+                <div className="grid gap-[8px] md:col-span-6">
+                  <Label className="font-normal text-[#03050F]">
+                    Phone Number
+                  </Label>
+                  <Input
+                    type="text"
+                    placeholder="987987987987"
+                    value={input.phoneNumber}
+                    name="phoneNumber"
+                    onChange={changeEvenHandler}
+                    className="bg-[#FBFBFE]"
+                  />
+                </div>
+                <div className=" grid gap-[8px] md:col-span-6">
+                  <Label className="font-normal text-[#03050F]">Password</Label>
+                  <Input
+                    type="password"
+                    placeholder="farah"
+                    value={input.password}
+                    name="password"
+                    onChange={changeEvenHandler}
+                    className="bg-[#FBFBFE]"
+                  />
+                </div>
+                <div className="flex items-center justify-between  md:col-span-6">
+                  <RadioGroup
+                    defaultValue="comfortable"
+                    className="flex items-center gap-4 "
+                  >
+                    <div className="flex items-center space-x-2 ">
+                      <Input
+                        type="radio"
+                        name="role"
+                        value="student"
+                        checked={input.role == "student"}
+                        onChange={changeEvenHandler}
+                        className="cursor-pointer bg-[#FBFBFE]"
+                      />
+                      <Label
+                        htmlFor="r1"
+                        className="font-normal text-[#03050F]"
+                      >
+                        Student
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2 md:col-span-6">
+                      <Input
+                        type="radio"
+                        name="role"
+                        value="recruiter"
+                        checked={input.role == "recruiter"}
+                        className="cursor-pointer bg-[#FBFBFE]"
+                        onChange={changeEvenHandler}
+                      />
+                      <Label
+                        htmlFor="r1"
+                        className="font-normal text-[#03050F]"
+                      >
+                        Recruiter
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+                <div className="flex items-center gap-[20px] md:col-span-6">
+                  <Label className="font-normal text-[#03050F]">Profile</Label>
+                  <Input
+                    accept="image/*"
+                    type="file"
+                    className="cursor-pointer bg-[#FBFBFE]"
+                    onChange={changeFileHandler}
+                  />
+                </div>
+                {loading ? (
+                  <Button className="font-medium md:col-span-12 py-[10px] px-[40px] bg-[#287992] text-[#F5F6FD]">
+                    <Loader2 className=" font-medium   " />
+                    Please wait
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    className=" font-medium  w-full md:col-span-12 bg-[#287992] text-[#F5F6FD]"
+                  >
+                    Signup
+                  </Button>
+                )}
+
+                {/* <span className="text-sm">
+                Already have an account?
+                <Link to="/login" className="text-blue-600">
+                  {" "}
+                  Login
+                </Link>
+              </span> */}
+              </form>{" "}
+            </div>
+          </div>
+        </Container>
+        <Footer />
+      </div>
+    </>
+  );
 
   return (
     <div>
