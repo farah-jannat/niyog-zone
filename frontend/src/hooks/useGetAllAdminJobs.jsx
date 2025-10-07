@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
 const useGetAllAdminJobs = (adminId) => {
+  console.log('this is aadmin id',adminId)
   const dispatch = useDispatch();
   const { loading, data, error } = useQuery(GET_ALL_ADMIN_JOBS, {
     variables: { adminId },

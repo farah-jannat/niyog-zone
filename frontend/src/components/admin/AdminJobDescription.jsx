@@ -134,14 +134,19 @@ const AdminJobDescription = ({ onDescriptionChange }) => {
       <h1> Job Description </h1>
       <ReactQuill
         value={content}
-        onChange={setContent}
+        // onChange={setContent}
+        // onChange={(content)=>onDescriptionChange()}
+        onChange={(content)=>{
+          // console.log("content is =====  ", content)
+          onDescriptionChange(content)
+        }}
         modules={modules}
         theme="snow"
         placeholder="start typing here"
       />
-      <Button className="mt-5" onClick={() => onDescriptionChange(content)}>
+      {/* <Button className="mt-5" onClick={() => onDescriptionChange(content)}>
         save
-      </Button>
+      </Button> */}
     </div>
   );
 };

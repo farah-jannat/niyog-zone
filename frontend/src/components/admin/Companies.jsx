@@ -8,6 +8,8 @@ import useGetAllCompanies from "@/hooks/useGetAllCompanies";
 import { useDispatch } from "react-redux";
 import { setSearchCompanyByText } from "@/redux/companySlice";
 import Navbar_two from "../shared/Navbar_two";
+import Container from "../container";
+import Footer from "../shared/Footer";
 
 const Companies = () => {
   useGetAllCompanies();
@@ -20,10 +22,24 @@ const Companies = () => {
   }, [input]);
   return (
     <div>
+      <Navbar />
+      <Container className={"my-[68px]"}>
+        <div>
+          <Button onClick={() => navigate("/admin/companies/create")}>
+            New Company
+          </Button>
+        </div>
+        <CompaniesTable />
+      </Container>
+      <Footer />
+    </div>
+  );
+  return (
+    <div>
       <div>
         {/* part1 */}
         <div className="bg-grayish ">
-          <Navbar_two />
+          <Navbar />
           <div className="flex items-center justify-between my-10">
             <Input
               className="w-fit"

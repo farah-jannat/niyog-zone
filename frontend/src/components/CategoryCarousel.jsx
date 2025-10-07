@@ -84,10 +84,10 @@ const CategoryCarousel = () => {
 
   return (
     <>
-      <div className="mx-auto flex flex-col items-center gap-5   w-[90%] md:w-[80%] my-10 ">
+      <div className="mx-auto flex flex-col items-center gap-5   ">
         <Swiper
           breakpoints={{
-            500: {
+            375: {
               slidesPerView: 2,
               spaceBetween: 5,
             },
@@ -95,12 +95,12 @@ const CategoryCarousel = () => {
             //   slidesPerView: 3,
             //   spaceBetween: 5,
             // },
-            1000: {
-              slidesPerView: 3,
+            768: {
+              slidesPerView: 4,
               spaceBetween: 3,
             },
             1200: {
-              slidesPerView: 4,
+              slidesPerView: 6,
               spaceBetween: 3,
             },
           }}
@@ -110,25 +110,20 @@ const CategoryCarousel = () => {
           pagination={{
             clickable: true,
           }}
-          modules={[FreeMode, Pagination]}
-          className="mySwiper  w-[90%] md:w-[80%]"
+          modules={[FreeMode]}
+          className="mySwiper  w-full"
         >
-          {category.map((cat, index) => (
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((cat, index) => (
             <SwiperSlide key={index}>
               <div
                 onClick={() => {
-                  navigate(`/jobs?search=${cat.name}`);
+                  // navigate(`/jobs?search=${cat.name}`);
                 }}
-                className="flex items-center rounded-md p-3 gap-3 border shadow-md bg-white border-gray-200 mb-10"
+                className="flex items-center  "
               >
-                <BookOpenText
-                  size={40}
-                  strokeWidth="1"
-                  className="text-blue-900"
-                />
-                <div className="flex flex-col">
-                  <p className="font-semibold text-[14px]"> {cat.name}</p>
-                  <span className="text-xs text-gray-500">{cat.desc}</span>
+                <div className="flex flex-col items-start bg-[#FEFEFF] rounded-[4px] gap-[4px]   sm:min-w-[100px] md:min-w-[172px] xl:min-w-[186px] py-[18px] px-[24px] ">
+                  <p className="text-[#68696F] text-[12px]"> Experince</p>
+                  <h3 className=" text-[#03050F] ">Minimum 1 year</h3>
                 </div>
               </div>
             </SwiperSlide>

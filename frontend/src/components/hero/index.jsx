@@ -20,25 +20,81 @@ import ShowCounts from "./ShowCounts";
 
 const populerSearches = ["Designer", "Mid", "Developer", "Senior Developer"];
 
-const filter1 = {
-  name: "Software & Development",
-  icon: "Home",
-  array: [
-    "All",
+const Category = {
+  name: "category",
+  categories: [
     "Software",
-    "mid",
-    "Finance",
-    "Marketing",
-    "Management",
-    "Design",
+    "Healthcare and Wellness ",
+    "Finance and Business",
+    "Manufacturing and Engineering",
+    "Education and Training",
+    "Construction and Infrastructure",
+    "Arts, Design, and Media",
+    "Hospitality and Tourism",
+  ],
+};
+const JobType = {
+  name: "job type",
+  types: [
+    "Full time",
+    "Part time",
+    "Onsite",
+    "Remote",
+    "Hybrid",
+    "Seasonal",
+    "Contract",
   ],
 };
 
-const filter2 = {
-  name: "location",
-  icon: "MapPin",
-  array: ["All", "Dhaka", "Florida", "Bonani"],
+const JobLabel = {
+  name: "job label",
+  labels: [
+    "Junior",
+    "Mid-Level",
+    "Senior",
+    "Lead-Principal",
+    "Manager",
+  ],
 };
+const Experience = {
+  name: "experience",
+  experiences: [
+    "1 year",
+    "3 year",
+    "4 year",
+    "5 year",
+    "10 year",
+  ],
+};
+const Salary = {
+  name: "salary",
+  salarys: [
+    "30K",
+    "50K",
+    "60K",
+    "100K",
+    "250K",
+  ],
+};
+// const filter1 = {
+//   name: "Software & Development",
+//   icon: "Home",
+//   array: [
+//     "All",
+//     "Software",
+//     "mid",
+//     "Finance",
+//     "Marketing",
+//     "Management",
+//     "Design",
+//   ],
+// };
+
+// const filter2 = {
+//   name: "location",
+//   icon: "MapPin",
+//   array: ["All", "Dhaka", "Florida", "Bonani"],
+// };
 
 const HeroSection = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -59,20 +115,27 @@ const HeroSection = () => {
   };
 
   // Get a specific query parameter
-  const category = searchParams.get("category");
+  // const category = searchParams.get("category");
   const page = searchParams.get("page");
 
   const [query, setQuery] = useState("");
   const [industry, setIndustry] = useState("");
   const [location, setLocation] = useState("");
   const [label, setLabel] = useState("");
+  const [category, setCategory] = useState("");
+  const [type, setType] = useState("");
+  const [experience, setExperience] = useState("");
+  const [salary, setSalary] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const searchJobHandler = () => {
     console.log("the que is = ", query);
     // navigate("/jobs");
-    navigate(`/jobs?search=${query}&industry=${industry}&location=${location}`);
+    // navigate(`/jobs?search=${query}&industry=${industry}&location=${location}`);
+    navigate(
+      `/jobs?search=${query}&category=${category}&type=${type}&experience=${experience}&salary=${salary}&label=${label}`
+    );
 
     // console.log("hello");
     // dispatch(setSearchedQuery(query));
@@ -195,18 +258,19 @@ const HeroSection = () => {
               <Input
                 type="text"
                 placeholder="Search Job Keywords.."
+                onChange={(e) => setQuery(e.target.value)}
                 className="p-[20px] "
               />
             </div>
             <div className="flex flex-col col-span-6 items-start max-w-[full] gap-[8px]">
               <Label className="text-[#03050F]">Category</Label>
               <div className=" w-full">
-                <Select onValueChange={(value) => setIndustry(value)}>
+                <Select onValueChange={(value) => setCategory(value)}>
                   <SelectTrigger className="w-full p-[20px]">
-                    <SelectValue placeholder={filter1.name} />
+                    <SelectValue placeholder={Category.name} />
                   </SelectTrigger>
                   <SelectContent>
-                    {filter1.array.map((item, idx) => (
+                    {Category.categories.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
@@ -222,12 +286,12 @@ const HeroSection = () => {
             <div className="flex flex-col col-span-6 items-start max-w-[full] gap-[8px]">
               <Label className="text-[#03050F]">Job Type</Label>
               <div className=" w-full">
-                <Select onValueChange={(value) => setIndustry(value)}>
+                <Select onValueChange={(value) => setType(value)}>
                   <SelectTrigger className="w-full p-[20px]">
                     <SelectValue placeholder="All Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {filter1.array.map((item, idx) => (
+                    {JobType.types.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
@@ -240,15 +304,15 @@ const HeroSection = () => {
                 </Select>
               </div>
             </div>
-<div className="flex flex-col col-span-6 items-start max-w-[full] gap-[8px]">
+            <div className="flex flex-col col-span-6 items-start max-w-[full] gap-[8px]">
               <Label className="text-[#03050F]">Job Level</Label>
               <div className=" w-full">
-                <Select onValueChange={(value) => setIndustry(value)}>
+                <Select onValueChange={(value) => setLabel(value)}>
                   <SelectTrigger className="w-full p-[20px]">
                     <SelectValue placeholder="All Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {filter1.array.map((item, idx) => (
+                    {JobLabel.labels.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
@@ -264,12 +328,12 @@ const HeroSection = () => {
             <div className="flex flex-col col-span-6 items-start max-w-[full] gap-[8px]">
               <Label className="text-[#03050F]">Experience</Label>
               <div className=" w-full">
-                <Select onValueChange={(value) => setIndustry(value)}>
+                <Select onValueChange={(value) => setExperience(value)}>
                   <SelectTrigger className="w-full p-[20px]">
                     <SelectValue placeholder="1 year" />
                   </SelectTrigger>
                   <SelectContent>
-                    {filter1.array.map((item, idx) => (
+                    {Experience.experiences.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
@@ -285,12 +349,12 @@ const HeroSection = () => {
             <div className="flex flex-col col-span-12 items-start max-w-[full] gap-[8px]">
               <Label className="text-[#03050F]">Expected Sallary</Label>
               <div className=" w-full">
-                <Select onValueChange={(value) => setIndustry(value)}>
+                <Select onValueChange={(value) => setSalary(value)}>
                   <SelectTrigger className="w-full p-[20px]">
                     <SelectValue placeholder="$500 - $1000 PA" />
                   </SelectTrigger>
                   <SelectContent>
-                    {filter1.array.map((item, idx) => (
+                    {Salary.salarys.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
@@ -303,7 +367,10 @@ const HeroSection = () => {
                 </Select>
               </div>
             </div>
-            <button className="h-[56px] text-[16px] col-span-12 font-medium text-[#F5F6FD] bg-[#287992] rounded-[8px]">
+            <button
+              onClick={searchJobHandler}
+              className="h-[56px] text-[16px] col-span-12 font-medium text-[#F5F6FD] bg-[#287992] rounded-[8px]"
+            >
               Search Result
             </button>
           </form>
