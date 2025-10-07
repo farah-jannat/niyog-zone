@@ -162,7 +162,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
           </DialogHeader>
           <form onSubmit={submitHandler}>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="grid grid-cols-4 items-center gap-6">
                 <Label htmlFor="name" className="text-right">
                   Name
                 </Label>
@@ -224,7 +224,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                   className="col-span-3"
                 />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
+              {/* <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="file" className="text-right">
                   Resume
                 </Label>
@@ -236,7 +236,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                   onChange={handleResumeChange}
                   className="col-span-3"
                 />
-              </div>
+              </div> */}
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="file" className="text-right">
                   Profile Picture
@@ -252,12 +252,15 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
             </div>
             <DialogFooter>
               {loading ? (
-                <Button className="w-full my-4">
+                <Button className="bg-[#287992] w-full my-4 text-white hover:bg-[#216377] hover:text-white">
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   please wait
                 </Button>
               ) : (
-                <Button type="submit" className="w-full my-4">
+                <Button
+                  type="submit"
+                  className="w-full my-4 bg-[#287992] text-white hover:bg-[#216377] hover:text-white"
+                >
                   Update
                 </Button>
               )}
