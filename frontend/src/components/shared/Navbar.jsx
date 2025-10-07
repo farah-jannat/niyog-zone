@@ -54,17 +54,8 @@ const Navbar = () => {
             {user && user.role == "recruiter" ? (
               <>
                 <li>
-                  <Link to="/admin/companies">Companies</Link>
-                </li>
-                <li>
-                  <Link to="/admin/jobs">Jobs</Link>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
                   <Link
-                    to=""
+                    to="/"
                     className={`hidden sm:block ${
                       location.pathname === "/"
                         ? "border-b border-[#A1DD5F]" // Active style
@@ -77,12 +68,36 @@ const Navbar = () => {
                 <li>
                   <Link to="/jobs">Jobs</Link>
                 </li>
-                <li className="">
+                {/* <li>
+                  <Link to="/admin/companies">My Companies</Link>
+                </li>
+                <li>
+                  <Link to="/admin/jobs">My Jobs</Link>
+                </li> */}
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to="/"
+                    className={`hidden sm:block ${
+                      location.pathname === "/"
+                        ? "border-b border-[#A1DD5F]" // Active style
+                        : "text-gray-700 hover:text-blue-500"
+                    }`}
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/jobs">Jobs</Link>
+                </li>
+                <li className="/login">
                   <Link to="">Sign In</Link>
                 </li>
 
                 <li>
-                  <Link to="" className="hidden sm:block">
+                  <Link to="/signup" className="hidden sm:block">
                     Sign Up
                   </Link>
                 </li>
@@ -163,29 +178,26 @@ const Navbar = () => {
                         </div>
                       </div>
                       <div className="flex flex-col my-2 text-gray-600 ">
-                        {user?.role == "student" ? (
-                          <>
-                            <div className="flex gap-2 items-center w-fit cursor-pointer">
-                              <User2 />
-                              <Button variant="link">
-                                <Link to="/profile">view profile</Link>
-                              </Button>
-                            </div>
-                            <div className="flex gap-2 items-center w-fit cursor-pointer ">
-                              <LogOut />
-                              <Button onClick={logoutHandler} variant="link">
-                                logout
-                              </Button>
-                            </div>
-                          </>
-                        ) : (
-                          <div className="flex gap-2 items-center w-fit cursor-pointer ">
-                            <LogOut />
-                            <Button onClick={logoutHandler} variant="link">
-                              logout
-                            </Button>
-                          </div>
-                        )}
+                        {/* {user?.role == "student" ? ( */}
+                        <div className="flex gap-2 items-center w-fit cursor-pointer">
+                          <User2 />
+                          <Button variant="link">
+                            <Link to="/profile">view profile</Link>
+                          </Button>
+                        </div>
+                        <div className="flex gap-2 items-center w-fit cursor-pointer ">
+                          <LogOut />
+                          <Button onClick={logoutHandler} variant="link">
+                            logout
+                          </Button>
+                        </div>
+                        {/* ) : ( */}
+                        <div className="flex gap-2 items-center w-fit cursor-pointer ">
+                          <Button variant="link" className="text-red-400">
+                            Delete Profile
+                          </Button>
+                        </div>
+                        {/* )} */}
                       </div>
                     </div>
                   </PopoverContent>
