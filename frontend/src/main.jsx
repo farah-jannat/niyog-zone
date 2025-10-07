@@ -21,7 +21,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ApolloProvider client={client}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <App />
+          <div className="font-lato">
+            <App />
+          </div>
           <Toaster />
         </PersistGate>
       </Provider>
