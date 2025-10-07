@@ -9,6 +9,8 @@ import useGetAllAdminJobs from "@/hooks/useGetAllAdminJobs";
 import { setSearchJobByText } from "@/redux/jobSlice";
 import Navbar_two from "../shared/Navbar_two";
 import store from "@/redux/store";
+import Container from "../container";
+import Footer from "../shared/Footer";
 
 const AdminJobs = () => {
   const { user } = useSelector((store) => store.auth);
@@ -21,6 +23,15 @@ const AdminJobs = () => {
   useEffect(() => {
     dispatch(setSearchJobByText(input));
   }, [input]);
+  return (
+    <div>
+      <Navbar />
+      <Container className="my-[68px]">
+        <AdminJobsTable />
+      </Container>
+      <Footer/>
+    </div>
+  );
   return (
     <div>
       <Navbar_two />
