@@ -11,8 +11,7 @@ import store from "@/redux/store";
 const useGetAppliedJobs = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
-  const userId = user?._id;
-  console.log("user idddddddddd", userId);
+  const userId = user?.id;
   const { loading, error, data } = useQuery(GET_APPLIED_JOBS, {
     variables: { userId },
     onCompleted: (data) => {
