@@ -17,65 +17,14 @@ import {
   SelectValue,
 } from "../ui/select";
 import ShowCounts from "./ShowCounts";
+import {
+  CategoryFilter,
+  JobLabelFilter,
+  ExperienceFilter,
+  SalaryFilter,
+  JobTypeFilter,
+} from "@/constants";
 
-const populerSearches = ["Designer", "Mid", "Developer", "Senior Developer"];
-
-const Category = {
-  name: "category",
-  categories: [
-    "Software",
-    "Healthcare and Wellness ",
-    "Finance and Business",
-    "Manufacturing and Engineering",
-    "Education and Training",
-    "Construction and Infrastructure",
-    "Arts, Design, and Media",
-    "Hospitality and Tourism",
-  ],
-};
-const JobType = {
-  name: "job type",
-  types: [
-    "Full time",
-    "Part time",
-    "Onsite",
-    "Remote",
-    "Hybrid",
-    "Seasonal",
-    "Contract",
-  ],
-};
-
-const JobLabel = {
-  name: "job label",
-  labels: [
-    "Junior",
-    "Mid-Level",
-    "Senior",
-    "Lead-Principal",
-    "Manager",
-  ],
-};
-const Experience = {
-  name: "experience",
-  experiences: [
-    "1 year",
-    "3 year",
-    "4 year",
-    "5 year",
-    "10 year",
-  ],
-};
-const Salary = {
-  name: "salary",
-  salarys: [
-    "30K",
-    "50K",
-    "60K",
-    "100K",
-    "250K",
-  ],
-};
 // const filter1 = {
 //   name: "Software & Development",
 //   icon: "Home",
@@ -267,10 +216,10 @@ const HeroSection = () => {
               <div className=" w-full">
                 <Select onValueChange={(value) => setCategory(value)}>
                   <SelectTrigger className="w-full p-[20px]">
-                    <SelectValue placeholder={Category.name} />
+                    <SelectValue placeholder={CategoryFilter.name} />
                   </SelectTrigger>
                   <SelectContent>
-                    {Category.categories.map((item, idx) => (
+                    {CategoryFilter.categories.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
@@ -291,7 +240,7 @@ const HeroSection = () => {
                     <SelectValue placeholder="All Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {JobType.types.map((item, idx) => (
+                    {JobTypeFilter.types.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
@@ -312,7 +261,7 @@ const HeroSection = () => {
                     <SelectValue placeholder="All Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {JobLabel.labels.map((item, idx) => (
+                    {JobLabelFilter.labels.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
@@ -333,7 +282,7 @@ const HeroSection = () => {
                     <SelectValue placeholder="1 year" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Experience.experiences.map((item, idx) => (
+                    {ExperienceFilter.experiences.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
@@ -354,7 +303,7 @@ const HeroSection = () => {
                     <SelectValue placeholder="$500 - $1000 PA" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Salary.salarys.map((item, idx) => (
+                    {SalaryFilter.salarys.map((item, idx) => (
                       <>
                         <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
                           <SelectItem value={item}>{item}</SelectItem>
