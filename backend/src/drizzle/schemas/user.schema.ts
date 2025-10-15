@@ -1,10 +1,4 @@
-import {
-  pgTable,
-  serial,
-  varchar,
-  timestamp,
-  pgEnum,
-} from "drizzle-orm/pg-core";
+import { pgTable, timestamp, pgEnum, uuid, text } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { profileTable } from "@/drizzle/schemas/profile.schema";
 import { jobTable } from "@/drizzle/schemas/job.schema";
@@ -15,12 +9,12 @@ export const userRoleEnum = pgEnum("user_role", ["student", "recruiter"]);
 
 // User Table (User.ts equivalent)
 export const userTable = pgTable("users", {
-  id: serial("id").primaryKey(),
-  fullName: varchar("full_name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
-  phoneNumber: varchar("phone_number", { length: 20 }).notNull(), // Changed to varchar for phone numbers
-  password: varchar("password", { length: 255 }).notNull(),
-  role: userRoleEnum("role").notNull(), // Using the defined enum
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull().unique(),
+  phoneNumber: text("phone_number").notNull(),
+  password: text("password").notNull(),
+  fullName: text("full_name").notNull(),
+  role: userRoleEnum("role").notNull().default("student"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

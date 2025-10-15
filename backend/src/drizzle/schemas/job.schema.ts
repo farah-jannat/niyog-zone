@@ -4,24 +4,23 @@ import { userTable } from "@/drizzle/schemas/user.schema";
 import { relations } from "drizzle-orm";
 import {
   pgTable,
-  serial,
   text,
   varchar,
   integer,
   timestamp,
+  uuid,
 } from "drizzle-orm/pg-core";
 
 // Job Table (Job.ts equivalent)
 export const jobTable = pgTable("jobs", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 255 }).notNull(),
   description: text("description").notNull(),
-  // requirements: [ { type: String } ] -> Can be stored as an array of strings in PostgreSQL (JSONB/text array)
   requirements: text("requirements").array(),
   salary: integer("salary").notNull(),
   experienceLevel: integer("experience_level").notNull(),
-  location: varchar("location", { length: 255 }).notNull(),
-  jobType: varchar("job_type", { length: 50 }).notNull(),
+  location: text("location").notNull(),
+  jobType: text("job_type").notNull(),
   position: integer("position").notNull(),
   companyId: integer("company_id")
     .notNull()
@@ -32,7 +31,6 @@ export const jobTable = pgTable("jobs", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
-
 
 // Define relations for Job
 export const jobsRelations = relations(jobTable, ({ one, many }) => ({

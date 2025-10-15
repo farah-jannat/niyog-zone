@@ -4,6 +4,7 @@ import {
   integer,
   timestamp,
   pgEnum,
+  uuid,
 } from "drizzle-orm/pg-core";
 import { jobTable } from "@/drizzle/schemas/job.schema";
 import { userTable } from "@/drizzle/schemas/user.schema";
@@ -17,7 +18,7 @@ export const applicationStatusEnum = pgEnum("application_status", [
 
 // Application Table (Application.ts equivalent)
 export const applicationTable = pgTable("applications", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   jobId: integer("job_id")
     .notNull()
     .references(() => jobTable.id, { onDelete: "cascade" }), // Foreign Key
