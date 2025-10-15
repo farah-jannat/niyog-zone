@@ -9,4 +9,5 @@ export const config = {
   CLOUD_API_SECRET: process.env.CLOUD_API_SECRET || "",
   API_GATEWAY_URL: process.env.API_GATEWAY_URL || "",
   CLIENT_URL: process.env.CLIENT_URL || "",
+  SECRET_KEY_ONE: process.env.SECRET_KEY_ONE || "",
 };
