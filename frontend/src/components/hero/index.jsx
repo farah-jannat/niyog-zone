@@ -91,115 +91,17 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="mx-auto ">
+    <div className="pt-[48px] pb-[64px]">
       <div className="flex flex-col gap-y-[8px]">
-        <h1 className="text-[28px] sm:text-[48px] lg:text-[88px] text-[#03050F] font-bold  mt-[48px]">
+        <h1 className="text-[28px] sm:text-[48px] lg:text-[88px] text-[#03050F] font-bold leading-[96px]">
           Your <span className="text-[#A1DD5F]">Next</span> Career Awaits
         </h1>
-        <p className="text-[#03050F] max-w-[315px] text-[16px]">
+        <p className="text-[#03050F] font-normal text-[16px] tracking-[0.64] max-w-[315px] leading-[24.95px]">
           Explore job opportunities at the world's most innovative companies{" "}
         </p>
       </div>
 
       <div className="mt-[68px] min-h-[344px]     grid  gap-[24px] lg:grid-cols-12 grid-row-2 ">
-        {/* <form className="grid  gap-[23px] col-span-6  row-span-2 bg-[#EAF2F4] p-[24px]   mx-auto lg:mx-0">
-          <div className="flex flex-col items-start max-w-[full] gap-[8px]">
-            <Label className="text-[#03050F]">Keywords</Label>
-            <Input
-              type="text"
-              placeholder="Search Job Keywords.."
-              className="p-[20px]"
-            />
-          </div>
-          <div className="flex flex-col items-start max-w-[full] gap-[8px]">
-            <Label className="text-[#03050F]">Category</Label>
-            <div className=" w-full">
-              <Select onValueChange={(value) => setIndustry(value)}>
-                <SelectTrigger className="w-full p-[20px]">
-                  <SelectValue placeholder={filter1.name} />
-                </SelectTrigger>
-                <SelectContent>
-                  {filter1.array.map((item, idx) => (
-                    <>
-                      <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
-                        <SelectItem value={item}>{item}</SelectItem>
-                      </div>
-
-                      <Separator className="border-b" />
-                    </>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="flex flex-col items-start max-w-[full] gap-[8px]">
-            <Label className="text-[#03050F]">Job Type</Label>
-            <div className=" w-full">
-              <Select onValueChange={(value) => setIndustry(value)}>
-                <SelectTrigger className="w-full p-[20px]">
-                  <SelectValue placeholder="All Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {filter1.array.map((item, idx) => (
-                    <>
-                      <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
-                        <SelectItem value={item}>{item}</SelectItem>
-                      </div>
-
-                      <Separator className="border-b" />
-                    </>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="flex flex-col items-start max-w-[full] gap-[8px]">
-            <Label className="text-[#03050F]">Experience</Label>
-            <div className=" w-full">
-              <Select onValueChange={(value) => setIndustry(value)}>
-                <SelectTrigger className="w-full p-[20px]">
-                  <SelectValue placeholder="1 year" />
-                </SelectTrigger>
-                <SelectContent>
-                  {filter1.array.map((item, idx) => (
-                    <>
-                      <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
-                        <SelectItem value={item}>{item}</SelectItem>
-                      </div>
-
-                      <Separator className="border-b" />
-                    </>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="flex flex-col items-start max-w-[full] gap-[8px]">
-            <Label className="text-[#03050F]">Expected Sallary</Label>
-            <div className=" w-full">
-              <Select onValueChange={(value) => setIndustry(value)}>
-                <SelectTrigger className="w-full p-[20px]">
-                  <SelectValue placeholder="$500 - $1000 PA" />
-                </SelectTrigger>
-                <SelectContent>
-                  {filter1.array.map((item, idx) => (
-                    <>
-                      <div className="flex items-center justify-between my-2 text-sm font-normal text-gray-500 ">
-                        <SelectItem value={item}>{item}</SelectItem>
-                      </div>
-
-                      <Separator className="border-b" />
-                    </>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <button className="h-[56px] text-[16px] font-medium text-[#F5F6FD] bg-[#287992] rounded-[8px]">
-            Search Result
-          </button>
-        </form> */}
-
         <div className="col-span-6 rounded-sm row-span-2">
           <form className="grid grid-cols-12  gap-[23px] col-span-6  row-span-2    card-gradient-bluish p-[24px]   mx-auto lg:mx-0">
             <div className="flex flex-col col-span-12 items-start max-w-[full] gap-[8px]">
