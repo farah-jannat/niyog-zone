@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
-import Navbar from "./shared/Navbar";
+import Navbar from "./widgets/Navbar";
 import HeroSection from "./hero";
-import CategoryCarousel from "./categoryCarousel";
 import LatestJobs from "./LatestJobs";
-import Footer from "./shared/Footer";
+import Footer from "./widgets/footer";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import HomeCreateProfile from "./HomeCreateProfile";
+import HomeCreateProfile from "./how-it-works";
 import Container from "./container";
 
 const Home = () => {
@@ -35,7 +33,7 @@ const Home = () => {
 
       <Container className={"bg-[#FBFBFE]"}>
         {/* {!user && <HomeCreateProfile />} */}
-        <HomeCreateProfile/>
+        <HomeCreateProfile />
       </Container>
 
       <Footer />

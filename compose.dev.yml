@@ -21,7 +21,7 @@ services:
       dockerfile: Dockerfile.dev
     restart: always
     ports:
-      - 5173:5173
+      - 3000:3000
     # environment:
     #   - VITE_NODE_ENV=${VITE_NODE_ENV}
     #   - VITE_BASE_ENDPOINT=${VITE_BASE_ENDPOINT}

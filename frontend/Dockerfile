@@ -28,27 +28,3 @@ RUN npm install --omit=dev
 EXPOSE 3000
 
 CMD [ "npm", "run", "start" ]
-
-# =================== working one ===========
-# # Build stage
-# FROM node:21-alpine3.18 AS build
-
-# WORKDIR /src
-# COPY package.json .
-# RUN npm install
-# COPY . .
-
-# RUN npm run build
-
-# # Production stage
-# FROM build AS production
-
-# COPY --from=build /src/.next ./.next
-# COPY --from=build /src/node_modules ./node_modules
-# COPY --from=build /src/package.json ./package.json
-# COPY --from=build /src/public ./public
-
-# CMD npm start
-
-
-

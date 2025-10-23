@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Button } from "../ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../shared/Navbar";
+import { Label } from "../../../components/ui/label";
+import { Input } from "../../../components/ui/input";
+import { RadioGroup, RadioGroupItem } from "../../../components/ui/radio-group";
+import { Button } from "../../../components/ui/button";
+import Navbar from "../../../components/widgets/Navbar";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
-import { useDispatch, useSelector } from "react-redux";
 import store from "@/redux/store";
 import { setLoading, setUser } from "@/redux/authSlice";
 import { Loader2 } from "lucide-react";
-import Navbar_two from "../shared/Navbar_two";
-import { useMutation } from "@apollo/client";
+import Navbar_two from "../../../components/widgets/Navbar_two";
 import { REGISTER_USER } from "@/graphql/mutation/register";
-import Container from "../container";
-import Footer from "../shared/Footer";
+import Container from "../../../components/container";
+import Footer from "../../../components/widgets/footer";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -61,8 +58,8 @@ const Signup = () => {
       <div className="bg-[#F5F6FD]">
         <Navbar />
         <Container className=" bg-[#FEFEFF]">
-          <div className="grid xl:grid-cols-2 gap-[80px] min-h-[725px] items-center  my-[68px] pt-[8px] pl-[8px] pb-[8px]">
-            <div className="hidden  xl:flex flex-col items-center h-full justify-center  gap-[22px] text-[#35373F] text-[16px] rounded-[8px] card-gradient-bluish bg-[#EAF2F4]">
+          <div className="grid xl:grid-cols-2 gap-20 min-h-[725px] items-center  my-[68px] pt-2 pl-2 pb-2">
+            <div className="hidden  xl:flex flex-col items-center h-full justify-center  gap-[22px] text-[#35373F] text-[16px] rounded-xl card-gradient-bluish bg-[#EAF2F4]">
               {/* <div className="rounded-full w-[223px] h-[223px] bg-[#F6FCEF] absolute bottom-10 left-0 overflow-hidden"></div> */}
               <h3 className="text-[40px] font-bold">Welcome</h3>
               <p className="max-w-[431px] text-center">
@@ -78,14 +75,16 @@ const Signup = () => {
                 <h2 className="text-[40px]">Sign Up</h2>
                 <p>
                   Already have an account?{" "}
-                  <Link to="/login" className="text-[#A1DD5F] underline">sign in</Link>
+                  <Link to="/login" className="text-[#A1DD5F] underline">
+                    sign in
+                  </Link>
                 </p>
               </div>
               <form
                 onSubmit={submitHandler}
                 className="w-full text-[#03050F] text-[16px] grid  md:grid-cols-12 gap-[34px]"
               >
-                <div className="grid gap-[8px] md:col-span-6">
+                <div className="grid gap-2 md:col-span-6">
                   <Label className="font-normal text-[#03050F]">
                     Full Name
                   </Label>
@@ -98,7 +97,7 @@ const Signup = () => {
                     className="bg-[#FBFBFE]"
                   />
                 </div>
-                <div className=" grid gap-[8px] md:col-span-6">
+                <div className=" grid gap-2 md:col-span-6">
                   <Label className="font-normal text-[#03050F]">Email</Label>
                   <Input
                     type="email"
@@ -109,7 +108,7 @@ const Signup = () => {
                     className="bg-[#FBFBFE]"
                   />
                 </div>
-                <div className="grid gap-[8px] md:col-span-6">
+                <div className="grid gap-2 md:col-span-6">
                   <Label className="font-normal text-[#03050F]">
                     Phone Number
                   </Label>
@@ -122,7 +121,7 @@ const Signup = () => {
                     className="bg-[#FBFBFE]"
                   />
                 </div>
-                <div className=" grid gap-[8px] md:col-span-6">
+                <div className=" grid gap-2 md:col-span-6">
                   <Label className="font-normal text-[#03050F]">Password</Label>
                   <Input
                     type="password"
@@ -172,7 +171,7 @@ const Signup = () => {
                     </div>
                   </RadioGroup>
                 </div>
-                <div className="flex items-center gap-[20px] md:col-span-6">
+                <div className="flex items-center gap-5 md:col-span-6">
                   <Label className="font-normal text-[#03050F]">Profile</Label>
                   <Input
                     accept="image/*"
@@ -182,7 +181,7 @@ const Signup = () => {
                   />
                 </div>
                 {loading ? (
-                  <Button className="font-medium md:col-span-12 py-[10px] px-[40px] bg-[#287992] text-[#F5F6FD]">
+                  <Button className="font-medium md:col-span-12 py-2.5 px-10 bg-[#287992] text-[#F5F6FD]">
                     <Loader2 className=" font-medium   " />
                     Please wait
                   </Button>
