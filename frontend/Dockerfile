@@ -1,23 +1,54 @@
-FROM node:21-alpine3.18 AS builder
+# ** --- base stage ---
+FROM node:21-alpine3.18 AS base
 
-WORKDIR /app
-COPY package*.json ./
-COPY tsconfig*.json ./
+# ** --- builder stage ---
+FROM base AS builder
 
-# RUN npm install
-RUN npm ci
+WORKDIR /build
+
+COPY package*.json .
+RUN npm install
 
 COPY . .
-# Bundle app source
 RUN npm run build
 
-FROM nginx:stable-alpine
+# ** --- runner stage ---
+FROM builder AS runner
 
 WORKDIR /app
-COPY --from=builder /app/build /app/html
-COPY nginx.conf /app
-RUN mkdir -p /app/run && apk add --no-cache bash && apk add --no-cache curl
+
+COPY --from=builder /build/package.json  .
+COPY --from=builder /build/package-lock.json  .
+# COPY --from=builder /build/node_modules  ./node_modules
+COPY --from=builder /build/.next ./.next
+COPY --from=builder /build/public  ./public
+
+RUN npm install --omit=dev
 
 EXPOSE 3000
 
-CMD ["nginx", "-c", "/app/nginx.conf"]
+CMD [ "npm", "run", "start" ]
+
+# =================== working one ===========
+# # Build stage
+# FROM node:21-alpine3.18 AS build
+
+# WORKDIR /src
+# COPY package.json .
+# RUN npm install
+# COPY . .
+
+# RUN npm run build
+
+# # Production stage
+# FROM build AS production
+
+# COPY --from=build /src/.next ./.next
+# COPY --from=build /src/node_modules ./node_modules
+# COPY --from=build /src/package.json ./package.json
+# COPY --from=build /src/public ./public
+
+# CMD npm start
+
+
+
