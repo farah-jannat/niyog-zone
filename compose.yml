@@ -1,0 +1,45 @@
+name: niyog-zone
+
+services:
+  # ==================================== Infrastructure ==============================
+
+  niyog-zone-db:
+    container_name: niyog-zone-db-container
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${NIYOG_ZONE_PG_DB_USER}
+      - POSTGRES_PASSWORD=${NIYOG_ZONE_PG_DB_PWD}
+      - POSTGRES_DB=${NIYOG_ZONE_PG_DB_NAME}
+
+  # ==================================== Application Services ==============================
+
+  niyog-zone-client:
+    container_name: niyog-zone-client-container
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    image: asiful087/niyog-zone-client
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - niyog-zone-backend
+
+  niyog-zone-backend:
+    container_name: niyog-zone-backend-container
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    image: asiful087/niyog-zone-backend
+    restart: always
+    ports:
+      - 4001:4001
+    environment:
+      - SECRET_KEY=${NIYOG_ZONE_SECRET_KEY}
+      - CLOUD_NAME=${NIYOG_ZONE_CLOUD_NAME}
+      - API_KEY=${NIYOG_ZONE_API_KEY}
+      - API_SECRET=${NIYOG_ZONE_API_SECRET}
+
+    depends_on:
+      - niyog-zone-db

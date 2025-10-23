@@ -1,0 +1,77 @@
+name: niyog-zone-dev
+
+services:
+  # ==================================== Infrastructure ==============================
+
+  niyog-zone-db:
+    container_name: niyog-zone-db-container
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${NIYOG_ZONE_PG_DB_USER}
+      - POSTGRES_PASSWORD=${NIYOG_ZONE_PG_DB_PWD}
+      - POSTGRES_DB=${NIYOG_ZONE_PG_DB_NAME}
+
+  # ==================================== Application Services ==============================
+
+  niyog-zone-client:
+    container_name: niyog-zone-client-container
+    build:
+      context: frontend
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 5173:5173
+    # environment:
+    #   - VITE_NODE_ENV=${VITE_NODE_ENV}
+    #   - VITE_BASE_ENDPOINT=${VITE_BASE_ENDPOINT}
+    #   - VITE_CLIENT_ENDPOINT=${VITE_CLIENT_ENDPOINT}
+    #   - VITE_STRIPE_KEY=${VITE_STRIPE_KEY}
+    #   - VITE_ELASTIC_APM_SERVER=${VITE_ELASTIC_APM_SERVER}
+    volumes:
+      - ./frontend:/home/app
+      - /home/app/node_modules
+    depends_on:
+      - niyog-zone-backend
+    user: "root"
+
+  niyog-zone-backend:
+    container_name: niyog-zone-backend-container
+    build:
+      context: backend
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4001:4001
+    environment:
+      - SECRET_KEY=${NIYOG_ZONE_SECRET_KEY}
+      - CLOUD_NAME=${NIYOG_ZONE_CLOUD_NAME}
+      - API_KEY=${NIYOG_ZONE_API_KEY}
+      - API_SECRET=${NIYOG_ZONE_API_SECRET}
+    volumes:
+      - ./backend:/home/app
+      - /home/app/node_modules
+
+    depends_on:
+      - niyog-zone-db
+
+    # 🌟 ADDED UID/GID MAPPING 🌟
+    user: "root"
+
+  niyog-zone-studio:
+    container_name: niyo-zone-studio-container
+    build:
+      context: backend
+      dockerfile: Dockerfile.studio
+    restart: always
+    ports:
+      - 4983:4983
+    environment:
+      - DATABASE_URL=${NIYOG_ZONE_DB_URL}
+    profiles: ["studio"]
+    volumes:
+      - ./backend:/home/app
+    depends_on:
+      - niyog-zone-db
+      - niyog-zone-backend
+    user: "root"

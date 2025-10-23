@@ -83,7 +83,7 @@ class AuthService {
   }
 
   private start_server() {
-    const PORT = 4002;
+    const PORT = 4001;
     this.app.listen(PORT, () => {
       console.log(`Auth server is running on port ${PORT}`);
     });
