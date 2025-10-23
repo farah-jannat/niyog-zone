@@ -12,6 +12,11 @@ import {
 
 // ** Local Imports
 import { config } from "@/config";
+import healthRouter from "@/routes/health.router";
+import userRouter from "@/routes/user.router";
+import jobRouter from "@/routes/job.router";
+import companyRouter from "@/routes/company.router";
+import applicationRouter from "@/routes/application.router";
 // import loginRegisterRouter from "@src/routes/login-register.route";
 // import verficationRouter from "@src/routes/verification.route";
 // import passwordRouter from "@src/routes/password.route";
@@ -65,13 +70,12 @@ class AuthService {
 
   private set_route_middlewares() {
     this.app.use(morgan("dev"));
-    const BASE_PATH = "/api/v1/auth";
-    // this.app.use(healthRouter);
-    // this.app.use(BASE_PATH, loginRegisterRouter);
-    // this.app.use(BASE_PATH, verficationRouter);
-    // this.app.use(BASE_PATH, passwordRouter);
-    // this.app.use(BASE_PATH, identityRouter);
-    // this.app.use(BASE_PATH, seedRouter);
+    const BASE_PATH = "/api/v1";
+    this.app.use(healthRouter);
+    this.app.use(BASE_PATH, userRouter);
+    this.app.use(BASE_PATH, jobRouter);
+    this.app.use(BASE_PATH, companyRouter);
+    this.app.use(BASE_PATH, applicationRouter);
   }
 
   private set_error_middlewares() {
