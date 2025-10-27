@@ -12,7 +12,7 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Delete, Edit2, Eye, MoreHorizontal } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+// import { useNavigate, useParams } from "react-router-dom";
 import { GET_APPLICANTS } from "@/graphql/query/getApplicants";
 import { useQuery } from "@apollo/client";
 

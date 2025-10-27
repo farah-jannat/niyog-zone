@@ -4,6 +4,10 @@ import HeroSection from "@/components/hero";
 export default function Page() {
   return (
     <div className="bg-[#F5F6FD] ">
+
+hello
+
+
       {/* <Navbar /> */}
 
       <Container className={" bg-gradient"}>

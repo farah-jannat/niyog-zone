@@ -33,7 +33,7 @@ services:
       - /home/app/node_modules
     depends_on:
       - niyog-zone-backend
-    user: "root"
+    user: "${UID}:${GID}"
 
   niyog-zone-backend:
     container_name: niyog-zone-backend-container
@@ -56,7 +56,7 @@ services:
       - niyog-zone-db
 
     # 🌟 ADDED UID/GID MAPPING 🌟
-    user: "root"
+    user: "${UID}:${GID}"
 
   niyog-zone-studio:
     container_name: niyo-zone-studio-container
@@ -74,4 +74,4 @@ services:
     depends_on:
       - niyog-zone-db
       - niyog-zone-backend
-    user: "root"
+    user: "${UID}:${GID}"
