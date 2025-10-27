@@ -1,3 +1,5 @@
+"use client"
+
 import JobFilter from "@/features/job/components/job-filter";
 import useJobFilter from "@/features/job/hooks/use-job-filter";
 import React from "react";

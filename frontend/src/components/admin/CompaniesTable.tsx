@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState } from "react";
 import {
   Table,
@@ -12,10 +14,13 @@ import { Avatar, AvatarImage } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Delete, Edit2, MoreHorizontal } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
+// import { useNavigate } from "react-router-dom";
 
 const CompaniesTable = () => {
   const navigate = useNavigate();
+  const router = useRouter();
+
   const { companies, searchCompanyByText } = useSelector(
     (store) => store.company
   );
@@ -80,7 +85,9 @@ const CompaniesTable = () => {
                   <Edit2
                     size={18}
                     className="cursor-pointer"
-                    onClick={() => navigate(`/admin/companies/${company.id}`)}
+                    onClick={() =>
+                      router.push(`/admin/companies/${company.id}`)
+                    }
                   />
                 </div>
               </TableCell>

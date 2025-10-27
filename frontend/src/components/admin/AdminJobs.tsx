@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Input } from "../ui/input";
@@ -29,7 +31,7 @@ const AdminJobs = () => {
       <Container className="my-[68px]">
         <AdminJobsTable />
       </Container>
-      <Footer/>
+      <Footer />
     </div>
   );
   return (
