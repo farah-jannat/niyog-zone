@@ -1,14 +1,30 @@
-import React from "react";
+"use client";
+
 import LatestJobsCards from "./LatestJobsCards";
-import { useSelector } from "react-redux";
-import { Button } from "./ui/button";
-import { Home } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+// import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { useLatestJobsQuery } from "@/features/job/queries/use-latest-jobs.query";
 
 const LatestJobs = () => {
-  const { allJobs } = useSelector((store) => store.job);
-  console.log("all job here", allJobs);
-  const navigate = useNavigate();
+  // const { allJobs } = useSelector((store) => store.job);
+  // console.log("all job here", allJobs);
+
+  // const { isLoading, data, error } = useJobsQuery({
+  //   q: `category=${encodeURIComponent(tabs[currentTabIndex])}`,
+  //   page: 1,
+  //   limit: 10,
+  // });
+
+  const {
+    isLoading,
+    data: allJobs,
+    error,
+  } = useLatestJobsQuery({
+    page: 1,
+    limit: 10,
+  });
+
+  const router = useRouter();
   return (
     <div className="mt-[68px]">
       <div className="max-h-[76px] my-[68px] flex items-center justify-between">
@@ -20,24 +36,27 @@ const LatestJobs = () => {
             Latest Jobs
           </h2>
         </div>
-       
-        <button onClick={()=>navigate('/jobs')} className=" bg-[#E8C092] text-[#03050F]  w-[89px] h-[33px]  rounded-[4px] text-[14px]">
+
+        <button
+          onClick={() => router.push("/jobs")}
+          className=" bg-[#E8C092] text-[#03050F]  w-[89px] h-[33px]  rounded-[4px] text-[14px]"
+        >
           Explore
-        </button> 
+        </button>
       </div>
       {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 my-5"> */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-[16px]">
-          {allJobs?.length <= 0 ? (
-            <span>No Job Available</span>
-          ) : (
-            allJobs?.slice(0, 6).map((job) => (
-              <div>
-                {" "}
-                <LatestJobsCards key={job.id} job={job} />
-              </div>
-            ))
-          )}
-        </div>
+      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-[16px]">
+        {allJobs?.length <= 0 ? (
+          <span>No Job Available</span>
+        ) : (
+          allJobs?.slice(0, 6).map((job) => (
+            <div>
+              {" "}
+              <LatestJobsCards key={job.id} job={job} />
+            </div>
+          ))
+        )}
+      </div>
       {/* </div> */}
       {/* <div className="flex items-center justify-center flex-wrap gap-3 sm:gap-4">
           <div className=" flex items-center gap-2 border border-Blue rounded-md px-3 py-2">

@@ -1,38 +1,14 @@
-import React, { useState } from "react";
 import { Badge } from "./ui/badge";
-import { useNavigate, useParams } from "react-router-dom";
-import {
-  Bookmark,
-  BriefcaseBusiness,
-  Clock7,
-  Locate,
-  MapPin,
-} from "lucide-react";
-import { Button } from "./ui/button";
-import { Separator } from "@radix-ui/react-select";
-import { useMutation } from "@apollo/client";
-import { APPLY_JOB } from "@/graphql/mutation/applyJob";
-import { useSelector } from "react-redux";
-import { setSingleJob } from "@/redux/jobSlice";
+
+import { useRouter } from "next/navigation";
 
 const LatestJobsCards = ({ job }) => {
-  const navigate = useNavigate();
-
-  const daysAgoFunction = (mongodbTime) => {
-    const createdAt = new Date(mongodbTime);
-    const currentTime = new Date();
-    const timeDifference = currentTime - createdAt;
-    return Math.floor(timeDifference / (1000 * 24 * 60 * 60));
-  };
-  const stripHtmlTags = (html) => {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent || "";
-  };
+  const router = useRouter();
 
   return (
     <div
-      className="flex flex-col cursor-pointer items-start gap-[14px] p-[24px]  w-full bg-[#FEFEFF] rounded-[8px] "
-      onClick={() => navigate(`/description/${job?.id}`)}
+      className="flex flex-col cursor-pointer items-start gap-3.5 p-[24px]  w-full bg-[#FEFEFF] rounded-[8px] "
+      onClick={() => router.push(`/description/${job?.id}`)}
     >
       <div className="flex items-center gap-[12px]">
         <div className="w-[34px] h-[34px] bg-[#B60E0E87] border border-black rounded-full">

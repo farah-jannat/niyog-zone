@@ -1,13 +1,11 @@
 import Container from "@/components/container";
 import HeroSection from "@/components/hero";
+import HomeCreateProfile from "@/components/how-it-works";
+import LatestJobs from "@/components/LatestJobs";
 
 export default function Page() {
   return (
     <div className="bg-[#F5F6FD] ">
-
-hello
-
-
       {/* <Navbar /> */}
 
       <Container className={" bg-gradient"}>
@@ -15,14 +13,12 @@ hello
       </Container>
 
       <Container>
-        {/* <LatestJobs /> */}
-        <div></div>
+        <LatestJobs />
       </Container>
 
       <Container className={"bg-[#FBFBFE]"}>
         {/* {!user && <HomeCreateProfile />} */}
-        {/* <HomeCreateProfile/> */}
-        <div></div>
+        <HomeCreateProfile/>
       </Container>
 
       {/* <Footer /> */}

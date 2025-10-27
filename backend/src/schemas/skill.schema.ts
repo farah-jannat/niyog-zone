@@ -1,6 +1,13 @@
-import { pgTable, serial, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { profileSkillTable } from "@/drizzle/schemas/profile-skill.schema";
+import { profileSkillTable } from "@/schemas/profile-skill.schema";
 
 export const skillTable = pgTable("skills", {
   id: uuid("id").primaryKey().defaultRandom(),

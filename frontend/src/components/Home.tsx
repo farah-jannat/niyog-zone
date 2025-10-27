@@ -1,17 +1,15 @@
-import Navbar from "./widgets/Navbar";
-import HeroSection from "./hero";
-import LatestJobs from "./LatestJobs";
-import Footer from "./widgets/footer";
+import Container from "@/components/container";
+import HeroSection from "@/components/hero";
+import HomeCreateProfile from "@/components/how-it-works";
+import LatestJobs from "@/components/LatestJobs";
+import Footer from "@/components/widgets/footer";
+import Navbar from "@/components/widgets/Navbar";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import HomeCreateProfile from "./how-it-works";
-import Container from "./container";
 
 const Home = () => {
   useGetAllJobs();
   const { user } = useSelector((store) => store.auth);
-  const navigate = useNavigate();
 
   // useEffect(() => {
   //   if (user?.role == "recruiter") {

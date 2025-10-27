@@ -6,8 +6,8 @@ import type {
   RegisterInput,
   UpdateProfileInput,
 } from "@/validations/user.validation";
-import { db } from "@/drizzle/db";
-import { profileTable, userTable } from "@/drizzle/schemas";
+import { db } from "@/db";
+import { profileTable, userTable } from "@/schemas";
 import { eq } from "drizzle-orm";
 import { hashPassword, verifyPassword } from "@/utils/hashing.util";
 import { config } from "@/config";

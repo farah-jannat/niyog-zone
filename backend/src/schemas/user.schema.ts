@@ -1,9 +1,9 @@
 import { pgTable, timestamp, pgEnum, uuid, text } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { profileTable } from "@/drizzle/schemas/profile.schema";
-import { jobTable } from "@/drizzle/schemas/job.schema";
-import { applicationTable } from "@/drizzle/schemas/application.schema";
-import { companyTable } from "@/drizzle/schemas/company.schema";
+import { profileTable } from "@/schemas/profile.schema";
+import { jobTable } from "@/schemas/job.schema";
+import { applicationTable } from "@/schemas/application.schema";
+import { companyTable } from "@/schemas/company.schema";
 
 export const userRoleEnum = pgEnum("user_role", ["student", "recruiter"]);
 

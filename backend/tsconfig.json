@@ -26,7 +26,6 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
 
-    "ignoreDeprecations": "6.0",
     "baseUrl": ".", // This tells TypeScript to resolve paths relative to the tsconfig.json file itself
 
     "paths": {

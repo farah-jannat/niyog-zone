@@ -17,13 +17,7 @@ import userRouter from "@/routes/user.router";
 import jobRouter from "@/routes/job.router";
 import companyRouter from "@/routes/company.router";
 import applicationRouter from "@/routes/application.router";
-// import loginRegisterRouter from "@src/routes/login-register.route";
-// import verficationRouter from "@src/routes/verification.route";
-// import passwordRouter from "@src/routes/password.route";
-// import identityRouter from "@src/routes/identity.route";
-// import healthRouter from "@src/routes/health.routes";
-// import seedRouter from "@src/routes/seed.route";
-// import { mqWrapper } from "@src/rabbitmq-wrapper";
+import seedRouter from "@/routes/seed.router";
 
 // ** Define Auth Service
 
@@ -65,7 +59,7 @@ class AuthService {
       })
     );
 
-    this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "auth"));
+    // this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "auth"));
   }
 
   private set_route_middlewares() {
@@ -74,6 +68,7 @@ class AuthService {
     this.app.use(healthRouter);
     this.app.use(BASE_PATH, userRouter);
     this.app.use(BASE_PATH, jobRouter);
+    this.app.use(`${BASE_PATH}/seed`, seedRouter);
     this.app.use(BASE_PATH, companyRouter);
     this.app.use(BASE_PATH, applicationRouter);
   }

@@ -6,8 +6,8 @@ import {
   pgEnum,
   uuid,
 } from "drizzle-orm/pg-core";
-import { jobTable } from "@/drizzle/schemas/job.schema";
-import { userTable } from "@/drizzle/schemas/user.schema";
+import { jobTable } from "@/schemas/job.schema";
+import { userTable } from "@/schemas/user.schema";
 import { relations } from "drizzle-orm";
 
 export const applicationStatusEnum = pgEnum("application_status", [
@@ -19,10 +19,10 @@ export const applicationStatusEnum = pgEnum("application_status", [
 // Application Table (Application.ts equivalent)
 export const applicationTable = pgTable("applications", {
   id: uuid("id").primaryKey().defaultRandom(),
-  jobId: integer("job_id")
+  jobId: uuid("job_id")
     .notNull()
     .references(() => jobTable.id, { onDelete: "cascade" }), // Foreign Key
-  applicantId: integer("applicant_id")
+  applicantId: uuid("applicant_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }), // Foreign Key
   status: applicationStatusEnum("status").default("pending").notNull(), // Reusing the enum or define a new one: pgEnum("application_status", ["pending", "accepted", "rejected"])

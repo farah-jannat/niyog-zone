@@ -1,21 +1,16 @@
-import {
-  pgTable,
-  integer,
-  uuid,
-  timestamp,
-} from "drizzle-orm/pg-core";
-import { profileTable } from "@/drizzle/schemas/profile.schema";
-import { skillTable } from "@/drizzle/schemas/skill.schema";
+import { pgTable, integer, uuid, timestamp } from "drizzle-orm/pg-core";
+import { profileTable } from "@/schemas/profile.schema";
+import { skillTable } from "@/schemas/skill.schema";
 import { relations } from "drizzle-orm";
 
 export const profileSkillTable = pgTable(
   "profile_skills",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    profileId: integer("profile_id")
+    profileId: uuid("profile_id")
       .notNull()
       .references(() => profileTable.userId, { onDelete: "cascade" }),
-    skillId: integer("skill_id")
+    skillId: uuid("skill_id")
       .notNull()
       .references(() => skillTable.id, { onDelete: "cascade" }),
     createdAt: timestamp("created_at").defaultNow().notNull(),

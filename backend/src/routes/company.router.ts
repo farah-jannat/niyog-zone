@@ -9,9 +9,9 @@ import { Router } from "express";
 
 const companyRouter = Router();
 
-companyRouter.post("/companies", isAuthenticated, registerCompany);
-companyRouter.get("/companies", isAuthenticated, getCompany);
-companyRouter.get("/companies/:id", isAuthenticated, getCompanyById);
-companyRouter.put("/companies/:id", isAuthenticated, updateCompany);
+// companyRouter.post("/companies", isAuthenticated, registerCompany);
+// companyRouter.get("/companies", isAuthenticated, getCompany);
+// companyRouter.get("/companies/:id", isAuthenticated, getCompanyById);
+// companyRouter.put("/companies/:id", isAuthenticated, updateCompany);
 
 export default companyRouter;

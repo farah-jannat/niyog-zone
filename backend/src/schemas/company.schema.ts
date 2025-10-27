@@ -6,13 +6,13 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { userTable } from "@/drizzle/schemas/user.schema";
+import { userTable } from "@/schemas/user.schema";
 import { relations } from "drizzle-orm";
-import { jobTable } from "@/drizzle/schemas/job.schema";
+import { jobTable } from "@/schemas/job.schema";
 
 export const companyTable = pgTable("companies", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: integer("user_id")
+  userId: uuid("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
   name: text("name").notNull().unique(),

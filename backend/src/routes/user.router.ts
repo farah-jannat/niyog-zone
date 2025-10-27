@@ -9,9 +9,9 @@ import { Router } from "express";
 
 const userRouter = Router();
 
-userRouter.post("/register", register);
-userRouter.post("/login", login);
-userRouter.get("/logout", logout);
-userRouter.put("/profile", isAuthenticated, updateProfile);
+// userRouter.post("/register", register);
+// userRouter.post("/login", login);
+// userRouter.get("/logout", logout);
+// userRouter.put("/profile", isAuthenticated, updateProfile);
 
 export default userRouter;

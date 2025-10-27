@@ -1,6 +1,6 @@
-import { applicationTable } from "@/drizzle/schemas/application.schema";
-import { companyTable } from "@/drizzle/schemas/company.schema";
-import { userTable } from "@/drizzle/schemas/user.schema";
+import { applicationTable } from "@/schemas/application.schema";
+import { companyTable } from "@/schemas/company.schema";
+import { userTable } from "@/schemas/user.schema";
 import { relations } from "drizzle-orm";
 import {
   pgTable,
@@ -22,10 +22,10 @@ export const jobTable = pgTable("jobs", {
   location: text("location").notNull(),
   jobType: text("job_type").notNull(),
   position: integer("position").notNull(),
-  companyId: integer("company_id")
+  companyId: uuid("company_id")
     .notNull()
     .references(() => companyTable.id, { onDelete: "cascade" }), // Foreign Key
-  createdBy: integer("created_by")
+  createdBy: uuid("created_by")
     .notNull()
     .references(() => userTable.id, { onDelete: "restrict" }), // Foreign Key
   createdAt: timestamp("created_at").defaultNow().notNull(),
