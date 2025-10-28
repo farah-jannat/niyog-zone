@@ -1,7 +1,30 @@
+import { Badge } from "@/components/ui/badge";
+import { Job } from "@/features/job/schemas/job.schema";
 import { useRouter } from "next/navigation";
-import React from "react";
 
-const JobCard = () => {
+interface Props {
+  job: Job;
+}
+
+const JobCard = (props: Props) => {
+  // ** --- props ---
+  const { job } = props;
+  // const {
+  //   companyId,
+  //   createdAt,
+  //   createdBy,
+  //   description,
+  //   experienceLevel,
+  //   id,
+  //   jobType,
+  //   location,
+  //   position,
+  //   requirements,
+  //   salary,
+  //   title,
+  //   updatedAt,
+  // } = props;
+
   const router = useRouter();
 
   return (
@@ -60,15 +83,14 @@ const JobCard = () => {
         </Badge>
       </div>
 
-      <div className="max-w-[full] p-[16px] leading-[20px] rounded-[4px] bg-[#FDF9F4] text-[14px] text-[#35373F]">
-        <p>
-          It is a long established fact that a reader will be distracted by the
-          readable content of a page when looking at its{" "}
+      <div className="max-h-[92px] w-full  p-4 leading-5 rounded-lg bg-[#FDF9F4] text-[14px] text-[#35373F]">
+        <p className="overflow-hidden line-clamp-3 text-ellipsis">
+          {job.description}
         </p>
       </div>
 
       <div className="flex items-center justify-between  w-full ">
-        <div className=" font-bold flex flex-col gap-[4px]">
+        <div className=" font-bold flex flex-col gap-1">
           <h1 className="text-Blue  text-md text-[20px] text-[#03050F]">
             ${job?.salary}
             <span className=" text-Apple_Green">/hr</span>
@@ -78,7 +100,7 @@ const JobCard = () => {
           </p>
         </div>
 
-        <button className=" bg-[#5394A8] hover:bg-[#488091] text-[#F5F6FD]  w-[89px] h-[33px]  rounded-[4px] text-[14px]">
+        <button className=" bg-[#5394A8] hover:bg-[#488091] text-[#F5F6FD]  w-[89px] h-[33px]  rounded-lg text-[14px] cursor-pointer">
           View
         </button>
       </div>
