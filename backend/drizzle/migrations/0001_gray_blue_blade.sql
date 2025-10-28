@@ -1,0 +1,1 @@
+ALTER TABLE "skills" DROP CONSTRAINT "skills_years_unique";
