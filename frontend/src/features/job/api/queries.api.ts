@@ -2,7 +2,7 @@ import { job__axios } from "@/axios.service";
 import { Job } from "@/features/job/schemas/job.schema";
 
 export interface JobsResponse {
-  data: Job[];
+  jobs: Job[];
   totalCount: number;
 }
 
@@ -15,7 +15,8 @@ export const getJobs = async (q: string, page: number, limit: number) => {
 
 export const getLatestJobs = async (page: number, limit: number) => {
   const response = await job__axios.get<JobsResponse>(
-    `/search?page=${page}&limit=${limit}`
+    `/latest?page=${page}&limit=${limit}`
   );
+
   return response.data;
 };

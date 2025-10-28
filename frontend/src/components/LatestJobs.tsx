@@ -15,14 +15,12 @@ const LatestJobs = () => {
   //   limit: 10,
   // });
 
-  const {
-    isLoading,
-    data: allJobs,
-    error,
-  } = useLatestJobsQuery({
+  const { isLoading, data, error } = useLatestJobsQuery({
     page: 1,
     limit: 10,
   });
+
+  const allJobs = data?.jobs;
 
   const router = useRouter();
   return (
