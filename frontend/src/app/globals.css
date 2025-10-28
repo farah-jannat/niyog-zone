@@ -166,3 +166,63 @@
     margin: 0 !important;
   } */
 }
+
+.bg-gradient {
+  background: repeating-linear-gradient(
+      rgba(0, 0, 0, 0.02) 0px 1px,
+      transparent 1px 100%
+    ),
+    repeating-linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.02) 0px 1px,
+      transparent 1px 100%
+    ),
+    #fbfbfe;
+
+  background-size: 40px 40px;
+}
+
+.card-gradient-bluish {
+  background: repeating-linear-gradient(
+      rgba(0, 0, 0, 0.02) 0px 1px,
+      transparent 1px 100%
+    ),
+    repeating-linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.02) 0px 1px,
+      transparent 1px 100%
+    ),
+    #eaf2f4;
+
+  background-size: 10px 10px;
+}
+.card-gradient-brown {
+  background: repeating-linear-gradient(
+      rgba(0, 0, 0, 0.02) 0px 1px,
+      transparent 1px 100%
+    ),
+    repeating-linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.02) 0px 1px,
+      transparent 1px 100%
+    ),
+    #faf2e9;
+
+  background-size: 10px 10px;
+}
+
+
+.card-gradient-green {
+  background: repeating-linear-gradient(
+      rgba(0, 0, 0, 0.02) 0px 1px,
+      transparent 1px 100%
+    ),
+    repeating-linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.02) 0px 1px,
+      transparent 1px 100%
+    ),
+    #F6FCEF;
+
+  background-size: 10px 10px;
+}
