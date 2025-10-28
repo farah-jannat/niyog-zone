@@ -22,12 +22,10 @@ services:
     restart: always
     ports:
       - 3000:3000
-    # environment:
-    #   - VITE_NODE_ENV=${VITE_NODE_ENV}
-    #   - VITE_BASE_ENDPOINT=${VITE_BASE_ENDPOINT}
-    #   - VITE_CLIENT_ENDPOINT=${VITE_CLIENT_ENDPOINT}
-    #   - VITE_STRIPE_KEY=${VITE_STRIPE_KEY}
-    #   - VITE_ELASTIC_APM_SERVER=${VITE_ELASTIC_APM_SERVER}
+    environment:
+      - NEXT_PUBLIC_BASE_ENDPOINT=${NIYOG_ZONE_BASE_ENDPOINT}
+      # - NEXT_PUBLIC_SOCKET_ENDPOINT=${SOCKET_ENDPOINT}
+
     volumes:
       - ./frontend:/home/app
       - /home/app/node_modules
@@ -44,6 +42,8 @@ services:
     ports:
       - 4001:4001
     environment:
+      - NODE_ENV=${NIYOG_ZONE_NODE_ENV}
+      - CLIENT_URL=${NIYOG_ZONE_CLIENT_URL}
       - SECRET_KEY=${NIYOG_ZONE_SECRET_KEY}
       - CLOUD_NAME=${NIYOG_ZONE_CLOUD_NAME}
       - API_KEY=${NIYOG_ZONE_API_KEY}
