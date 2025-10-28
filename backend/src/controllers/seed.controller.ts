@@ -45,7 +45,7 @@ const NUM_PROFILE_SKILLS = 140;
 
 const jobTypes = ["Full-time", "Part-time", "Contract", "Internship"];
 const jobLevels = ["Junior", "Senior", "Mid"];
-const experiences = ["2", "2", "3", "4", "5"]; // 1=Entry, 5=Senior
+const experiences = ["1", "2", "3", "4", "5", "6"]; // 1=Entry, 5=Senior
 
 export const jobCategories = [
   "Software",
