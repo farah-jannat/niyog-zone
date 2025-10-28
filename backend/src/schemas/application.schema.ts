@@ -1,11 +1,4 @@
-import {
-  pgTable,
-  serial,
-  integer,
-  timestamp,
-  pgEnum,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { pgTable, timestamp, pgEnum, uuid } from "drizzle-orm/pg-core";
 import { jobTable } from "@/schemas/job.schema";
 import { userTable } from "@/schemas/user.schema";
 import { relations } from "drizzle-orm";
@@ -21,11 +14,11 @@ export const applicationTable = pgTable("applications", {
   id: uuid("id").primaryKey().defaultRandom(),
   jobId: uuid("job_id")
     .notNull()
-    .references(() => jobTable.id, { onDelete: "cascade" }), // Foreign Key
+    .references(() => jobTable.id, { onDelete: "cascade" }),
   applicantId: uuid("applicant_id")
     .notNull()
-    .references(() => userTable.id, { onDelete: "cascade" }), // Foreign Key
-  status: applicationStatusEnum("status").default("pending").notNull(), // Reusing the enum or define a new one: pgEnum("application_status", ["pending", "accepted", "rejected"])
+    .references(() => userTable.id, { onDelete: "cascade" }),
+  status: applicationStatusEnum("status").default("pending").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

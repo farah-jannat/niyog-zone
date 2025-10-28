@@ -1,4 +1,4 @@
-import { pgTable, integer, uuid, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, uuid, timestamp } from "drizzle-orm/pg-core";
 import { profileTable } from "@/schemas/profile.schema";
 import { skillTable } from "@/schemas/skill.schema";
 import { relations } from "drizzle-orm";

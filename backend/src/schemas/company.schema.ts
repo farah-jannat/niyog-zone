@@ -1,11 +1,4 @@
-import {
-  pgTable,
-  text,
-  varchar,
-  integer,
-  timestamp,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, uuid } from "drizzle-orm/pg-core";
 import { userTable } from "@/schemas/user.schema";
 import { relations } from "drizzle-orm";
 import { jobTable } from "@/schemas/job.schema";
