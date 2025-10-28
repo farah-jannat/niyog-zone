@@ -9,8 +9,12 @@ import {
   integer,
   timestamp,
   uuid,
-  pgEnum,
 } from "drizzle-orm/pg-core";
+
+interface Skill {
+  name: string;
+  years: string;
+}
 
 // Job Table (Job.ts equivalent)
 export const jobTable = pgTable("jobs", {
@@ -25,6 +29,7 @@ export const jobTable = pgTable("jobs", {
   jobType: text("job_type").notNull(),
   jobLevel: text("job_level").notNull(),
   vacancy: integer("vacancy").notNull(),
+  // techs: jsonb("skills").$type<Skill[]>(),
   companyId: uuid("company_id")
     .notNull()
     .references(() => companyTable.id, { onDelete: "cascade" }), // Foreign Key

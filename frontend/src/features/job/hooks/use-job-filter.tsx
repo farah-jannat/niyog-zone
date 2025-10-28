@@ -11,50 +11,47 @@ const useJobFilter = () => {
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const limit = parseInt(searchParams.get("limit") || jobLimit, 10);
 
+  //   category: "",
+  //   jobType: "",
+  //   jobLevel: "",
+  //   experience: "",
+  //   salary: "",
+  //   keywords: "",
+
   // query params
-  const searchKey = searchParams.get("searchKey") || "";
-  const industry = searchParams.get("industry") || "";
-  const location = searchParams.get("location") || "";
-  const label = searchParams.get("label") || "";
+
   const category = searchParams.get("category") || "";
-  const type = searchParams.get("type") || "";
+  const jobType = searchParams.get("jobType") || "";
+  const jobLevel = searchParams.get("jobLevel") || "";
   const experience = searchParams.get("experience") || "";
   const salary = searchParams.get("salary") || "";
+  const keywords = searchParams.get("keywords") || "";
+
+  // const industry = searchParams.get("industry") || "";
+  // const location = searchParams.get("location") || "";
+  // const experience = searchParams.get("experience") || "";
 
   // State to manage form inputs
   const [filters, setFilters] = useState({
-    searchKey: searchKey,
-    industry: industry,
-    location: location,
-    label: label,
     category: category,
-    type: type,
+    jobType: jobType,
+    jobLevel: jobLevel,
     experience: experience,
     salary: salary,
+    keywords: keywords,
   });
 
   // Keep local state in sync with URL params
   useEffect(() => {
     setFilters({
-      searchKey: searchKey,
-      industry: industry,
-      location: location,
-      label: label,
       category: category,
-      type: type,
+      jobType: jobType,
+      jobLevel: jobLevel,
       experience: experience,
       salary: salary,
+      keywords: keywords,
     });
-  }, [
-    searchKey,
-    industry,
-    location,
-    label,
-    category,
-    type,
-    experience,
-    salary,
-  ]);
+  }, [category, jobType, jobLevel, experience, salary, keywords]);
 
   const handleFilterChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -74,14 +71,12 @@ const useJobFilter = () => {
     newParams.set("limit", limit.toString());
 
     // filters
-    if (filters.searchKey) newParams.set("searchKey", filters.searchKey);
-    if (filters.industry) newParams.set("industry", filters.industry);
-    if (filters.location) newParams.set("location", filters.location);
-    if (filters.label) newParams.set("label", filters.label);
     if (filters.category) newParams.set("category", filters.category);
-    if (filters.type) newParams.set("type", filters.type);
+    if (filters.jobType) newParams.set("jobType", filters.jobType);
+    if (filters.jobLevel) newParams.set("jobLevel", filters.jobLevel);
     if (filters.experience) newParams.set("experience", filters.experience);
     if (filters.salary) newParams.set("salary", filters.salary);
+    if (filters.keywords) newParams.set("keywords", filters.keywords);
 
     router.push(`?${newParams.toString()}`);
   };
@@ -96,15 +91,13 @@ const useJobFilter = () => {
     router.push(`?${currentParams.toString()}`);
   };
 
-  const baseQueryString = `searchKey=${encodeURIComponent(
-    searchKey
-  )}&industry=${encodeURIComponent(industry)}&location=${encodeURIComponent(
-    location
-  )}&label=${encodeURIComponent(label)}&category=${encodeURIComponent(
+  const baseQueryString = `category=${encodeURIComponent(
     category
-  )}&type=${encodeURIComponent(type)}&experience=${encodeURIComponent(
-    experience
-  )}&salary=${encodeURIComponent(salary)}`;
+  )}&jobType=${encodeURIComponent(jobType)}&jobLevel=${encodeURIComponent(
+    jobLevel
+  )}&experience=${encodeURIComponent(experience)}&salary=${encodeURIComponent(
+    salary
+  )}&keywords=${encodeURIComponent(keywords)}`;
 
   return {
     filters,

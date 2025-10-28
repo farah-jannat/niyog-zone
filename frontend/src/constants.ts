@@ -65,43 +65,43 @@ export const SalaryFilter = {
 
 export const jobLimit = "10";
 
-export const categories = [
-  "Software",
-  "Healthcare and Wellness ",
-  "Finance and Business",
-  "Manufacturing and Engineering",
-  "Education and Training",
-  "Construction and Infrastructure",
-  "Arts, Design, and Media",
-  "Hospitality and Tourism",
-];
+// export const categories = [
+//   "Software",
+//   "Healthcare and Wellness ",
+//   "Finance and Business",
+//   "Manufacturing and Engineering",
+//   "Education and Training",
+//   "Construction and Infrastructure",
+//   "Arts, Design, and Media",
+//   "Hospitality and Tourism",
+// ];
 
-export const jobTypes = [
-  "Full time",
-  "Part time",
-  "Onsite",
-  "Remote",
-  "Hybrid",
-  "Seasonal",
-  "Contract",
-];
+// export const jobTypes = [
+//   "Full time",
+//   "Part time",
+//   "Onsite",
+//   "Remote",
+//   "Hybrid",
+//   "Seasonal",
+//   "Contract",
+// ];
 
-export const jobLabels = [
-  "Junior",
-  "Mid-Level",
-  "Senior",
-  "Lead-Principal",
-  "Manager",
-];
+// export const jobLabels = [
+//   "Junior",
+//   "Mid-Level",
+//   "Senior",
+//   "Lead-Principal",
+//   "Manager",
+// ];
 
-export const jobExperiences = [
-  "1 year",
-  "3 year",
-  "4 year",
-  "5 year",
-  "10 year",
-];
-export const jobSalaries = ["30K", "50K", "60K", "100K", "250K"];
+// export const jobExperiences = [
+//   "1 year",
+//   "3 year",
+//   "4 year",
+//   "5 year",
+//   "10 year",
+// ];
+// export const jobSalaries = ["30K", "50K", "60K", "100K", "250K"];
 
 export const howItWorkSteps = [
   {
@@ -149,4 +149,55 @@ export const footerData = [
     heading: "FAQ",
     links: ["Account", "Deliveries", "Orders", "Payments"],
   },
+];
+
+// export const jobTypes = ["Full-time", "Part-time", "Contract", "Internship"];
+export const jobTypesSelect = [
+  { label: "Full-time", value: "Full-time" },
+  { label: "Part-time", value: "Part-time" },
+  { label: "Contract", value: "Contract" },
+  { label: "Internship", value: "Internship" },
+];
+// export const jobLevels = ["Junior", "Senior", "Mid"];
+
+export const jobLevels = [
+  { label: "Junior", value: "Junior" },
+  { label: "Senior", value: "Senior" },
+  { label: "Mid", value: "Mid" },
+];
+
+// export const experiences = ["2", "3", "3", "4", "5"];
+export const jobExperiences = [
+  { label: "1+ Years", value: "1" },
+  { label: "2+ Years", value: "2" },
+  { label: "3+ Years", value: "3" },
+  { label: "4+ Years", value: "4" },
+  { label: "5+ Years", value: "5" },
+  { label: "6+ Years", value: "6" },
+];
+
+// export const jobSalaries = ["$500/hr", "$1000/hr", "$1500/hr", "$2000/hr"];
+
+export const jobSalaries = [
+  { label: "$500/hr", value: 500 },
+  { label: "$1000/hr", value: 1000 },
+  { label: "$1500/hr", value: 1500 },
+  { label: "$2000/hr", value: 2000 },
+];
+
+export const jobCategories = [
+  { label: "Software", value: "Software" },
+  { label: "Healthcare and Wellness ", value: "Healthcare and Wellness " },
+  { label: "Finance and Business", value: "Finance and Business" },
+  {
+    label: "Manufacturing and Engineering",
+    value: "Manufacturing and Engineering",
+  },
+  { label: "Education and Training", value: "Education and Training" },
+  {
+    label: "Construction and Infrastructure",
+    value: "Construction and Infrastructure",
+  },
+  { label: "Arts, Design, and Media", value: "Arts, Design, and Media" },
+  { label: "Hospitality and Tourism", value: "Hospitality and Tourism" },
 ];

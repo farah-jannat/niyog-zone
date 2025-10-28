@@ -12,21 +12,26 @@ export const JobSchema = z.object({
     .nullable()
     .describe("List of job requirements."),
   salary: z.number().int().positive().describe("Job salary (integer)."),
-  experienceLevel: z
-    .number()
-    .int()
-    .min(0)
+  experience: z
+    .string()
+    .min(1)
     .describe("Required experience level (integer)."),
   location: z.string().min(1).describe("Job location."),
   jobType: z
     .string()
     .min(1)
     .describe("Type of job (e.g., full-time, part-time)."),
-  position: z
+
+  jobLevel: z
+    .string()
+    .min(1)
+    .describe("Level of job (e.g., full-time, part-time)."),
+
+  vacancy: z
     .number()
     .int()
     .min(0)
-    .describe("Position or slot count for the job (integer)."),
+    .describe("Vacancy or slot count for the job (integer)."),
   companyId: z
     .number()
     .int()
@@ -54,4 +59,3 @@ export const InsertJobSchema = JobSchema.omit({
 export const UpdateJobSchema = InsertJobSchema.partial();
 
 export type Job = z.infer<typeof JobSchema>;
-

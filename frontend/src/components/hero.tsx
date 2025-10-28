@@ -1,8 +1,7 @@
-"use client"
+"use client";
 
-import JobFilter from "@/features/job/components/job-filter";
+import JobSearchForm from "@/features/job/components/job-search-form";
 import useJobFilter from "@/features/job/hooks/use-job-filter";
-import React from "react";
 
 const HeroSection = () => {
   const { filters, handleFilterChange, applyFilters, clearFilters } =
@@ -15,14 +14,15 @@ const HeroSection = () => {
           Your <span className="text-[#A1DD5F]">Next</span> Career Awaits
         </h1>
         <p className="text-[#03050F] font-normal text-[16px] tracking-[0.64] max-w-[315px] leading-[24.95px]">
-          Explore job opportunities at the world's most innovative companies{" "}
+          Explore job opportunities at the world&apos;s most innovative
+          companies{" "}
         </p>
       </div>
 
-      <div className="mt-[68px] min-h-[344px] grid gap-6 lg:grid-cols-12 grid-row-2">
+      <div className="mt-[68px] min-h-[344px] grid gap-6 grid-cols-12 grid-row-2">
         {/* 1st box */}
-        <JobFilter
-          className="col-span-6 rounded-sm row-span-2"
+        <JobSearchForm
+          className="col-span-12 xl:col-span-6 rounded-sm row-span-2"
           filters={filters}
           handleFilterChange={handleFilterChange}
           applyFilters={applyFilters}
@@ -33,21 +33,21 @@ const HeroSection = () => {
         <ShowCounts
           total={10}
           title="Active Jobs"
-          className="col-span-3 row-span-1  rounded-sm "
+          className="col-span-6 xl:col-span-3 row-span-1  rounded-sm "
         />
 
         {/* 3rd box */}
         <ShowCounts
           total={1200}
           title="Startups"
-          className="col-span-3 row-span-1  rounded-sm "
+          className="col-span-6 xl:col-span-3 row-span-1  rounded-sm "
         />
 
         {/* 4th box */}
         <ShowCounts
           total={300}
           title="Talents"
-          className="col-span-6 row-span-1 rounded-sm "
+          className="col-span-12 xl:col-span-6 row-span-1 rounded-sm "
         />
       </div>
     </div>

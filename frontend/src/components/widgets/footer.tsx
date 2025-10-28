@@ -1,10 +1,4 @@
-import {
-  Facebook,
-  Github,
-  Instagram,
-  InstagramIcon,
-  Twitter,
-} from "lucide-react";
+import { Facebook, Github, Instagram, Twitter } from "lucide-react";
 import { Separator } from "@radix-ui/react-select";
 import React from "react";
 
@@ -75,7 +69,10 @@ const Footer = () => {
         </p>
         <div className="hidden sm:flex items-center gap-[8px]">
           {[1, 2, 3, 4, 5].map((item) => (
-            <div className="w-[24px] h-[24px] grid border border-[#6392D8]  place-items-center rounded-full bg-[#FFFFFF]">
+            <div
+              key={item}
+              className="w-[24px] h-[24px] grid border border-[#6392D8]  place-items-center rounded-full bg-[#FFFFFF]"
+            >
               <Twitter size={14} color="#6392D8" />
             </div>
           ))}

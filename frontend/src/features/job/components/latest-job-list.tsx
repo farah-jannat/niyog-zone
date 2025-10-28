@@ -1,13 +1,21 @@
+"use client";
+
 import JobCard from "@/features/job/components/job-card";
+import { useLatestJobsQuery } from "@/features/job/queries/use-latest-jobs.query";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const LatestJobList = () => {
-  //   const { allJobs } = useSelector((store) => store.job);
-  const allJobs = [];
-
-  //   console.log("all job here", allJobs);
   const router = useRouter();
+
+  // ** --- Queries ---
+  const { isLoading, data, error } = useLatestJobsQuery({
+    page: 1,
+    limit: 12,
+  });
+
+  if (isLoading) return <h1>loading</h1>;
+  if (error) return <h1>Error</h1>;
 
   return (
     <div className="mt-[68px]">
@@ -23,15 +31,15 @@ const LatestJobList = () => {
 
         <button
           onClick={() => router.push("/jobs")}
-          className=" bg-[#E8C092] text-[#03050F]  w-[89px] h-[33px]  rounded-lg text-[14px]"
+          className=" bg-[#E8C092] text-[#03050F]  w-[89px] h-[33px]  rounded-lg text-[14px] cursor-pointer"
         >
           Explore
         </button>
       </div>
 
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {allJobs?.length <= 0 && <span>No Job Available</span>}
-        {allJobs?.length > 0 && <JobCard key={job.id} job={job} />}
+        {data && data?.jobs?.length <= 0 && <span>No Job Available</span>}
+        {data && data?.jobs.map((job) => <JobCard key={job.id} job={job} />)}
       </div>
     </div>
   );
