@@ -9,19 +9,22 @@ import {
   integer,
   timestamp,
   uuid,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 
 // Job Table (Job.ts equivalent)
 export const jobTable = pgTable("jobs", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar("title", { length: 255 }).notNull(),
+  category: text("category").notNull().default("Software"),
   description: text("description").notNull(),
   requirements: text("requirements").array(),
   salary: integer("salary").notNull(),
-  experienceLevel: integer("experience_level").notNull(),
+  experience: text("experience").notNull(),
   location: text("location").notNull(),
   jobType: text("job_type").notNull(),
-  position: integer("position").notNull(),
+  jobLevel: text("job_level").notNull(),
+  vacancy: integer("vacancy").notNull(),
   companyId: uuid("company_id")
     .notNull()
     .references(() => companyTable.id, { onDelete: "cascade" }), // Foreign Key

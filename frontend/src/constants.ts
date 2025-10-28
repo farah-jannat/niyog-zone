@@ -28,7 +28,7 @@ export const CategoryFilter = {
   name: "category",
   categories: [
     "Software",
-    "Healthcare and Wellness ",
+    "Healthcare and Wellness",
     "Finance and Business",
     "Manufacturing and Engineering",
     "Education and Training",

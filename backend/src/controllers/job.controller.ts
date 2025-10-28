@@ -1,86 +1,115 @@
 import { db } from "@/db";
 import { jobTable } from "@/schemas";
 import { catchError } from "@/utils/catch-error.util";
-import { BadRequestError } from "@fvoid/shared-lib";
-import { count, desc } from "drizzle-orm";
+import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
+import { and, count, desc, eq, gte, ilike, or } from "drizzle-orm";
 import type { Request, Response } from "express";
 
-// export const getJobs = async (req: Request, res: Response) => {
-//   let { minPrice, maxPrice, deliveryTime, category, searchKey, page, limit } =
-//     req.query;
+export const getJobs = async (req: Request, res: Response) => {
+  let {
+    location,
+    jobLevel,
+    category,
+    jobType,
+    experience,
+    salary,
+    searchKey,
+    vacancy,
+    page,
+    limit,
+  } = req.query;
 
-//   const conditions = [];
+  const conditions = [];
 
-//   // Convert string query params to numbers where expected
-//   const parsedMinPrice =
-//     typeof minPrice === "string" ? parseInt(minPrice) : undefined;
-//   const parsedMaxPrice =
-//     typeof maxPrice === "string" ? parseInt(maxPrice) : undefined;
+  // Convert string query params to numbers where expected
+  const parsedSalary =
+    typeof salary === "string" ? parseInt(salary) : undefined;
 
-//   // Pagination parameters
-//   const parsedPage = typeof page === "string" ? parseInt(page, 10) : 1;
-//   const parsedLimit = typeof limit === "string" ? parseInt(limit, 10) : 10;
-//   const offset = (parsedPage - 1) * parsedLimit;
+  const parsedVacancy =
+    typeof vacancy === "string" ? parseInt(vacancy) : undefined;
 
-//   if (parsedMinPrice !== undefined && !isNaN(parsedMinPrice)) {
-//     conditions.push(gte(GigsTable.price, parsedMinPrice));
-//   }
+  // Pagination parameters
+  const parsedPage = typeof page === "string" ? parseInt(page, 10) : 1;
+  const parsedLimit = typeof limit === "string" ? parseInt(limit, 10) : 10;
+  const offset = (parsedPage - 1) * parsedLimit;
 
-//   if (parsedMaxPrice !== undefined && !isNaN(parsedMaxPrice)) {
-//     conditions.push(lte(GigsTable.price, parsedMaxPrice));
-//   }
+  if (parsedVacancy !== undefined && !isNaN(parsedVacancy)) {
+    conditions.push(gte(jobTable.vacancy, parsedVacancy));
+  }
 
-//   if (typeof deliveryTime === "string" && deliveryTime.length > 0) {
-//     conditions.push(eq(GigsTable.expectedDelivery, deliveryTime as string));
-//   }
+  // if (parsedSalary !== undefined && !isNaN(parsedSalary)) {
+  //   conditions.push(gte(jobTable.salary, parsedSalary));
+  // }
 
-//   if (typeof category === "string" && category.length > 0) {
-//     conditions.push(eq(GigsTable.category, category));
-//   }
+  // if (parsedMaxPrice !== undefined && !isNaN(parsedMaxPrice)) {
+  //   conditions.push(lte(GigsTable.price, parsedMaxPrice));
+  // }
 
-//   if (typeof searchKey === "string" && searchKey.length > 0) {
-//     conditions.push(
-//       or(
-//         ilike(GigsTable.category, `%${searchKey}%`),
-//         ilike(GigsTable.title, `%${searchKey}%`),
-//         ilike(GigsTable.description, `%${searchKey}%`)
-//       )
-//     );
-//   }
+  // if (typeof industry === "string" && industry.length > 0) {
+  //   conditions.push(eq(jobTable.jobType, deliveryTime as string));
+  // }
 
-//   // Define the 'where' clause once
-//   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+  if (typeof category === "string" && category.length > 0) {
+    conditions.push(eq(jobTable.category, category));
+  }
 
-//   // 1. Get total count of matching gigs (applying the same 'where' clause)
-//   const [totalCountResult] = await handleAsync(
-//     db
-//       .select({ count: count(GigsTable.id) })
-//       .from(GigsTable)
-//       .where(whereClause) // Apply the 'where' clause here
-//   );
+  if (typeof jobType === "string" && jobType.length > 0) {
+    conditions.push(eq(jobTable.jobType, jobType));
+  }
 
-//   const totalCount = totalCountResult?.count || 0;
+  if (typeof jobLevel === "string" && jobLevel.length > 0) {
+    conditions.push(eq(jobTable.jobLevel, jobLevel));
+  }
 
-//   // 2. Get paginated gigs (applying the same 'where' clause, then limit and offset)
-//   const gigs = await handleAsync(
-//     db
-//       .select()
-//       .from(GigsTable)
-//       .where(whereClause) // Apply the 'where' clause here
-//       .limit(parsedLimit)
-//       .offset(offset)
-//       // It's good practice to add an orderBy clause for consistent pagination
-//       // If no natural order, order by primary key (e.g., id)
-//       .orderBy(GigsTable.id)
-//   );
+  if (typeof location === "string" && location.length > 0) {
+    conditions.push(eq(jobTable.location, location));
+  }
 
-//   return res.status(200).json({
-//     data: gigs,
-//     totalCount: Number(totalCount), // Ensure totalCount is a number
-//     currentPage: parsedPage,
-//     limit: parsedLimit,
-//   });
-// };
+  if (typeof experience === "string" && experience.length > 0) {
+    conditions.push(eq(jobTable.experience, experience));
+  }
+
+  if (typeof searchKey === "string" && searchKey.length > 0) {
+    conditions.push(
+      or(
+        ilike(jobTable.category, `%${searchKey}%`),
+        ilike(jobTable.title, `%${searchKey}%`),
+        ilike(jobTable.description, `%${searchKey}%`)
+      )
+    );
+  }
+
+  // Define the 'where' clause once
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+  // 1. Get total count of matching gigs (applying the same 'where' clause)
+  const [totalCountResult] = await handleAsync(
+    db
+      .select({ count: count(jobTable.id) })
+      .from(jobTable)
+      .where(whereClause) // Apply the 'where' clause here
+  );
+
+  const totalCount = totalCountResult?.count || 0;
+
+  // 2. Get paginated gigs (applying the same 'where' clause, then limit and offset)
+  const gigs = await handleAsync(
+    db
+      .select()
+      .from(jobTable)
+      .where(whereClause)
+      .limit(parsedLimit)
+      .offset(offset)
+      .orderBy(jobTable.id)
+  );
+
+  return res.status(200).json({
+    data: gigs,
+    totalCount: Number(totalCount),
+    currentPage: parsedPage,
+    limit: parsedLimit,
+  });
+};
 
 export const getLatestJobs = async (req: Request, res: Response) => {
   let { page, limit } = req.query;

@@ -10,7 +10,6 @@ import { catchError } from "@/utils/catch-error.util";
 import { db } from "@/db";
 import {
   userTable,
-  userRoleEnum,
   applicationTable,
   jobTable,
   profileSkillTable,
@@ -45,7 +44,19 @@ const NUM_APPLICATIONS = 130;
 const NUM_PROFILE_SKILLS = 140;
 
 const jobTypes = ["Full-time", "Part-time", "Contract", "Internship"];
-const experienceLevels = [1, 2, 3, 4, 5]; // 1=Entry, 5=Senior
+const jobLevels = ["Junior", "Senior", "Mid"];
+const experiences = ["2", "2", "3", "4", "5"]; // 1=Entry, 5=Senior
+
+export const jobCategories = [
+  "Software",
+  "Healthcare and Wellness",
+  "Finance and Business",
+  "Manufacturing and Engineering",
+  "Education and Training",
+  "Construction and Infrastructure",
+  "Arts, Design, and Media",
+  "Hospitality and Tourism",
+];
 
 async function generateUsers() {
   const users = [];
@@ -166,11 +177,14 @@ function generateJobs(companyIds: string[], recruiterIds: string[]) {
         ],
         { min: 2, max: 4 }
       ),
+
+      category: faker.helpers.arrayElement(jobCategories),
       salary: faker.number.int({ min: 50000, max: 150000 }),
-      experienceLevel: faker.helpers.arrayElement(experienceLevels),
+      experience: faker.helpers.arrayElement(experiences),
       location: faker.location.city(),
       jobType: faker.helpers.arrayElement(jobTypes),
-      position: faker.number.int({ min: 1, max: 10 }),
+      jobLevel: faker.helpers.arrayElement(jobLevels),
+      vacancy: faker.number.int({ min: 1, max: 10 }),
       companyId: faker.helpers.arrayElement(companyIds),
       createdBy: faker.helpers.arrayElement(recruiterIds),
     });
