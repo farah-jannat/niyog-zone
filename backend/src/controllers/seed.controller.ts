@@ -1,66 +1,272 @@
-// ** Third party imports
+// ** --- Third party imports ---
 import type { Request, Response } from "express";
 import { faker } from "@faker-js/faker";
 
-// ** Utils
+// ** --- Utils ---
 import { hashPassword } from "@/utils/hashing.util";
-
-// ** DB
-import { db } from "@/db";
-import { userTable, userRoleEnum } from "@/schemas";
 import { catchError } from "@/utils/catch-error.util";
-import { ConnectionError } from "@fvoid/shared-lib";
 
-const seedUser = async (req: Request, res: Response) => {
-  const { count = "10" } = req.params;
-  const total = parseInt(count);
+// ** --- DB ---
+import { db } from "@/db";
+import {
+  userTable,
+  userRoleEnum,
+  applicationTable,
+  jobTable,
+  profileSkillTable,
+  companyTable,
+  profileTable,
+  skillTable,
+} from "@/schemas";
 
-  if (isNaN(total) || total <= 0) {
-    return res.status(400).json({ message: "Invalid count provided." });
+const uuidv4 = () => crypto.randomUUID();
+
+// --- UTILITY FUNCTIONS ---
+
+async function clearDatabase() {
+  console.log("--- Clearing Existing Data ---");
+  await db.delete(applicationTable);
+  await db.delete(jobTable);
+  await db.delete(profileSkillTable);
+  await db.delete(companyTable);
+  await db.delete(profileTable);
+  await db.delete(skillTable);
+  await db.delete(userTable);
+  console.log("--- Database Cleared ---");
+}
+
+// --- DATA GENERATION FUNCTIONS ---
+
+const NUM_STUDENTS = 110;
+const NUM_RECRUITERS = 105;
+const NUM_SKILLS = 120;
+const NUM_JOBS = 115;
+const NUM_APPLICATIONS = 130;
+const NUM_PROFILE_SKILLS = 140;
+
+const jobTypes = ["Full-time", "Part-time", "Contract", "Internship"];
+const experienceLevels = [1, 2, 3, 4, 5]; // 1=Entry, 5=Senior
+
+async function generateUsers() {
+  const users = [];
+
+  const password = await hashPassword("qwerty");
+
+  // Generate Students
+  for (let i = 0; i < NUM_STUDENTS; i++) {
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+    users.push({
+      id: uuidv4(),
+      fullName: `${firstName} ${lastName}`,
+      email: faker.internet.email({
+        firstName,
+        lastName,
+        provider: "student.edu",
+      }),
+      phoneNumber: faker.phone.number(),
+      password: password,
+      role: "student" as const,
+    });
   }
 
-  console.log("Removing existing users...");
-  const [deleteError] = await catchError(db.delete(userTable));
-
-  if (deleteError) throw new ConnectionError("Database Connection Error !!");
-
-  console.log("--- Existing users removed successfully ---");
-
-  const roles = userRoleEnum.enumValues;
-
-  for (let i = 0; i < total; i++) {
-    const authData = {
-      email: `seed${i + 1}@jobportal.com`,
+  // Generate Recruiters
+  for (let i = 0; i < NUM_RECRUITERS; i++) {
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
+    users.push({
+      id: uuidv4(),
+      fullName: `${firstName} ${lastName}`,
+      email: faker.internet.email({
+        firstName,
+        lastName,
+        provider: "recruiter.com",
+      }),
       phoneNumber: faker.phone.number(),
-      password: await hashPassword("qwerty"),
-      fullName: faker.person.fullName(),
-      role: faker.helpers.arrayElement(roles),
-    };
+      password: password,
+      role: "recruiter" as const,
+    });
+  }
 
-    const [createError, result] = await catchError(
-      db
-        .insert(userTable)
-        .values(authData)
-        .returning({
-          id: userTable.id,
-          email: userTable.email,
-          role: userTable.role,
-        })
-        .then((res) => res[0])
+  return users;
+}
+
+function generateCompanies(recruiterIds: string[]) {
+  // const uniqueCompanyName = faker.helpers.unique(faker.company.name);
+
+  return recruiterIds.map((userId, i) => ({
+    id: uuidv4(),
+    userId,
+    name: `${faker.company.name()}${i}`,
+    // name: uniqueCompanyName(),
+    category: faker.commerce.department(),
+    description: faker.lorem.paragraph(),
+    website: faker.internet.url(),
+    location: faker.location.city(),
+    logo: faker.image.url({ width: 64, height: 64 }),
+  }));
+}
+
+interface SkillInterface {
+  name: string;
+  years: string;
+}
+
+function generateProfiles(studentIds: string[]) {
+  return studentIds.map((userId) => {
+    // Generate an in-place skills array (as per the schema's jsonb field)
+    const skillsArray: SkillInterface[] = faker.helpers.arrayElements(
+      [
+        { name: "JavaScript", years: "3" },
+        { name: "TypeScript", years: "2" },
+        { name: "React", years: "4" },
+        { name: "Tailwind CSS", years: "1" },
+        { name: "PostgreSQL", years: "3" },
+      ],
+      { min: 1, max: 4 }
     );
 
-    if (createError) {
-      console.error(`Error creating user ${i + 1}:`, createError);
-    } else {
-      console.log(
-        `User ${i + 1} created: ID=${result?.id}, Email=${
-          result?.email
-        }, Role=${result?.role}`
-      );
-    }
+    return {
+      id: uuidv4(),
+      userId,
+      bio: faker.person.bio(),
+      profilePhoto: faker.image.avatar(),
+      skills: skillsArray,
+    };
+  });
+}
+
+function generateSkills() {
+  const skills = new Set<string>();
+  while (skills.size < NUM_SKILLS) {
+    skills.add(faker.word.adjective() + " " + faker.word.noun());
   }
 
-  return res.json({ message: `${total} seed users created successfully.` });
-};
+  return Array.from(skills).map((skillName) => ({
+    id: uuidv4(),
+    name: skillName,
+    years: faker.helpers.arrayElement(["1-2", "2-4", "4-6", "6+"]),
+  }));
+}
 
-export default seedUser;
+function generateJobs(companyIds: string[], recruiterIds: string[]) {
+  const jobs = [];
+  for (let i = 0; i < NUM_JOBS; i++) {
+    jobs.push({
+      id: uuidv4(),
+      title: faker.person.jobTitle(),
+      description: faker.lorem.paragraphs(2),
+      requirements: faker.helpers.arrayElements(
+        [
+          "Must have 3+ years experience with React.",
+          "Proficiency in SQL and relational databases.",
+          "Strong communication skills.",
+          "Experience with CI/CD pipelines.",
+          "Bachelor's degree in Computer Science or related field.",
+        ],
+        { min: 2, max: 4 }
+      ),
+      salary: faker.number.int({ min: 50000, max: 150000 }),
+      experienceLevel: faker.helpers.arrayElement(experienceLevels),
+      location: faker.location.city(),
+      jobType: faker.helpers.arrayElement(jobTypes),
+      position: faker.number.int({ min: 1, max: 10 }),
+      companyId: faker.helpers.arrayElement(companyIds),
+      createdBy: faker.helpers.arrayElement(recruiterIds),
+    });
+  }
+  return jobs;
+}
+
+function generateApplications(studentIds: string[], jobIds: string[]) {
+  const applications = [];
+  for (let i = 0; i < NUM_APPLICATIONS; i++) {
+    applications.push({
+      id: uuidv4(),
+      jobId: faker.helpers.arrayElement(jobIds),
+      applicantId: faker.helpers.arrayElement(studentIds),
+      status: faker.helpers.arrayElement([
+        "pending",
+        "accepted",
+        "rejected",
+      ]) as "pending" | "accepted" | "rejected",
+    });
+  }
+  return applications;
+}
+
+function generateProfileSkills(studentIds: string[], skillIds: string[]) {
+  const links = new Set<string>();
+  const profileSkills = [];
+
+  while (links.size < NUM_PROFILE_SKILLS) {
+    const profileId = faker.helpers.arrayElement(studentIds);
+    const skillId = faker.helpers.arrayElement(skillIds);
+    const linkKey = `${profileId}-${skillId}`;
+
+    if (!links.has(linkKey)) {
+      links.add(linkKey);
+      profileSkills.push({
+        id: uuidv4(),
+        profileId,
+        skillId,
+      });
+    }
+  }
+  return profileSkills;
+}
+
+export const seed = async (req: Request, res: Response) => {
+  // 2. Clear existing data
+  await clearDatabase();
+
+  console.log("Starting Data Seeding! 🚀");
+
+  // 3. Generate and Insert Users
+  const users = await generateUsers();
+  const studentUsers = users.filter((u) => u.role === "student");
+  const recruiterUsers = users.filter((u) => u.role === "recruiter");
+
+  console.log(`--- Inserting ${users.length} users ---`);
+  await db.insert(userTable).values(users);
+
+  const studentIds = studentUsers.map((u) => u.id);
+  const recruiterIds = recruiterUsers.map((u) => u.id);
+
+  // 4. Generate and Insert Companies & Profiles
+  const companies = generateCompanies(recruiterIds);
+  const profiles = generateProfiles(studentIds);
+
+  console.log(`--- Inserting ${companies.length} companies ---`);
+  await db.insert(companyTable).values(companies);
+
+  console.log(`--- Inserting ${profiles.length} profiles ---`);
+  await db.insert(profileTable).values(profiles);
+
+  // 5. Generate and Insert Skills
+  const skills = generateSkills();
+  console.log(`--- Inserting ${skills.length} unique skills ---`);
+  await db.insert(skillTable).values(skills);
+  const skillIds = skills.map((s) => s.id);
+
+  // 6. Generate and Insert Jobs
+  const companyIds = companies.map((c) => c.id);
+  const jobs = generateJobs(companyIds, recruiterIds);
+  console.log(`--- Inserting ${jobs.length} jobs ---`);
+  await db.insert(jobTable).values(jobs);
+  const jobIds = jobs.map((j) => j.id);
+
+  // 7. Generate and Insert Applications
+  const applications = generateApplications(studentIds, jobIds);
+  console.log(`--- Inserting ${applications.length} applications ---`);
+  await db.insert(applicationTable).values(applications);
+
+  // 8. Generate and Insert Profile Skills (many-to-many)
+  const profileSkills = generateProfileSkills(studentIds, skillIds);
+  console.log(`--- Inserting ${profileSkills.length} profile-skill links ---`);
+  await db.insert(profileSkillTable).values(profileSkills);
+
+  console.log("Seeding complete! ✨");
+
+  return res.send("Seeding complete! ✨");
+};
