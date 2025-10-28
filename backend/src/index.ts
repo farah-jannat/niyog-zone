@@ -51,11 +51,20 @@ class AuthService {
   }
 
   private set_security_middlewares() {
+    // this.app.use(
+    //   cors({
+    //     origin: "*",
+    //     credentials: true,
+    //     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    //   })
+    // );
+
     this.app.use(
       cors({
-        origin: "*",
+        origin: config.CLIENT_URL,
         credentials: true,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
       })
     );
 
@@ -67,7 +76,7 @@ class AuthService {
     const BASE_PATH = "/api/v1";
     this.app.use(healthRouter);
     this.app.use(BASE_PATH, userRouter);
-    this.app.use(BASE_PATH, jobRouter);
+    this.app.use(`${BASE_PATH}/jobs`, jobRouter);
     this.app.use(`${BASE_PATH}/seed`, seedRouter);
     this.app.use(BASE_PATH, companyRouter);
     this.app.use(BASE_PATH, applicationRouter);
