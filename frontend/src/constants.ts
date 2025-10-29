@@ -63,7 +63,7 @@ export const SalaryFilter = {
   salarys: ["30K", "50K", "60K", "100K", "250K"],
 };
 
-export const jobLimit = "10";
+export const jobLimit = "12";
 
 // export const categories = [
 //   "Software",

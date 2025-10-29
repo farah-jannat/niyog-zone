@@ -1,13 +1,18 @@
 import { JobSearchFormValues } from "@/features/job/schemas/search.schema";
 
-const jobSearchForm = (): JobSearchFormValues => {
+const jobSearchForm = (obj?: JobSearchFormValues): JobSearchFormValues => {
+  const inputObj = obj ?? {};
+
+  const { category, experience, jobLevel, jobType, keywords, salary } =
+    inputObj;
+
   const form: JobSearchFormValues = {
-    category: "",
-    jobType: "",
-    jobLevel: "",
-    experience: "",
-    salary: "",
-    keywords: "", // Assuming 'keywords' maps to the 'title' field in your schema
+    category: category ?? "",
+    jobType: jobType ?? "",
+    jobLevel: jobLevel ?? "",
+    experience: experience ?? "",
+    salary: salary ?? "",
+    keywords: keywords ?? "",
   };
 
   return form;

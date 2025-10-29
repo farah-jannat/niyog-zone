@@ -2,6 +2,18 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { jobLimit } from "@/constants";
+import jobSearchForm from "@/features/job/default-form-values/job-search.form";
+import { useForm } from "react-hook-form";
+import { JobSearchFormValues } from "@/features/job/schemas/search.schema";
+
+export interface Filter {
+  category: string;
+  jobType: string;
+  jobLevel: string;
+  experience: string;
+  salary: string;
+  keywords: string;
+}
 
 const useJobFilter = () => {
   const router = useRouter();
@@ -10,13 +22,6 @@ const useJobFilter = () => {
   // pagination query
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const limit = parseInt(searchParams.get("limit") || jobLimit, 10);
-
-  //   category: "",
-  //   jobType: "",
-  //   jobLevel: "",
-  //   experience: "",
-  //   salary: "",
-  //   keywords: "",
 
   // query params
 
@@ -27,59 +32,23 @@ const useJobFilter = () => {
   const salary = searchParams.get("salary") || "";
   const keywords = searchParams.get("keywords") || "";
 
-  // const industry = searchParams.get("industry") || "";
-  // const location = searchParams.get("location") || "";
-  // const experience = searchParams.get("experience") || "";
-
-  // State to manage form inputs
-  const [filters, setFilters] = useState({
-    category: category,
-    jobType: jobType,
-    jobLevel: jobLevel,
-    experience: experience,
-    salary: salary,
-    keywords: keywords,
-  });
-
-  // Keep local state in sync with URL params
-  useEffect(() => {
-    setFilters({
-      category: category,
-      jobType: jobType,
-      jobLevel: jobLevel,
-      experience: experience,
-      salary: salary,
-      keywords: keywords,
+  const { control, register, handleSubmit, reset } =
+    useForm<JobSearchFormValues>({
+      defaultValues: jobSearchForm(),
+      mode: "onChange",
     });
-  }, [category, jobType, jobLevel, experience, salary, keywords]);
 
-  const handleFilterChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-  };
-
-  const applyFilters = () => {
-    const newParams = new URLSearchParams();
-
-    // pagination
-    newParams.set("page", "1");
-    newParams.set("limit", limit.toString());
-
-    // filters
-    if (filters.category) newParams.set("category", filters.category);
-    if (filters.jobType) newParams.set("jobType", filters.jobType);
-    if (filters.jobLevel) newParams.set("jobLevel", filters.jobLevel);
-    if (filters.experience) newParams.set("experience", filters.experience);
-    if (filters.salary) newParams.set("salary", filters.salary);
-    if (filters.keywords) newParams.set("keywords", filters.keywords);
-
-    router.push(`?${newParams.toString()}`);
-  };
+  useEffect(() => {
+    const obj = {
+      category,
+      jobType,
+      jobLevel,
+      experience,
+      salary,
+      keywords,
+    };
+    reset(jobSearchForm(obj));
+  }, [category, jobType, jobLevel, experience, salary, keywords, reset]);
 
   const clearFilters = () => {
     router.push("?");
@@ -100,14 +69,14 @@ const useJobFilter = () => {
   )}&keywords=${encodeURIComponent(keywords)}`;
 
   return {
-    filters,
-    handleFilterChange,
-    applyFilters,
     clearFilters,
     handlePageChange,
     currentPage,
     limit,
     baseQueryString,
+    control,
+    handleSubmit,
+    register,
   };
 };
 

@@ -8,7 +8,7 @@ export interface JobsResponse {
 
 export const getJobs = async (q: string, page: number, limit: number) => {
   const response = await job__axios.get<JobsResponse>(
-    `/search?${q}&page=${page}&limit=${limit}`
+    `?${q}&page=${page}&limit=${limit}`
   );
   return response.data;
 };

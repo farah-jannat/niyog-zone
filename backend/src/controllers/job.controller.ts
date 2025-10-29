@@ -42,7 +42,7 @@ export const getJobs = async (req: Request, res: Response) => {
   // }
 
   // if (parsedMaxPrice !== undefined && !isNaN(parsedMaxPrice)) {
-  //   conditions.push(lte(GigsTable.price, parsedMaxPrice));
+  //   conditions.push(lte(jobTable.price, parsedMaxPrice));
   // }
 
   // if (typeof industry === "string" && industry.length > 0) {
@@ -82,7 +82,7 @@ export const getJobs = async (req: Request, res: Response) => {
   // Define the 'where' clause once
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-  // 1. Get total count of matching gigs (applying the same 'where' clause)
+  // 1. Get total count of matching jobs (applying the same 'where' clause)
   const [totalCountResult] = await handleAsync(
     db
       .select({ count: count(jobTable.id) })
@@ -92,8 +92,8 @@ export const getJobs = async (req: Request, res: Response) => {
 
   const totalCount = totalCountResult?.count || 0;
 
-  // 2. Get paginated gigs (applying the same 'where' clause, then limit and offset)
-  const gigs = await handleAsync(
+  // 2. Get paginated jobs (applying the same 'where' clause, then limit and offset)
+  const jobs = await handleAsync(
     db
       .select()
       .from(jobTable)
@@ -104,7 +104,7 @@ export const getJobs = async (req: Request, res: Response) => {
   );
 
   return res.status(200).json({
-    data: gigs,
+    jobs: jobs,
     totalCount: Number(totalCount),
     currentPage: parsedPage,
     limit: parsedLimit,
@@ -123,7 +123,7 @@ export const getLatestJobs = async (req: Request, res: Response) => {
   const parsedLimit = typeof limit === "string" ? parseInt(limit, 10) : 10;
   const offset = (parsedPage - 1) * parsedLimit;
 
-  // 1. Get total count of matching gigs (applying the same 'where' clause)
+  // 1. Get total count of matching jobs (applying the same 'where' clause)
   const [errTotal, totalCountResult] = await catchError(
     db.select({ count: count(jobTable.id) }).from(jobTable)
   );
@@ -132,7 +132,7 @@ export const getLatestJobs = async (req: Request, res: Response) => {
 
   const totalCount = totalCountResult ? totalCountResult[0]?.count : 0;
 
-  // 2. Get paginated gigs (applying the same 'where' clause, then limit and offset)
+  // 2. Get paginated jobs (applying the same 'where' clause, then limit and offset)
   const [errJobs, jobs] = await catchError(
     db
       .select()
