@@ -40,19 +40,19 @@ const Jobs = () => {
   if (isLoading) return <h1>loading</h1>;
   if (error) return <h1>Error</h1>;
 
-  console.log("data is ", data?.jobs);
+  // console.log("data is ", data?.jobs);
 
   return (
     <>
       <Container className={"bg-[#F5F6FD]"}>
         <div className="min-h-[292px] card-gradient-bluish rounded-bl-[8px] rounded-br-[8px] flex items-center justify-center">
-          <h1 className="font-lato font-bold text-[56px]  text-[#35373F]">
+          <h1 className="font-lato font-bold text-[56px]  text-[#35373F] text-center">
             200<span className="text-[#A1DD5F]">M</span> Jobs Available
           </h1>
         </div>
       </Container>
 
-      <Container className={"bg-[#F5F6FD] pt-[72px]"}>
+      <Container className={"bg-[#F5F6FD] pt-[18px]"}>
         <JobFilterForm
           handleSubmit={handleSubmit}
           control={control}
@@ -61,7 +61,7 @@ const Jobs = () => {
         />
       </Container>
 
-      <Container className="py-[72px] bg-[#F5F6FD]">
+      <Container className="pt-[18px] pb-[72px] bg-[#F5F6FD]">
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
           {data && data?.jobs?.length <= 0 && <span>No Job Available</span>}
           {data && data?.jobs.map((job) => <JobCard key={job.id} job={job} />)}
