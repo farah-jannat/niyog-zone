@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { jobTable } from "@/schemas";
 import { catchError } from "@/utils/catch-error.util";
-import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
+import { BadRequestError, handleAsync, NotFoundError } from "@fvoid/shared-lib";
 import { and, count, desc, eq, gte, ilike, or } from "drizzle-orm";
 import type { Request, Response } from "express";
 
@@ -150,6 +150,25 @@ export const getLatestJobs = async (req: Request, res: Response) => {
     currentPage: parsedPage,
     limit: parsedLimit,
   });
+};
+
+export const getJob = async (req: Request, res: Response) => {
+  let { creator, company } = req.query;
+  const { id } = req.params;
+
+  const [jobError, job] = await catchError(
+    db.query.jobTable.findFirst({
+      where: eq(jobTable.id, id!),
+      with: {
+        creator: creator ? true : undefined,
+        company: company ? true : undefined,
+      },
+    })
+  );
+
+  if (jobError) throw new NotFoundError();
+
+  return res.json(job);
 };
 
 // import { Job } from "../models/job.model.js";
