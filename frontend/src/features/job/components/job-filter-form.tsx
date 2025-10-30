@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { Filter } from "@/features/job/hooks/use-job-filter";
 import FilterInput from "@/features/job/components/filter-form/filter-input";
 import FilterSelect from "@/features/job/components/filter-form/filter-select";
+import { FunnelIcon, FunnelXIcon } from "lucide-react";
 
 interface Props {
   control: Control<JobSearchFormValues>;
@@ -71,67 +72,79 @@ const JobFilterForm = (props: Props) => {
 
   return (
     <form
-      className={`flex flex-wrap gap-3 items-center justify-center py-2.5`}
+      className={`flex flex-wrap gap-3 items-center justify-center py-2.5 bg-[#FEFEFF] rounded-[4px] p-3`}
       onSubmit={handleSubmit((data) => onSubmit(data))}
     >
       <FilterSelect
         label="Category"
-        placeholder="Select a Category"
+        placeholder="Category"
         options={jobCategories}
         control={control}
         name="category"
-        className="col-span-6"
+        className="grow"
       />
 
       <FilterSelect
         label="Job Type"
-        placeholder="Select job type"
+        placeholder="Job Type"
         options={jobTypesSelect}
         control={control}
         name="jobType"
-        className="col-span-6"
       />
 
       <FilterSelect
         label="Job Level"
-        placeholder="Select job level"
+        placeholder="Job Level"
         options={jobLevels}
         name="jobLevel"
         control={control}
-        className="col-span-6"
       />
 
       <FilterInput
         label="Keywords"
-        placeholder="Search Job Keywords..."
+        placeholder="Search"
         register={register("keywords")}
-        className="col-span-12"
+        className="grow-2"
       />
 
       <FilterSelect
         label="Experience"
-        placeholder="Select Experience"
+        placeholder="Experience"
         options={jobExperiences}
         name="experience"
         control={control}
-        className="col-span-6"
+        className="grow"
       />
 
       <FilterSelect
         label="Salary"
-        placeholder="Select Salary"
+        placeholder="Expected Salary"
         options={jobSalaries}
         name="salary"
         control={control}
-        className="col-span-12"
+        className="grow"
       />
 
       <button
-        // onClick={searchJobHandler}
-        className="h-14 text-[16px] col-span-12 font-medium text-[#F5F6FD] bg-[#287992] rounded-xl"
+        className="h-14 text-[16px] col-span-12 font-medium text-[#F5F6FD] bg-[#287992] rounded-[4px] flex items-center justify-center gap-x-0.5 px-3.5  py-3 cursor-pointer"
+        type="submit"
       >
-        Search Result
+        <FunnelIcon size={18} strokeWidth={1} />
+        Apply
       </button>
+
+      <button
+        className="h-14 text-[16px] col-span-12 font-medium text-[#03050F] bg-[#E8C092] rounded-[4px] flex items-center justify-center gap-x-0.5 px-3.5  py-3 cursor-pointer"
+        type="button"
+        onClick={clearFilters}
+      >
+        <FunnelXIcon size={18} strokeWidth={1} />
+        Reset
+      </button>
+
+      {/*<button className="h-14 text-[16px] col-span-12 font-medium text-[#F5F6FD] bg-[#287992] rounded-">
+        Clear
+      </button>*/}
     </form>
   );
 };

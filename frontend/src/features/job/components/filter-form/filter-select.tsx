@@ -34,7 +34,7 @@ const FilterSelect: React.FC<Props> = (props: Props) => {
   const { label, options, name, placeholder, className = "", control } = props;
 
   return (
-    <div className="w-fulll">
+    <div className={`${className}`}>
       <Controller
         name={name}
         control={control}
@@ -44,7 +44,7 @@ const FilterSelect: React.FC<Props> = (props: Props) => {
             value={field.value ? String(field.value) : ""}
             // value={field.value || ""}
           >
-            <SelectTrigger className="w-full h-auto! px-3.5 py-3 shadow-none outline-none! bg-[#F5F6FD] text-[16px] !ring-0! ring-offset-0! focus:ring-0! focus:ring-offset-0! focus:outline-none rounded-[4px] border-none">
+            <SelectTrigger className="w-full h-auto! px-3.5 py-3 shadow-none outline-none! bg-[#F5F6FD] text-[16px] !ring-0! ring-offset-0! focus:ring-0! focus:ring-offset-0! focus:outline-none rounded-[4px] border-none text-[#35373F]! data-[state=open]:text-blue-500">
               <SelectValue
                 placeholder={placeholder}
                 className="focus:outline-none outline-none text-[16px]"

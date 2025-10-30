@@ -19,7 +19,7 @@ const FilterInput = (props: Props) => {
       type={type}
       {...register}
       placeholder={placeholder}
-      className={`bg-[#F5F6FD] font-normal text-[16px] tracking-[-0.64] placeholder:text-[#68696F] outline-none w-fulll rounded-[4px] px-3.5 py-3 border-none`}
+      className={`bg-[#F5F6FD] font-normal text-[16px] tracking-[-0.64] placeholder:text-[#35373F] outline-none w-fulll rounded-[4px] px-3.5 py-3 border-none ${className}`}
     />
   );
 };
