@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Job } from "@/features/job/schemas/job.schema";
 import { useRouter } from "next/navigation";
+import { formatDistanceToNow, parseISO } from "date-fns";
 
 interface Props {
   job: Job;
@@ -30,7 +31,8 @@ const JobCard = (props: Props) => {
   return (
     <div
       className="flex flex-col cursor-pointer items-start gap-3.5 p-[24px]  w-full bg-[#FEFEFF] rounded-[8px] "
-      onClick={() => router.push(`/description/${job?.id}`)}
+      // onClick={() => router.push(`/description/${job?.id}`)}
+      onClick={() => router.push(`/jobs/${job?.id}`)}
     >
       <div className="flex items-center gap-[12px]">
         <div className="w-[34px] h-[34px] bg-[#B60E0E87] border border-black rounded-full">
@@ -44,7 +46,7 @@ const JobCard = (props: Props) => {
         <div className="flex  items-center gap-[13px]">
           <p className="text-[14px] text-[#35373F]">Posted</p>
           <div className="flex gap-1 items-center text-[10px] text-[#68696F]">
-            <p>5 days ago</p>
+            {formatDistanceToNow(job.createdAt)} ago
           </div>
         </div>
 
@@ -61,7 +63,17 @@ const JobCard = (props: Props) => {
           variant="outline"
         >
           {/* {job?.experienceLevel} years */}
-          Senior
+          {/* Senior */}
+          {job.jobLevel}
+        </Badge>
+        <Badge
+          className={
+            "text-[#35373F] text-[12px] font-medium rounded-[4px] border-none  bg-[#ECF8DF] p-[8px] capitalize "
+          }
+          variant="outline"
+        >
+          {/* Remote */}
+          {["remote", "onsite"][Math.random() < 0.5 ? 0 : 1]}
         </Badge>
         <Badge
           className={
@@ -70,16 +82,8 @@ const JobCard = (props: Props) => {
           variant="outline"
         >
           {/* position {job?.position} */}
-          Remote
-        </Badge>
-        <Badge
-          className={
-            "text-[#35373F] text-[12px] font-medium rounded-[4px] border-none  bg-[#ECF8DF] p-[8px] capitalize "
-          }
-          variant="outline"
-        >
-          {/* position {job?.position} */}
-          PartTime
+          {/* PartTime */}
+          {job.jobType}
         </Badge>
       </div>
 
@@ -96,11 +100,14 @@ const JobCard = (props: Props) => {
             <span className=" text-Apple_Green">/hr</span>
           </h1>
           <p className="text-[14px] text-[#68696F] font-normal">
-            San Francisco, CA
+            {job.location}
           </p>
         </div>
 
-        <button className=" bg-[#5394A8] hover:bg-[#488091] text-[#F5F6FD]  w-[89px] h-[33px]  rounded-lg text-[14px] cursor-pointer">
+        <button
+          className=" bg-[#5394A8] hover:bg-[#488091] text-[#F5F6FD]  w-[89px] h-[33px]  rounded-lg text-[14px] cursor-pointer"
+          onClick={() => router.push(`/jobs/${job?.id}`)}
+        >
           View
         </button>
       </div>
