@@ -6,9 +6,9 @@ const Footer = () => {
   return (
     <div className="card-gradient-brown px-[60px] flex flex-col items-startl gap-[15px] pt-[47px] pb-[15px]">
       <div className=" flex items-start justify-between gap-[50px] w-full">
-        <div className="grid gap-[35px] ">
+        <div className="grid gap-5 ">
           <div>
-            <h1 className="text-[18px]  ">
+            <h1 className="text-[28px]">
               <span className="text-[#287992]">Niyog</span>
               <span className="text-[#E8C092]">Zone</span>
             </h1>

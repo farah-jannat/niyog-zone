@@ -67,7 +67,7 @@ const ShowCounts = (props: {
     >
       <h1 className="font-bold text-[32px] text-Black">
         {total}
-        <span className="text-Apple_Green">M</span>
+        <span className="text-[#A1DD5F]">M</span>
       </h1>
       <p>{title}</p>
     </div>
