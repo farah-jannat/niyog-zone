@@ -52,7 +52,7 @@ const Jobs = () => {
         </div>
       </Container>
 
-      <Container className={"bg-[#F5F6FD] pt-[18px]"}>
+      <Container className={"bg-[#F5F6FD] pt-5"}>
         <JobFilterForm
           handleSubmit={handleSubmit}
           control={control}
@@ -61,14 +61,14 @@ const Jobs = () => {
         />
       </Container>
 
-      <Container className="pt-[18px] pb-[72px] bg-[#F5F6FD]">
+      <Container className="pt-5 pb-[72px] bg-[#F5F6FD]">
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
           {data && data?.jobs?.length <= 0 && <span>No Job Available</span>}
           {data && data?.jobs.map((job) => <JobCard key={job.id} job={job} />)}
         </div>
       </Container>
 
-      <Container className="mt-[72px]">
+      <Container className=" bg-[#F5F6FD] pb-16">
         <Pagination
           paginationRange={paginationRange}
           currentPage={currentPage}

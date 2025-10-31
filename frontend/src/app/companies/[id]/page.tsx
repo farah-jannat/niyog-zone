@@ -27,7 +27,7 @@ const CompanyDetails = () => {
 
   return (
     <div>
-      <Container className="bg-[#F5F6FD]">
+      <Container className="bg-[#F5F6FD] pt-20">
         <CompanyBio company={company} />
       </Container>
 

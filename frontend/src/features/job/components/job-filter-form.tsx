@@ -126,7 +126,7 @@ const JobFilterForm = (props: Props) => {
       />
 
       <button
-        className="h-14 text-[16px] col-span-12 font-medium text-[#F5F6FD] bg-[#287992] rounded-[4px] flex items-center justify-center gap-x-0.5 px-3.5  py-3 cursor-pointer"
+        className="text-[16px] col-span-12 font-medium text-[#F5F6FD] bg-[#287992] rounded-[4px] flex items-center justify-center gap-x-0.5 px-3.5  py-3 cursor-pointer"
         type="submit"
       >
         <FunnelIcon size={18} strokeWidth={1} />
@@ -134,7 +134,7 @@ const JobFilterForm = (props: Props) => {
       </button>
 
       <button
-        className="h-14 text-[16px] col-span-12 font-medium text-[#03050F] bg-[#E8C092] rounded-[4px] flex items-center justify-center gap-x-0.5 px-3.5  py-3 cursor-pointer"
+        className="text-[16px] col-span-12 font-medium text-[#03050F] bg-[#E8C092] rounded-[4px] flex items-center justify-center gap-x-0.5 px-3.5  py-3 cursor-pointer"
         type="button"
         onClick={clearFilters}
       >

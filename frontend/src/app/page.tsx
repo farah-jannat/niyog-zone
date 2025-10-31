@@ -2,7 +2,6 @@
 import Container from "@/components/container";
 import HeroSection from "@/components/hero";
 import HowItWorks from "@/components/how-it-works";
-import Footer from "@/components/widgets/footer";
 import JobList from "@/features/job/components/job-list";
 import { useLatestJobsQuery } from "@/features/job/queries/use-latest-jobs.query";
 
@@ -13,12 +12,12 @@ export default function Page() {
   });
 
   return (
-    <div className="bg-[#F5F6FD] ">
+    <>
       <Container className={"bg-gradient"}>
         <HeroSection />
       </Container>
 
-      <Container>
+      <Container className="bg-[#F5F6FD] pt-12 pb-16">
         <JobList
           subHeading="Top Jobs You Can Apply Right Now"
           heading="Latest Jobs"
@@ -28,11 +27,9 @@ export default function Page() {
         />
       </Container>
 
-      <Container className={"bg-[#FBFBFE]"}>
+      <Container className={"bg-[#FBFBFE] pt-12 pb-16"}>
         <HowItWorks />
       </Container>
-
-      <Footer />
-    </div>
+    </>
   );
 }

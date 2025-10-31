@@ -1,12 +1,9 @@
 import Container from "@/components/container";
-import Navbar from "@/components/shared/Navbar";
 import Link from "next/link";
 
 const LoginPage = () => {
   return (
     <div className="bg-[#F5F6FD]">
-      <Navbar />
-
       <Container className=" bg-[#FEFEFF]">
         <div className="grid xl:grid-cols-2 gap-20 min-h-[725px] items-center  my-[68px] pt-2 pl-2 pb-2">
           <div className="hidden  xl:flex flex-col items-center h-full justify-center  gap-[22px] text-[#35373F] text-[16px] rounded-xl card-gradient-bluish bg-[#EAF2F4]">
@@ -108,11 +105,10 @@ const LoginPage = () => {
                   Login
                 </Link>
               </span> */}
-            </form>{" "}
+            </form>
           </div>
         </div>
       </Container>
-      <Footer />
     </div>
   );
 };
