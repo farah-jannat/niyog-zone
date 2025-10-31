@@ -6,6 +6,7 @@ export const JobSchema = z.object({
     .uuid()
     .describe("Unique identifier for the job, auto-generated UUID."),
   title: z.string().max(255).min(1).describe("Job title."),
+  category: z.string().min(1).describe("job category."),
   description: z.string().min(1).describe("Detailed job description."),
   requirements: z
     .array(z.string())

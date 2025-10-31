@@ -5,11 +5,15 @@ import { jobMenus } from "@/constants";
 import JobCompany from "@/features/job/components/job-company";
 import JobDescription from "@/features/job/components/job-descrption";
 import JobDetailsTab from "@/features/job/components/job-details-tab";
+import JobList from "@/features/job/components/job-list";
 import JobTagList from "@/features/job/components/job-tag-list";
 import SimilarJobList from "@/features/job/components/similar-job-list";
+import { useJobQuery } from "@/features/job/queries/use-job.query";
+import { useSimilarJobsQuery } from "@/features/job/queries/use-similar-jobs.query";
 import useTabs from "@/hooks/useTabs";
 import { formatDistanceToNow } from "date-fns";
 import { TimerResetIcon, Users } from "lucide-react";
+import { useParams } from "next/navigation";
 
 const job = {
   id: "12c7c781-5c19-49fc-88c6-f3f2d13aded3",
@@ -34,9 +38,32 @@ const job = {
 };
 
 const JobDetails = () => {
+  const { id } = useParams<{ id: string }>();
+
   const { currentTabIndex, handleTabIndex, tabs } = useTabs({
     tabs: jobMenus,
   });
+
+  // ** --- Queries ---
+
+  const { isLoading, data: job, error } = useJobQuery(id);
+
+  // console.log("data is ", job?.category);
+
+  const {
+    isLoading: isSimilarLoading,
+    data: similarJobs,
+    error: similarError,
+  } = useSimilarJobsQuery({
+    category: job?.category,
+    q: "",
+    page: 1,
+    limit: 6,
+  });
+
+  if (isLoading) return null;
+
+  // return (<div>hello</div>)
 
   return (
     <div className="bg-[#F5F6FD]">
@@ -49,7 +76,7 @@ const JobDetails = () => {
             </div>
             <div className="col-span-6 flex items-center gap-2">
               <TimerResetIcon size={24} />
-              <span>Posted {formatDistanceToNow(job.createdAt)} ago</span>
+              <span>Posted {formatDistanceToNow(job?.createdAt)} ago</span>
             </div>
           </div>
 
@@ -95,13 +122,23 @@ const JobDetails = () => {
 
       <Container className="pt-7">
         {currentTabIndex === 0 && (
-          <JobDescription description={job.description} />
+          <JobDescription description={job?.description} />
         )}
         {currentTabIndex === 1 && <JobCompany />}
       </Container>
 
-      <Container>
+      {/* <Container>
         <SimilarJobList />
+      </Container> */}
+
+      <Container>
+        <JobList
+          subHeading="Similar Jobs You Can Apply Right Now"
+          heading="Similar Jobs"
+          isLoading={isSimilarLoading}
+          error={similarError}
+          jobs={similarJobs?.jobs}
+        />
       </Container>
     </div>
   );

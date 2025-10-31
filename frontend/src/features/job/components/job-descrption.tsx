@@ -1,7 +1,7 @@
 import { Job } from "@/features/job/schemas/job.schema";
 
 interface Props {
-  description: Job["description"];
+  description: Job["description"] | undefined;
 }
 
 const JobDescription = (props: Props) => {

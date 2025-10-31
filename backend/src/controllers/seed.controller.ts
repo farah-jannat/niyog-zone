@@ -133,8 +133,12 @@ function generateProfiles(studentIds: string[]) {
         { name: "React", years: "4" },
         { name: "Tailwind CSS", years: "1" },
         { name: "PostgreSQL", years: "3" },
+        { name: "Next", years: "4" },
+        { name: "Node", years: "5" },
+        { name: "Redux", years: "3" },
+        { name: "Graphql", years: "2" },
       ],
-      { min: 1, max: 4 }
+      { min: 6, max: 6 }
     );
 
     return {
