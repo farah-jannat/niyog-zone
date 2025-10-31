@@ -75,11 +75,11 @@ class AuthService {
     this.app.use(morgan("dev"));
     const BASE_PATH = "/api/v1";
     this.app.use(healthRouter);
-    this.app.use(BASE_PATH, userRouter);
+    this.app.use(`${BASE_PATH}/users`, userRouter);
     this.app.use(`${BASE_PATH}/jobs`, jobRouter);
     this.app.use(`${BASE_PATH}/seed`, seedRouter);
-    this.app.use(BASE_PATH, companyRouter);
-    this.app.use(BASE_PATH, applicationRouter);
+    this.app.use(`${BASE_PATH}/companies`, companyRouter);
+    this.app.use(`${BASE_PATH}/applications`, applicationRouter);
   }
 
   private set_error_middlewares() {

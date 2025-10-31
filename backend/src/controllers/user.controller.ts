@@ -1,6 +1,11 @@
 import jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
-import { BadRequestError, handleAsync } from "@fvoid/shared-lib";
+import {
+  BadRequestError,
+  ConnectionError,
+  handleAsync,
+  NotFoundError,
+} from "@fvoid/shared-lib";
 import type {
   LoginInput,
   RegisterInput,
@@ -12,6 +17,7 @@ import { eq } from "drizzle-orm";
 import { hashPassword, verifyPassword } from "@/utils/hashing.util";
 import { config } from "@/config";
 import { updateImage } from "@/utils/update-image-url.util";
+import { catchError } from "@/utils/catch-error.util";
 
 export const register = async (req: Request, res: Response) => {
   const formData = req.body as RegisterInput;
@@ -131,4 +137,61 @@ export const updateProfile = async (req: Request, res: Response) => {
     .returning();
 
   return res.json(updatedProfile);
+};
+
+// export const getUser = async (req: Request, res: Response) => {
+//   let { application } = req.query;
+//   const { id } = req.params;
+
+//   if (!id) throw new BadRequestError("Id not found!");
+
+//   const [userError, user] = await catchError(
+//     db.query.userTable.findFirst({
+//       where: eq(userTable.id, id),
+//       with: {
+//         // creator: creator ? true : undefined,
+//         // company: company ? true : undefined,
+//         applications: application ? true : undefined,
+//       },
+//     })
+//   );
+
+//   if (userError) throw new ConnectionError("Database Error!");
+//   if (!user) throw new NotFoundError();
+
+//   return res.json(user);
+// };
+
+export const getUser = async (req: Request, res: Response) => {
+  let { application, profile, job } = req.query;
+
+  const { id } = req.params;
+
+  if (!id) throw new BadRequestError("Id not found!");
+
+  // --- Drizzle Query Logic ---
+  const [userError, user] = await catchError(
+    db.query.userTable.findFirst({
+      where: eq(userTable.id, id),
+
+      with: {
+        applications: application
+          ? {
+              with: {
+                job: job ? true : undefined,
+              },
+              // orderBy: (applications, { desc }) => [
+              //   desc(applications.createdAt),
+              // ],
+            }
+          : undefined,
+        profile: profile ? true : undefined,
+      },
+    })
+  );
+
+  if (userError) throw new ConnectionError("Database Error!");
+  if (!user) throw new NotFoundError();
+
+  return res.json(user);
 };

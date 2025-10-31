@@ -144,7 +144,7 @@ const JobSearchForm = (props: Props) => {
 
       <button
         // onClick={searchJobHandler}
-        className="h-14 text-[16px] col-span-12 font-medium text-[#F5F6FD] bg-[#287992] rounded-xl"
+        className="h-14 text-[16px] col-span-12 font-medium text-[#F5F6FD] bg-[#287992] rounded-xl cursor-pointer"
       >
         Search Result
       </button>

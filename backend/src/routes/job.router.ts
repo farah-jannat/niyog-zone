@@ -1,11 +1,18 @@
 import { Router } from "express";
-import { getJob, getJobs, getLatestJobs } from "@/controllers/job.controller";
+import {
+  getCompanyJobs,
+  getJob,
+  getJobs,
+  getLatestJobs,
+} from "@/controllers/job.controller";
 import isAuthenticated from "@/middlewares/isAuthenticated";
 
 const jobRouter = Router();
 
 // jobRouter.post("/jobs", isAuthenticated, postJob);
 jobRouter.get("/latest", getLatestJobs);
+jobRouter.get("/company/:id", getCompanyJobs);
+jobRouter.get("/similar", getCompanyJobs);
 jobRouter.get("/:id", getJob);
 jobRouter.get("/", getJobs);
 // jobRouter.get("/jobs/:id", getJobById);

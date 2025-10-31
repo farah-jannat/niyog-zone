@@ -1,9 +1,4 @@
-import {
-  getCompany,
-  getCompanyById,
-  registerCompany,
-  updateCompany,
-} from "@/controllers/company.controller";
+import { getCompany } from "@/controllers/company.controller";
 import isAuthenticated from "@/middlewares/isAuthenticated";
 import { Router } from "express";
 
@@ -13,5 +8,7 @@ const companyRouter = Router();
 // companyRouter.get("/companies", isAuthenticated, getCompany);
 // companyRouter.get("/companies/:id", isAuthenticated, getCompanyById);
 // companyRouter.put("/companies/:id", isAuthenticated, updateCompany);
+
+companyRouter.get("/:id", getCompany);
 
 export default companyRouter;

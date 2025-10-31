@@ -1,7 +1,12 @@
 import { db } from "@/db";
 import { jobTable } from "@/schemas";
 import { catchError } from "@/utils/catch-error.util";
-import { BadRequestError, handleAsync, NotFoundError } from "@fvoid/shared-lib";
+import {
+  BadRequestError,
+  ConnectionError,
+  handleAsync,
+  NotFoundError,
+} from "@fvoid/shared-lib";
 import { and, count, desc, eq, gte, ilike, or } from "drizzle-orm";
 import type { Request, Response } from "express";
 
@@ -156,9 +161,11 @@ export const getJob = async (req: Request, res: Response) => {
   let { creator, company } = req.query;
   const { id } = req.params;
 
+  if (!id) throw new BadRequestError("Id not found!");
+
   const [jobError, job] = await catchError(
     db.query.jobTable.findFirst({
-      where: eq(jobTable.id, id!),
+      where: eq(jobTable.id, id),
       with: {
         creator: creator ? true : undefined,
         company: company ? true : undefined,
@@ -166,9 +173,227 @@ export const getJob = async (req: Request, res: Response) => {
     })
   );
 
-  if (jobError) throw new NotFoundError();
+  if (jobError) throw new ConnectionError("Database Error !");
+  if (!job) throw new NotFoundError();
 
   return res.json(job);
+};
+
+export const getCompanyJobs = async (req: Request, res: Response) => {
+  let {
+    location,
+    jobLevel,
+    category,
+    jobType,
+    experience,
+    salary,
+    searchKey,
+    vacancy,
+    page,
+    limit,
+  } = req.query;
+
+  const { id } = req.params;
+
+  if (!id) throw new BadRequestError("Id not found!");
+
+  const conditions = [];
+
+  conditions.push(eq(jobTable.companyId, id));
+  // Convert string query params to numbers where expected
+  const parsedSalary =
+    typeof salary === "string" ? parseInt(salary) : undefined;
+
+  const parsedVacancy =
+    typeof vacancy === "string" ? parseInt(vacancy) : undefined;
+
+  // Pagination parameters
+  const parsedPage = typeof page === "string" ? parseInt(page, 10) : 1;
+  const parsedLimit = typeof limit === "string" ? parseInt(limit, 10) : 10;
+  const offset = (parsedPage - 1) * parsedLimit;
+
+  if (parsedVacancy !== undefined && !isNaN(parsedVacancy)) {
+    conditions.push(gte(jobTable.vacancy, parsedVacancy));
+  }
+
+  // if (parsedSalary !== undefined && !isNaN(parsedSalary)) {
+  //   conditions.push(gte(jobTable.salary, parsedSalary));
+  // }
+
+  // if (parsedMaxPrice !== undefined && !isNaN(parsedMaxPrice)) {
+  //   conditions.push(lte(jobTable.price, parsedMaxPrice));
+  // }
+
+  // if (typeof industry === "string" && industry.length > 0) {
+  //   conditions.push(eq(jobTable.jobType, deliveryTime as string));
+  // }
+
+  if (typeof category === "string" && category.length > 0) {
+    conditions.push(eq(jobTable.category, category));
+  }
+
+  if (typeof jobType === "string" && jobType.length > 0) {
+    conditions.push(eq(jobTable.jobType, jobType));
+  }
+
+  if (typeof jobLevel === "string" && jobLevel.length > 0) {
+    conditions.push(eq(jobTable.jobLevel, jobLevel));
+  }
+
+  if (typeof location === "string" && location.length > 0) {
+    conditions.push(eq(jobTable.location, location));
+  }
+
+  if (typeof experience === "string" && experience.length > 0) {
+    conditions.push(eq(jobTable.experience, experience));
+  }
+
+  if (typeof searchKey === "string" && searchKey.length > 0) {
+    conditions.push(
+      or(
+        ilike(jobTable.category, `%${searchKey}%`),
+        ilike(jobTable.title, `%${searchKey}%`),
+        ilike(jobTable.description, `%${searchKey}%`)
+      )
+    );
+  }
+
+  // Define the 'where' clause once
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+  // 1. Get total count of matching jobs (applying the same 'where' clause)
+  const [totalCountResult] = await handleAsync(
+    db
+      .select({ count: count(jobTable.id) })
+      .from(jobTable)
+      .where(whereClause) // Apply the 'where' clause here
+  );
+
+  const totalCount = totalCountResult?.count || 0;
+
+  // 2. Get paginated jobs (applying the same 'where' clause, then limit and offset)
+  const jobs = await handleAsync(
+    db
+      .select()
+      .from(jobTable)
+      .where(whereClause)
+      .limit(parsedLimit)
+      .offset(offset)
+      .orderBy(jobTable.id)
+  );
+
+  return res.status(200).json({
+    jobs: jobs,
+    totalCount: Number(totalCount),
+    currentPage: parsedPage,
+    limit: parsedLimit,
+  });
+};
+
+export const getSimilarJobs = async (req: Request, res: Response) => {
+  let {
+    location,
+    jobLevel,
+    jobType,
+    experience,
+    salary,
+    searchKey,
+    vacancy,
+    page,
+    limit,
+  } = req.query;
+
+  const { category } = req.params;
+
+  if (!category) throw new BadRequestError("Category is not found!");
+
+  const conditions = [];
+
+  conditions.push(eq(jobTable.category, category));
+  // Convert string query params to numbers where expected
+  const parsedSalary =
+    typeof salary === "string" ? parseInt(salary) : undefined;
+
+  const parsedVacancy =
+    typeof vacancy === "string" ? parseInt(vacancy) : undefined;
+
+  // Pagination parameters
+  const parsedPage = typeof page === "string" ? parseInt(page, 10) : 1;
+  const parsedLimit = typeof limit === "string" ? parseInt(limit, 10) : 10;
+  const offset = (parsedPage - 1) * parsedLimit;
+
+  if (parsedVacancy !== undefined && !isNaN(parsedVacancy)) {
+    conditions.push(gte(jobTable.vacancy, parsedVacancy));
+  }
+
+  // if (parsedSalary !== undefined && !isNaN(parsedSalary)) {
+  //   conditions.push(gte(jobTable.salary, parsedSalary));
+  // }
+
+  // if (parsedMaxPrice !== undefined && !isNaN(parsedMaxPrice)) {
+  //   conditions.push(lte(jobTable.price, parsedMaxPrice));
+  // }
+
+  // if (typeof industry === "string" && industry.length > 0) {
+  //   conditions.push(eq(jobTable.jobType, deliveryTime as string));
+  // }
+
+  if (typeof jobType === "string" && jobType.length > 0) {
+    conditions.push(eq(jobTable.jobType, jobType));
+  }
+
+  if (typeof jobLevel === "string" && jobLevel.length > 0) {
+    conditions.push(eq(jobTable.jobLevel, jobLevel));
+  }
+
+  if (typeof location === "string" && location.length > 0) {
+    conditions.push(eq(jobTable.location, location));
+  }
+
+  if (typeof experience === "string" && experience.length > 0) {
+    conditions.push(eq(jobTable.experience, experience));
+  }
+
+  if (typeof searchKey === "string" && searchKey.length > 0) {
+    conditions.push(
+      or(
+        ilike(jobTable.category, `%${searchKey}%`),
+        ilike(jobTable.title, `%${searchKey}%`),
+        ilike(jobTable.description, `%${searchKey}%`)
+      )
+    );
+  }
+
+  // Define the 'where' clause once
+  const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+  // 1. Get total count of matching jobs (applying the same 'where' clause)
+  const [totalCountResult] = await handleAsync(
+    db
+      .select({ count: count(jobTable.id) })
+      .from(jobTable)
+      .where(whereClause) // Apply the 'where' clause here
+  );
+
+  const totalCount = totalCountResult?.count || 0;
+
+  // 2. Get paginated jobs (applying the same 'where' clause, then limit and offset)
+  const jobs = await handleAsync(
+    db
+      .select()
+      .from(jobTable)
+      .where(whereClause)
+      .limit(parsedLimit)
+      .offset(offset)
+      .orderBy(jobTable.id)
+  );
+
+  return res.status(200).json({
+    jobs: jobs,
+    totalCount: Number(totalCount),
+    currentPage: parsedPage,
+    limit: parsedLimit,
+  });
 };
 
 // import { Job } from "../models/job.model.js";
