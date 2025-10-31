@@ -56,3 +56,16 @@ export const getRecruiterJobs = async (
   // );
   return response.data;
 };
+
+export const getComapanyJobs = async (
+  id: string,
+  q: string,
+  page: number,
+  limit: number
+) => {
+  const response = await job__axios.get<JobsResponse>(
+    `/company/${id}?${q}&page=${page}&limit=${limit}`
+  );
+
+  return response.data;
+};

@@ -16,3 +16,4 @@ export const apiService = (serviceRelativePath: string): AxiosInstance => {
 export const auth__axios = apiService("/auth");
 export const user__axios = apiService("/users");
 export const job__axios = apiService("/jobs");
+export const company__axios = apiService("/companies");

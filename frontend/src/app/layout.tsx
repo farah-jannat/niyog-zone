@@ -3,6 +3,8 @@ import { Lato } from "next/font/google";
 import ReactQueryProvider from "@/providers/react-query-provider";
 
 import "./globals.css";
+import Container from "@/components/container";
+import Footer from "@/components/widgets/footer";
 
 // Define the font variable
 const lato = Lato({
@@ -26,7 +28,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lato.variable}  font-lato  antialiased`}>
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <ReactQueryProvider>
+          {children}
+
+          {/* <Container className="mt-[60px] bg-white"> */}
+            <Footer />
+          {/* </Container> */}
+        </ReactQueryProvider>
       </body>
     </html>
   );
