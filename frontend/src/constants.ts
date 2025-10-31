@@ -22,6 +22,15 @@ export const jobMenus = [
   },
 ];
 
+export const recruiterMenus = [
+  {
+    title: "Job",
+  },
+  {
+    title: "Company",
+  },
+];
+
 const populerSearches = ["Designer", "Mid", "Developer", "Senior Developer"];
 
 export const CategoryFilter = {

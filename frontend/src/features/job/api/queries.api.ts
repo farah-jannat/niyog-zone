@@ -38,3 +38,21 @@ export const getSimilarJobs = async (
 
   return response.data;
 };
+
+export const getRecruiterJobs = async (
+  id: string,
+  q: string,
+  page: number,
+  limit: number
+) => {
+  const response = await job__axios.get<JobsResponse>(
+    `/recruiter/${id}?${q}&page=${page}&limit=${limit}`
+  );
+
+  // const response = await job__axios.get<JobsResponse>(
+  //   q
+  //     ? `/recruiter/${id}?${q}&page=${page}&limit=${limit}`
+  //     : `/recruiter/${id}?page=${page}&limit=${limit}`
+  // );
+  return response.data;
+};
