@@ -14,7 +14,7 @@ const HowItWorks = () => {
             className="bg-[#EAF2F4] grid gap-[70px] rounded-[8px] p-[18px] relative overflow-hidden z-0"
             key={i}
           >
-            <div className="bg-[#A1DD5F] h-[45px] w-[45px] rounded-[4px] grid place-items-center font-lato font-medium text-[24px] text-white">
+            <div className="bg-[#A1DD5F] h-[45px] w-[45px] rounded-[8px] grid place-items-center font-lato font-medium text-[24px] text-[#03050F]">
               {i + 1}
             </div>
 

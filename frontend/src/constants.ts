@@ -114,9 +114,9 @@ export const jobLimit = "12";
 
 export const howItWorkSteps = [
   {
-    heading: "Create a Gig",
+    heading: "Create a Job",
     subheading:
-      "Sign up for free, set up your Gig, and offer your work to our global audience.",
+      "Sign up for free, set up your Job, and offer your work to our global audience.",
   },
   {
     heading: "Deliver great work",
