@@ -16,8 +16,13 @@ import {
   RegisterSchemaType,
 } from "@/features/auth/schemas/register.schema";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useRegister } from "@/features/auth/mutations/use-register.mutation";
 
 const RegisterForm = () => {
+  // ** --- mutations ---
+  const { mutate: register, isPending } = useRegister();
+
+  // ** --- forms ---
   const { control, handleSubmit } = useForm<RegisterSchemaType>({
     defaultValues: {
       email: "",
@@ -44,7 +49,8 @@ const RegisterForm = () => {
 
       <form
         className="w-full text-[#03050F] text-[16px] grid gap-[34px]"
-        onSubmit={handleSubmit((data) => console.log("... data is ", data))}
+        // onSubmit={handleSubmit((data) => console.log("... data is ", data))}
+        onSubmit={handleSubmit((data) => register(data))}
       >
         {/* --- Email --- */}
         <div className="grid gap-2">
@@ -215,7 +221,7 @@ const RegisterForm = () => {
           type="submit"
           className="font-medium w-max font-lato text-[16px] px-10 py-2.5 h-auto! bg-[#287992] text-[#F5F6FD] capitalize"
         >
-          {true ? "Please wait..." : "Sign In"}
+          {isPending ? "Please wait..." : "Register"}
         </Button>
       </form>
     </div>

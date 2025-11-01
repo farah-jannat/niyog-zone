@@ -1,3 +1,4 @@
+import { User } from "@/features/user/schemas/user.schema";
 import { z } from "zod";
 
 export const loginSchema = z.object({
@@ -12,3 +13,9 @@ export const loginSchema = z.object({
 });
 
 export type LoginSchemaType = z.infer<typeof loginSchema>;
+
+export interface LoginApi {
+  message: string;
+  user: User;
+  token: string;
+}

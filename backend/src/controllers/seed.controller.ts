@@ -70,11 +70,12 @@ async function generateUsers() {
     users.push({
       id: uuidv4(),
       fullName: `${firstName} ${lastName}`,
-      email: faker.internet.email({
-        firstName,
-        lastName,
-        provider: "student.edu",
-      }),
+      // email: faker.internet.email({
+      //   firstName,
+      //   lastName,
+      //   provider: "student.edu",
+      // }),
+      email: `candidate${i}@gmail.com`,
       phoneNumber: faker.phone.number(),
       password: password,
       role: "student" as const,
@@ -88,11 +89,12 @@ async function generateUsers() {
     users.push({
       id: uuidv4(),
       fullName: `${firstName} ${lastName}`,
-      email: faker.internet.email({
-        firstName,
-        lastName,
-        provider: "recruiter.com",
-      }),
+      // email: faker.internet.email({
+      //   firstName,
+      //   lastName,
+      //   provider: "recruiter.com",
+      // }),
+      email: `recruiter${i}@gmail.com`,
       phoneNumber: faker.phone.number(),
       password: password,
       role: "recruiter" as const,

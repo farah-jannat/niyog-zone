@@ -1,9 +1,9 @@
 import { getUser } from "@/controllers/user.controller";
 import { Router } from "express";
 
-const userRouter = Router();
+const profileRouter = Router();
 
-userRouter.get("/:id", getUser);
+// profileRouter.get("/:id", getUser);
 // userRouter.put("/profile", isAuthenticated, updateProfile);
 
-export default userRouter;
+export default profileRouter;

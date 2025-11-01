@@ -15,8 +15,13 @@ import {
   FieldError,
   FieldLabel,
 } from "@/components/ui/field";
+import { useLogin } from "@/features/auth/mutations/use-login.mutation";
 
 const LoginForm = () => {
+  // ** --- mutations ---
+  const { mutate: login, isPending } = useLogin();
+
+  // ** --- forms ---
   const { control, handleSubmit } = useForm<LoginSchemaType>({
     defaultValues: {
       email: "",
@@ -40,7 +45,8 @@ const LoginForm = () => {
 
       <form
         className="w-full text-[#03050F] text-[16px] grid  gap-[34px]"
-        onSubmit={handleSubmit((data) => console.log("... data is ", data))}
+        // onSubmit={handleSubmit((data) => console.log("... data is ", data))}
+        onSubmit={handleSubmit((data) => login(data))}
       >
         <div className="grid gap-2">
           <Controller
@@ -94,7 +100,7 @@ const LoginForm = () => {
           type="submit"
           className="font-medium w-max font-lato text-[16px] px-10 py-2.5 h-auto! bg-[#287992] text-[#F5F6FD] capitalize"
         >
-          {true ? "Please wait..." : "Sign In"}
+          {isPending ? "Please wait..." : "Login"}
         </Button>
       </form>
     </div>

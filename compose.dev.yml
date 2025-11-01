@@ -49,6 +49,7 @@ services:
       - API_KEY=${NIYOG_ZONE_API_KEY}
       - API_SECRET=${NIYOG_ZONE_API_SECRET}
       - DATABASE_URL=${NIYOG_ZONE_DB_URL}
+      - JWT_TOKEN=${NIYOG_JWT_TOKEN}
     volumes:
       - ./backend:/home/app
       - /home/app/node_modules

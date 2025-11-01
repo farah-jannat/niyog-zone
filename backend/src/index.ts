@@ -9,6 +9,7 @@ import {
   NotFoundError,
   verifyGatewayToken,
 } from "@fvoid/shared-lib";
+import cookieSession from "cookie-session";
 
 // ** Local Imports
 import { config } from "@/config";
@@ -18,6 +19,8 @@ import jobRouter from "@/routes/job.router";
 import companyRouter from "@/routes/company.router";
 import applicationRouter from "@/routes/application.router";
 import seedRouter from "@/routes/seed.router";
+import authRouter from "@/routes/auth.router";
+import profileRouter from "@/routes/profile.router";
 
 // ** Define Auth Service
 
@@ -51,14 +54,16 @@ class AuthService {
   }
 
   private set_security_middlewares() {
-    // this.app.use(
-    //   cors({
-    //     origin: "*",
-    //     credentials: true,
-    //     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    //   })
-    // );
-
+    this.app.set("trust proxy", 1);
+    this.app.use(
+      cookieSession({
+        name: "session",
+        keys: [config.SECRET_KEY_ONE],
+        maxAge: 24 * 7 * 3600 * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      })
+    );
     this.app.use(
       cors({
         origin: config.CLIENT_URL,
@@ -75,9 +80,11 @@ class AuthService {
     this.app.use(morgan("dev"));
     const BASE_PATH = "/api/v1";
     this.app.use(healthRouter);
-    this.app.use(`${BASE_PATH}/users`, userRouter);
-    this.app.use(`${BASE_PATH}/jobs`, jobRouter);
+    this.app.use(`${BASE_PATH}/auth`, authRouter);
     this.app.use(`${BASE_PATH}/seed`, seedRouter);
+    this.app.use(`${BASE_PATH}/users`, userRouter);
+    this.app.use(`${BASE_PATH}/profiles`, profileRouter);
+    this.app.use(`${BASE_PATH}/jobs`, jobRouter);
     this.app.use(`${BASE_PATH}/companies`, companyRouter);
     this.app.use(`${BASE_PATH}/applications`, applicationRouter);
   }
