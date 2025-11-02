@@ -75,8 +75,6 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const formData = req.body as LoginInput;
 
-  console.log("=========================================== ", formData);
-
   // Find isUser & throw error if !isUser
   const isUser = await handleAsync(
     db
@@ -118,7 +116,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   req.session = null;
-  return res.json({ message: "Logout successful", user: {} });
+  return res.json({ message: "Logout successful", user: null });
 };
 
 export const getAuthUser = async (req: Request, res: Response) => {

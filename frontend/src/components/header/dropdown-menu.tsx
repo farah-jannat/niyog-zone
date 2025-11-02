@@ -6,6 +6,7 @@ interface Props {
   Icon: LucideIcon;
   title: string;
   onClick?: () => void;
+  // onClick?: (...args: any[]) => any;
   link?: string;
 }
 
@@ -17,8 +18,8 @@ const DropdownMenu = (props: Props) => {
   return (
     <div
       onClick={() => {
-        link && router.push(link);
-        onClick && onClick();
+        if (link) router.push(link);
+        if (onClick) onClick();
       }}
       className={`flex flex-row gap-x-[10px] cursor-pointer ${
         isBtn && "px-[8px] py-[4px] bg-[#CDC0A8] rounded-[4px]"

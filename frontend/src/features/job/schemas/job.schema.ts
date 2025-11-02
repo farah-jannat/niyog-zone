@@ -34,9 +34,7 @@ export const JobSchema = z.object({
     .min(0)
     .describe("Vacancy or slot count for the job (integer)."),
   companyId: z
-    .number()
-    .int()
-    .positive()
+    .string()
     .describe("ID of the company offering the job (Foreign Key)."),
   createdBy: z
     .number()

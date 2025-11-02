@@ -103,9 +103,6 @@ const JobDetails = () => {
           </div>
 
           <Button
-            // onClick={isApplied ? null : applyJobHandler}
-
-            // onClick={}
             type="submit"
             className={`rounded-md px-4 py-2   text-[#03050F] ${
               isApplied
@@ -119,19 +116,6 @@ const JobDetails = () => {
 
             {isApplicationCreating && "Applying..."}
           </Button>
-
-          {/* {!authUser && (
-            <Button
-              onClick={() => navigate("/login")}
-              className={`rounded-md px-4 py-2   text-[#03050F] ${
-                isApplied
-                  ? "bg-gray-600 text-white cursor-not-allowed"
-                  : "bg-[#E8C092] hover:bg-[#cfac83]"
-              }`}
-            >
-              {isApplied ? "Already Applied" : "Apply Now "}
-            </Button>
-          )} */}
         </form>
       </Container>
 
@@ -151,7 +135,7 @@ const JobDetails = () => {
         {currentTabIndex === 0 && (
           <JobDescription description={job?.description} />
         )}
-        {currentTabIndex === 1 && <JobCompany />}
+        {currentTabIndex === 1 && <JobCompany companyId={job?.companyId} />}
       </Container>
 
       <Container className="pt-16 pb-16">

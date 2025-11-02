@@ -15,3 +15,8 @@ export const register = async (data: RegisterSchemaType) => {
   const response = await auth__axios.post<LoginApi>(`/register`, data);
   return response.data;
 };
+
+export const logout = async () => {
+  const response = await auth__axios.post<LoginApi>(`/logout`);
+  return response.data;
+};

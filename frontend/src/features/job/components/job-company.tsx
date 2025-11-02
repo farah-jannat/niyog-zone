@@ -1,30 +1,31 @@
+import { useCompanyQuery } from "@/features/company/queries/use-company.query";
 import { useRouter } from "next/navigation";
 
-const JobCompany = () => {
+interface Props {
+  companyId?: string;
+}
+
+const JobCompany = (props: Props) => {
+  // ** --- props ---
+  const { companyId } = props;
+
+  // ** --- router ---
   const router = useRouter();
 
-  const company = {
-    id: "0162bbb1-f36e-4f85-b8e4-9b1324005dcd",
-    user_id: "8df95153-439a-431b-b216-746b094f9f59",
-    name: "Frami LLC75",
-    category: "Beauty",
-    description:
-      "Advoco cursim suspendo totus. Sponte sui cumque voluntarius theatrum verecundia deficio dapifer. Consequatur vinitor clam sint spes cum minus colligo adeo et.",
-    website: "https://impassioned-puritan.info",
-    location: "Arelyland",
-    logo: "https://picsum.photos/seed/ML0G4W/64/64",
-    created_at: "2025-10-30 14:43:16.925482",
-    updated_at: "2025-10-30 14:43:16.925482",
-  };
+  // ** --- queires ---
+  const { isLoading: isCompanyLoading, data: company } =
+    useCompanyQuery(companyId);
+
+  if (isCompanyLoading) return null;
 
   return (
-    <div
-      onClick={() => {
-        router.push(`/companyProfile/${company?.id}`);
-      }}
-      className=" bg-[#FFFFFF] py-[38px] px-6"
-    >
-      <div className="flex items-start gap-4">
+    <div className=" bg-[#FFFFFF] py-[38px] px-6">
+      <div
+        className="flex items-start gap-4 cursor-pointer"
+        onClick={() => {
+          router.push(`/companies/${company?.id}`);
+        }}
+      >
         <img
           src={company?.logo}
           alt=""

@@ -15,14 +15,15 @@ const navs = [
 ];
 
 const HeaderNavs = (props: Props) => {
-  // ** --- Props ---
+  // ** --- props ---
   const { className } = props;
 
-  // ** --- Stores ---
+  // ** --- stores ---
   const { authUser } = useAuthStore();
-  //   const authUser = {};
 
   const router = useRouter();
+
+  console.log("auth user is ", authUser);
 
   return (
     <>
@@ -37,13 +38,6 @@ const HeaderNavs = (props: Props) => {
               >
                 {nav.title}
               </p>
-
-              {/* {i === 0 && (
-                <BecomeASeller
-                  className="order-0 md:order-1"
-                  onClick={() => setActiveItem(1)}
-                />
-              )} */}
             </Fragment>
           ))}
 
