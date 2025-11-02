@@ -25,4 +25,6 @@ RUN bun install --production
 COPY --from=builder /build/dist ./dist
 COPY --from=builder /build/drizzle/migrations ./migrations
 
+EXPOSE 4001
+
 CMD [ "bun", "run", "start" ]
