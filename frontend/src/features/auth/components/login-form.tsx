@@ -37,7 +37,7 @@ const LoginForm = () => {
         <h2 className="text-[40px]">Sign In</h2>
         <p>
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="text-[#A1DD5F] underline">
+          <Link href="/register" className="text-[#A1DD5F] underline">
             sign up
           </Link>
         </p>

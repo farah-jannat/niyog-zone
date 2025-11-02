@@ -51,12 +51,4 @@ export const JobSchema = z.object({
     .describe("Timestamp of when the job was last updated, auto-generated."),
 });
 
-export const InsertJobSchema = JobSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const UpdateJobSchema = InsertJobSchema.partial();
-
 export type Job = z.infer<typeof JobSchema>;
