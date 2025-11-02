@@ -26,7 +26,7 @@ const SearchBox = (props: Props) => {
       className={`flex items-center bg-[#F7F7FA] rounded-[12px] border border-gray-300 transition-all duration-300 ease-in-out pl-4 pr-1.5 py-[5px] grow ${className}`}
       onSubmit={handleSubmit((data) =>
         router.push(
-          `/jobs?searchKey=${encodeURIComponent(
+          `/jobs?keywords=${encodeURIComponent(
             data.searchInput
           )}&page=1&limit=5`
         )

@@ -18,7 +18,7 @@ export const getJobs = async (req: Request, res: Response) => {
     jobType,
     experience,
     salary,
-    searchKey,
+    keywords,
     vacancy,
     page,
     limit,
@@ -74,12 +74,12 @@ export const getJobs = async (req: Request, res: Response) => {
     conditions.push(eq(jobTable.experience, experience));
   }
 
-  if (typeof searchKey === "string" && searchKey.length > 0) {
+  if (typeof keywords === "string" && keywords.length > 0) {
     conditions.push(
       or(
-        ilike(jobTable.category, `%${searchKey}%`),
-        ilike(jobTable.title, `%${searchKey}%`),
-        ilike(jobTable.description, `%${searchKey}%`)
+        ilike(jobTable.category, `%${keywords}%`),
+        ilike(jobTable.title, `%${keywords}%`),
+        ilike(jobTable.description, `%${keywords}%`)
       )
     );
   }
@@ -187,7 +187,7 @@ export const getCompanyJobs = async (req: Request, res: Response) => {
     jobType,
     experience,
     salary,
-    searchKey,
+    keywords,
     vacancy,
     page,
     limit,
@@ -248,12 +248,12 @@ export const getCompanyJobs = async (req: Request, res: Response) => {
     conditions.push(eq(jobTable.experience, experience));
   }
 
-  if (typeof searchKey === "string" && searchKey.length > 0) {
+  if (typeof keywords === "string" && keywords.length > 0) {
     conditions.push(
       or(
-        ilike(jobTable.category, `%${searchKey}%`),
-        ilike(jobTable.title, `%${searchKey}%`),
-        ilike(jobTable.description, `%${searchKey}%`)
+        ilike(jobTable.category, `%${keywords}%`),
+        ilike(jobTable.title, `%${keywords}%`),
+        ilike(jobTable.description, `%${keywords}%`)
       )
     );
   }
@@ -298,7 +298,7 @@ export const getRecruiterJobs = async (req: Request, res: Response) => {
     jobType,
     experience,
     salary,
-    searchKey,
+    keywords,
     vacancy,
     page,
     limit,
@@ -308,8 +308,7 @@ export const getRecruiterJobs = async (req: Request, res: Response) => {
 
   if (!id) throw new BadRequestError("Id not found!");
 
-  console.log("hello from rec jobs")
-
+  console.log("hello from rec jobs");
 
   const conditions = [];
 
@@ -362,12 +361,12 @@ export const getRecruiterJobs = async (req: Request, res: Response) => {
     conditions.push(eq(jobTable.experience, experience));
   }
 
-  if (typeof searchKey === "string" && searchKey.length > 0) {
+  if (typeof keywords === "string" && keywords.length > 0) {
     conditions.push(
       or(
-        ilike(jobTable.category, `%${searchKey}%`),
-        ilike(jobTable.title, `%${searchKey}%`),
-        ilike(jobTable.description, `%${searchKey}%`)
+        ilike(jobTable.category, `%${keywords}%`),
+        ilike(jobTable.title, `%${keywords}%`),
+        ilike(jobTable.description, `%${keywords}%`)
       )
     );
   }
@@ -411,7 +410,7 @@ export const getSimilarJobs = async (req: Request, res: Response) => {
     jobType,
     experience,
     salary,
-    searchKey,
+    keywords,
     vacancy,
     page,
     limit,
@@ -468,12 +467,12 @@ export const getSimilarJobs = async (req: Request, res: Response) => {
     conditions.push(eq(jobTable.experience, experience));
   }
 
-  if (typeof searchKey === "string" && searchKey.length > 0) {
+  if (typeof keywords === "string" && keywords.length > 0) {
     conditions.push(
       or(
-        ilike(jobTable.category, `%${searchKey}%`),
-        ilike(jobTable.title, `%${searchKey}%`),
-        ilike(jobTable.description, `%${searchKey}%`)
+        ilike(jobTable.category, `%${keywords}%`),
+        ilike(jobTable.title, `%${keywords}%`),
+        ilike(jobTable.description, `%${keywords}%`)
       )
     );
   }

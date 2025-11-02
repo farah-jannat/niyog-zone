@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
-import ReactQueryProvider from "@/providers/react-query-provider";
 
 import "./globals.css";
 import Footer from "@/components/widgets/footer";
 import Header from "@/components/header/Header";
-import AuthProvider from "@/providers/auth.provider";
+import Provider from "@/providers/provider";
 
 // Define the font variable
 const lato = Lato({
@@ -29,13 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lato.variable} font-lato antialiased`}>
-        <ReactQueryProvider>
-          <AuthProvider>
-            <Header />
-            {children}
-            <Footer />
-          </AuthProvider>
-        </ReactQueryProvider>
+        <Provider>
+          <Header />
+          {children}
+          <Footer />
+        </Provider>
       </body>
     </html>
   );

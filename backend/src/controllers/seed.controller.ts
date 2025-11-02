@@ -43,6 +43,14 @@ const NUM_JOBS = 115;
 const NUM_APPLICATIONS = 130;
 const NUM_PROFILE_SKILLS = 140;
 
+
+// const NUM_STUDENTS = 1110;
+// const NUM_RECRUITERS = 1105;
+// const NUM_SKILLS = 1120;
+// const NUM_JOBS = 5115;
+// const NUM_APPLICATIONS = 2130;
+// const NUM_PROFILE_SKILLS = 1140;
+
 const jobTypes = ["Full-time", "Part-time", "Contract", "Internship"];
 const jobLevels = ["Junior", "Senior", "Mid"];
 const experiences = ["1", "2", "3", "4", "5", "6"]; // 1=Entry, 5=Senior
