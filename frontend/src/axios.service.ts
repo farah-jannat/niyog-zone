@@ -18,3 +18,4 @@ export const profile__axios = apiService("/profiles");
 export const user__axios = apiService("/users");
 export const job__axios = apiService("/jobs");
 export const company__axios = apiService("/companies");
+export const application__axios = apiService("/applications");

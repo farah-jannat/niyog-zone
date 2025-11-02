@@ -1,13 +1,24 @@
+import { config } from "@/config";
 import {
-  applyJob,
-  getApplicants,
-  getAppliedJobs,
-  updateStatus,
+  checkApplication,
+  createApplication,
 } from "@/controllers/application.controller";
-import isAuthenticated from "@/middlewares/isAuthenticated";
+import { verifyClientToken } from "@/middlewares/verify-client-token.middleware";
 import { Router } from "express";
 
 const applicationRouter = Router();
+
+applicationRouter.get(
+  "/:applicantId/:jobId",
+  verifyClientToken(config.JWT_TOKEN),
+  checkApplication
+);
+
+applicationRouter.post(
+  "/",
+  verifyClientToken(config.JWT_TOKEN),
+  createApplication
+);
 
 // applicationRouter.post("/applications", isAuthenticated, applyJob);
 // applicationRouter.get(
