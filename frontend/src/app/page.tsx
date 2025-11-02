@@ -4,8 +4,15 @@ import HeroSection from "@/components/hero";
 import HowItWorks from "@/components/how-it-works";
 import JobList from "@/features/job/components/job-list";
 import { useLatestJobsQuery } from "@/features/job/queries/use-latest-jobs.query";
+import { Suspense } from "react";
 
 export default function Page() {
+  <Suspense fallback={<div>Loading jobs...</div>}>
+    <Home />
+  </Suspense>;
+}
+
+function Home() {
   const { isLoading, data, error } = useLatestJobsQuery({
     page: 1,
     limit: 6,

@@ -7,8 +7,17 @@ import { usePagination } from "@/hooks/use-pagination.hook";
 import { useJobsQuery } from "@/features/job/queries/use-jobs.query";
 import { Pagination } from "@/components/pagination";
 import JobCard from "@/features/job/components/job-card";
+import { Suspense } from "react";
 
-const Jobs = () => {
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading jobs...</div>}>
+      <Jobs />
+    </Suspense>
+  );
+}
+
+function Jobs() {
   const {
     // filters,
     // handleFilterChange,
@@ -77,6 +86,4 @@ const Jobs = () => {
       </Container>
     </>
   );
-};
-
-export default Jobs;
+}
