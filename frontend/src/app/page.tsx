@@ -7,9 +7,11 @@ import { useLatestJobsQuery } from "@/features/job/queries/use-latest-jobs.query
 import { Suspense } from "react";
 
 export default function Page() {
-  <Suspense fallback={<div>Loading jobs...</div>}>
-    <Home />
-  </Suspense>;
+  return (
+    <Suspense fallback={<div>Loading jobs...</div>}>
+      <Home />
+    </Suspense>
+  );
 }
 
 function Home() {

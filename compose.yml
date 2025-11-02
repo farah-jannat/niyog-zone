@@ -36,10 +36,14 @@ services:
     ports:
       - 4001:4001
     environment:
+      - NODE_ENV=${NIYOG_ZONE_NODE_ENV}
+      - CLIENT_URL=${NIYOG_ZONE_CLIENT_URL}
       - SECRET_KEY=${NIYOG_ZONE_SECRET_KEY}
       - CLOUD_NAME=${NIYOG_ZONE_CLOUD_NAME}
       - API_KEY=${NIYOG_ZONE_API_KEY}
       - API_SECRET=${NIYOG_ZONE_API_SECRET}
+      - DATABASE_URL=${NIYOG_ZONE_DB_URL}
+      - JWT_TOKEN=${NIYOG_JWT_TOKEN}
 
     depends_on:
       - niyog-zone-db
