@@ -5,6 +5,7 @@ import ReactQueryProvider from "@/providers/react-query-provider";
 import "./globals.css";
 import Footer from "@/components/widgets/footer";
 import Header from "@/components/header/Header";
+import AuthProvider from "@/providers/auth.provider";
 
 // Define the font variable
 const lato = Lato({
@@ -29,9 +30,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${lato.variable} font-lato antialiased`}>
         <ReactQueryProvider>
-          <Header />
-          {children}
-          <Footer />
+          <AuthProvider>
+            <Header />
+            {children}
+            <Footer />
+          </AuthProvider>
         </ReactQueryProvider>
       </body>
     </html>

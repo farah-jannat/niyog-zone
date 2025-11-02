@@ -4,6 +4,7 @@ import {
   BadRequestError,
   ConnectionError,
   handleAsync,
+  NotAuthorizedError,
   NotFoundError,
 } from "@fvoid/shared-lib";
 import type { LoginInput, RegisterInput } from "@/validations/user.validation";
@@ -118,4 +119,24 @@ export const login = async (req: Request, res: Response) => {
 export const logout = async (req: Request, res: Response) => {
   req.session = null;
   return res.json({ message: "Logout successful", user: {} });
+};
+
+export const getAuthUser = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user) throw new NotAuthorizedError();
+
+  const [isUserError, isUser] = await catchError(
+    db.query.userTable.findFirst({
+      where: eq(userTable.email, user.email),
+      columns: {
+        password: false,
+      },
+    })
+  );
+
+  if (isUserError) throw new ConnectionError("Database Error!");
+  if (!isUser) throw new NotFoundError();
+
+  return res.json(isUser);
 };

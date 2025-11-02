@@ -21,6 +21,7 @@ import applicationRouter from "@/routes/application.router";
 import seedRouter from "@/routes/seed.router";
 import authRouter from "@/routes/auth.router";
 import profileRouter from "@/routes/profile.router";
+import { getSession } from "@/middlewares/get-session.middleware";
 
 // ** Define Auth Service
 
@@ -73,6 +74,7 @@ class AuthService {
       })
     );
 
+    this.app.use(getSession);
     // this.app.use(verifyGatewayToken(config.GATEWAY_JWT_TOKEN, "auth"));
   }
 
