@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1761602414043,
-      "tag": "0000_loving_thunderbolt_ross",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1761644215133,
-      "tag": "0001_gray_blue_blade",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1761650523130,
-      "tag": "0002_remarkable_radioactive_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1761651285504,
-      "tag": "0003_supreme_mandroid",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1761652441525,
-      "tag": "0004_normal_violations",
+      "when": 1762189649005,
+      "tag": "0000_workable_susan_delgado",
       "breakpoints": true
     }
   ]

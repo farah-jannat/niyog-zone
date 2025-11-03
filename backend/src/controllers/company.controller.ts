@@ -144,3 +144,20 @@ export const getCompany = async (req: Request, res: Response) => {
 
   return res.json(company);
 };
+
+export const getRecruiterCompanies = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) throw new BadRequestError("Id not found!");
+
+  const [companyError, companies] = await catchError(
+    db.query.companyTable.findMany({
+      where: eq(companyTable.userId, id),
+    })
+  );
+
+  if (companyError) throw new ConnectionError("Database Error !");
+  if (!companies) throw new NotFoundError();
+
+  return res.json(companies);
+};

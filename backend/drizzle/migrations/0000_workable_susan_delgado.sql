@@ -38,13 +38,15 @@ CREATE TABLE "users" (
 CREATE TABLE "jobs" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" varchar(255) NOT NULL,
+	"category" text DEFAULT 'Software' NOT NULL,
 	"description" text NOT NULL,
-	"requirements" text[],
+	"requirements" jsonb,
 	"salary" integer NOT NULL,
-	"experience_level" integer NOT NULL,
+	"experience" text NOT NULL,
 	"location" text NOT NULL,
 	"job_type" text NOT NULL,
-	"position" integer NOT NULL,
+	"job_level" text NOT NULL,
+	"vacancy" integer NOT NULL,
 	"company_id" uuid NOT NULL,
 	"created_by" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
@@ -76,8 +78,7 @@ CREATE TABLE "skills" (
 	"years" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "skills_name_unique" UNIQUE("name"),
-	CONSTRAINT "skills_years_unique" UNIQUE("years")
+	CONSTRAINT "skills_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 ALTER TABLE "applications" ADD CONSTRAINT "applications_job_id_jobs_id_fk" FOREIGN KEY ("job_id") REFERENCES "public"."jobs"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint

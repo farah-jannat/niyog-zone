@@ -16,6 +16,7 @@ import {
   companyTable,
   profileTable,
   skillTable,
+  type Requirement,
 } from "@/schemas";
 
 const uuidv4 = () => crypto.randomUUID();
@@ -43,7 +44,6 @@ const NUM_JOBS = 115;
 const NUM_APPLICATIONS = 130;
 const NUM_PROFILE_SKILLS = 140;
 
-
 // const NUM_STUDENTS = 1110;
 // const NUM_RECRUITERS = 1105;
 // const NUM_SKILLS = 1120;
@@ -64,6 +64,14 @@ export const jobCategories = [
   "Construction and Infrastructure",
   "Arts, Design, and Media",
   "Hospitality and Tourism",
+];
+
+const possibleRequirements: Requirement[] = [
+  { title: "Must have 3+ years experience with React." },
+  { title: "Proficiency in SQL and relational databases." },
+  { title: "Strong communication skills." },
+  { title: "Experience with CI/CD pipelines." },
+  { title: "Bachelor's degree in Computer Science or related field." },
 ];
 
 async function generateUsers() {
@@ -181,17 +189,10 @@ function generateJobs(companyIds: string[], recruiterIds: string[]) {
       id: uuidv4(),
       title: faker.person.jobTitle(),
       description: faker.lorem.paragraphs(2),
-      requirements: faker.helpers.arrayElements(
-        [
-          "Must have 3+ years experience with React.",
-          "Proficiency in SQL and relational databases.",
-          "Strong communication skills.",
-          "Experience with CI/CD pipelines.",
-          "Bachelor's degree in Computer Science or related field.",
-        ],
-        { min: 2, max: 4 }
-      ),
-
+      requirements: faker.helpers.arrayElements(possibleRequirements, {
+        min: 2,
+        max: 4,
+      }) as Requirement[],
       category: faker.helpers.arrayElement(jobCategories),
       salary: faker.number.int({ min: 50000, max: 150000 }),
       experience: faker.helpers.arrayElement(experiences),

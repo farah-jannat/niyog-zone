@@ -12,7 +12,7 @@ export const useRecruiterJobsQuery = (props: Props) => {
   const { id, q, page, limit } = props;
 
   return useQueryWithSideEffects({
-    queryKey: ["recruiter", id, q, page, limit],
+    queryKey: ["recruiter-jobs", id, q, page, limit],
     queryFn: () => getRecruiterJobs(id!, q, page, limit),
     enabled: !!id,
     refetchOnWindowFocus: false,

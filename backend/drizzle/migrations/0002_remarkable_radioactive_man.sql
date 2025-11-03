@@ -1,2 +1,0 @@
-CREATE TYPE "public"."job_category" AS ENUM('Software', 'Healthcare and Wellness', 'Finance and Business', 'Manufacturing and Engineering', 'Education and Training', 'Construction and Infrastructure', 'Arts, Design, and Media', 'Hospitality and Tourism');--> statement-breakpoint
-ALTER TABLE "jobs" ADD COLUMN "category" "job_category" DEFAULT 'Software' NOT NULL;

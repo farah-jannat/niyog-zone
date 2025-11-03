@@ -1,5 +1,7 @@
-import { getCompany } from "@/controllers/company.controller";
-import isAuthenticated from "@/middlewares/isAuthenticated";
+import {
+  getCompany,
+  getRecruiterCompanies,
+} from "@/controllers/company.controller";
 import { Router } from "express";
 
 const companyRouter = Router();
@@ -9,6 +11,7 @@ const companyRouter = Router();
 // companyRouter.get("/companies/:id", isAuthenticated, getCompanyById);
 // companyRouter.put("/companies/:id", isAuthenticated, updateCompany);
 
+companyRouter.get("/recruiter/:id", getRecruiterCompanies);
 companyRouter.get("/:id", getCompany);
 
 export default companyRouter;

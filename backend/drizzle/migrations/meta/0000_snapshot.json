@@ -1,5 +1,5 @@
 {
-  "id": "4979eef9-9ccd-4aa4-8b97-b35e04412854",
+  "id": "e31d9717-5708-48bc-a0e1-095e6702686e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -274,6 +274,13 @@
           "primaryKey": false,
           "notNull": true
         },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'Software'"
+        },
         "description": {
           "name": "description",
           "type": "text",
@@ -282,7 +289,7 @@
         },
         "requirements": {
           "name": "requirements",
-          "type": "text[]",
+          "type": "jsonb",
           "primaryKey": false,
           "notNull": false
         },
@@ -292,9 +299,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "experience_level": {
-          "name": "experience_level",
-          "type": "integer",
+        "experience": {
+          "name": "experience",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -310,8 +317,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "position": {
-          "name": "position",
+        "job_level": {
+          "name": "job_level",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vacancy": {
+          "name": "vacancy",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -578,13 +591,6 @@
           "nullsNotDistinct": false,
           "columns": [
             "name"
-          ]
-        },
-        "skills_years_unique": {
-          "name": "skills_years_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "years"
           ]
         }
       },

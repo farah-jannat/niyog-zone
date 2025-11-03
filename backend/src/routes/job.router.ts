@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  createJob,
   getCompanyJobs,
   getJob,
   getJobs,
@@ -7,7 +8,8 @@ import {
   getRecruiterJobs,
   getSimilarJobs,
 } from "@/controllers/job.controller";
-import isAuthenticated from "@/middlewares/isAuthenticated";
+import { verifyClientToken } from "@/middlewares/verify-client-token.middleware";
+import { config } from "@/config";
 
 const jobRouter = Router();
 
@@ -18,6 +20,8 @@ jobRouter.get("/recruiter/:id", getRecruiterJobs);
 jobRouter.get("/similar/:category", getSimilarJobs);
 jobRouter.get("/:id", getJob);
 jobRouter.get("/", getJobs);
+
+jobRouter.post("/", verifyClientToken(config.JWT_TOKEN), createJob);
 // jobRouter.get("/jobs/:id", getJobById);
 // jobRouter.get("/jobs/admin/:id", isAuthenticated, getAdminJobs);
 

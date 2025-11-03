@@ -9,11 +9,11 @@ import {
   integer,
   timestamp,
   uuid,
+  jsonb,
 } from "drizzle-orm/pg-core";
 
-interface Skill {
-  name: string;
-  years: string;
+export interface Requirement {
+  title: string;
 }
 
 // Job Table (Job.ts equivalent)
@@ -22,7 +22,7 @@ export const jobTable = pgTable("jobs", {
   title: varchar("title", { length: 255 }).notNull(),
   category: text("category").notNull().default("Software"),
   description: text("description").notNull(),
-  requirements: text("requirements").array(),
+  requirements: jsonb("requirements").$type<Requirement[]>(),
   salary: integer("salary").notNull(),
   experience: text("experience").notNull(),
   location: text("location").notNull(),

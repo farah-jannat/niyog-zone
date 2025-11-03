@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { jobTable } from "@/schemas";
 import { catchError } from "@/utils/catch-error.util";
+import type { InsertJobInput } from "@/validations/job.validation";
 import {
   BadRequestError,
   ConnectionError,
@@ -507,6 +508,22 @@ export const getSimilarJobs = async (req: Request, res: Response) => {
     currentPage: parsedPage,
     limit: parsedLimit,
   });
+};
+
+export const createJob = async (req: Request, res: Response) => {
+  const formData = req.body as InsertJobInput;
+
+  const [companyError, company] = await catchError(
+    db
+      .insert(jobTable)
+      .values(formData)
+      .returning()
+      .then((res) => res[0])
+  );
+
+  if (companyError) throw new ConnectionError("Error creating job !");
+
+  return res.json(company);
 };
 
 // import { Job } from "../models/job.model.js";
