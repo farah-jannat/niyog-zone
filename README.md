@@ -5,6 +5,8 @@ search, applications, company management, applicant tracking, and networking.
 
 This application is in development. It has already included all the features listed in [Done Stories](#done-stories). But soon Its going to have all features listed in [All Stories](#all-stories) 🚀.
 
+<a id="toc"></a>
+
 ## Table Of Content
 
 - [Technologies](#tech)
@@ -41,6 +43,7 @@ Devops: `CI/CD` `VPS` `Docker` `SSH` `Vim`
 - recruiter can **create** and **edit** his **jobs**
 - recruiter can see the **applicants** in jobs
 - recruiter can **accept** or **reject applicants** in his jobs
+- [Go to **Table Of Content**](#toc)
 
 <a id="all-stories"></a>
 
@@ -70,6 +73,8 @@ Devops: `CI/CD` `VPS` `Docker` `SSH` `Vim`
 - user can see **who viewed their profile**
 - user can **search other user**
 
+- [Go to **Table Of Content**](#toc)
+
 <a id="tech-arc"></a>
 
 ## Technical Architectures
@@ -88,3 +93,5 @@ Devops: `CI/CD` `VPS` `Docker` `SSH` `Vim`
 - Optimizes the build process by separating the **build environment** from the smaller **runtime environment**, resulting in **slimmer**, more **secure deployment images**.
 - **Automates the entire release process**—from testing and image building to **deployment on the VPS**—ensuring **fast, reliable**, and **consistent rollouts**.
 - Provides a **cost-effective** and **controlled environment** for hosting the **Dockerized application**, offering **dedicated resources** without the complexity of managed container services.
+
+- [Go to **Table Of Content**](#toc)
