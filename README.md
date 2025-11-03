@@ -43,6 +43,7 @@ Devops: `CI/CD` `VPS` `Docker` `SSH` `Vim`
 - recruiter can **create** and **edit** his **jobs**
 - recruiter can see the **applicants** in jobs
 - recruiter can **accept** or **reject applicants** in his jobs
+
 - [Go to **Table Of Content**](#toc)
 
 <a id="all-stories"></a>
