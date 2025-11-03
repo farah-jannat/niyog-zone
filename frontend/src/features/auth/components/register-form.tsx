@@ -36,7 +36,7 @@ const RegisterForm = () => {
   });
 
   return (
-    <div className="text-[#03050F]  xl:pr-6 text-[16px] flex flex-col gap-[42px] items-start py-8">
+    <div className="text-[#03050F]  xl:pr-6 text-[16px] flex flex-col gap-[42px] items-start  p-8 xl:py-8 xl:p-0">
       <div className="flex flex-col gap-5 items-start">
         <h2 className="text-[40px]">Sign Up</h2>
         <p>

@@ -14,7 +14,7 @@ const Provider = (props: Props) => {
   const { children } = props;
 
   // ** --- States ---
-  const [activeItem, setActiveItem] = useState(0);
+  const [activeItem, setActiveItem] = useState(1);
 
   return (
     <ReactQueryProvider>

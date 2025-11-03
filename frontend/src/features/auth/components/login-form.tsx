@@ -17,22 +17,49 @@ import {
 } from "@/components/ui/field";
 import { useLogin } from "@/features/auth/mutations/use-login.mutation";
 
+const candidateCredentials = {
+  email: "candidate100@gmail.com",
+  password: "qwerty",
+};
+
+const recruiterCredentials = {
+  email: "recruiter100@gmail.com",
+  password: "qwerty",
+};
+
 const LoginForm = () => {
+  // ** --- state ---
+  // const [isCandidate, setIsCandidate] = useState(true);
+
   // ** --- mutations ---
   const { mutate: login, isPending } = useLogin();
 
   // ** --- forms ---
-  const { control, handleSubmit } = useForm<LoginSchemaType>({
+  const { control, handleSubmit, reset } = useForm<LoginSchemaType>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "candidate100@gmail.com",
+      password: "qwerty",
     },
 
     resolver: zodResolver(loginSchema),
   });
 
+  // useEffect(() => {
+  //   if (isCandidate) {
+  //     reset({
+  //       email: "candidate100@gmail.com",
+  //       password: "qwerty",
+  //     });
+  //   } else {
+  //     reset({
+  //       email: "recruiter100@gmail.com",
+  //       password: "qwerty",
+  //     });
+  //   }
+  // }, [isCandidate, reset]);
+
   return (
-    <div className="text-[#03050F]  xl:pr-6 text-[16px] flex flex-col gap-[42px] items-start">
+    <div className="text-[#03050F]  xl:pr-6 text-[16px] flex flex-col gap-[42px] items-start  p-8 xl:p-0">
       <div className="flex flex-col gap-5 items-start">
         <h2 className="text-[40px]">Sign In</h2>
         <p>
@@ -41,6 +68,21 @@ const LoginForm = () => {
             sign up
           </Link>
         </p>
+
+        <div className="flex gap-2 flex-wrap">
+          <Button
+            className="capitalize bg-[#03050F] cursor-pointer"
+            onClick={() => reset(candidateCredentials)}
+          >
+            Candidate Credential
+          </Button>
+          <Button
+            className="capitalize bg-[#03050F] cursor-pointer"
+            onClick={() => reset(recruiterCredentials)}
+          >
+            Recruiter Credential
+          </Button>
+        </div>
       </div>
 
       <form
@@ -82,6 +124,7 @@ const LoginForm = () => {
                   <FieldLabel htmlFor={field.name}>Password</FieldLabel>
                 </FieldContent>
                 <Input
+                  type="password"
                   className="bg-[#FBFBFE] p-5 h-auto! text-[#68696F] font-lato font-normal text-[16px] border border-[#C9C9CB] rounded-[8px]"
                   placeholder="Enter Your Password"
                   {...field}
