@@ -27,7 +27,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { jobCategories } from "@/constants";
 import { createCompanyForm } from "@/features/company/default-form-values/company-create.form";
-import { upsertProfileForm } from "@/features/profile/default-form-values/upsert-job.form";
+import { upsertProfileForm } from "@/features/profile/default-form-values/upsert-profile.form";
+import useUpsertProfileMutation from "@/features/profile/mutations/use-upsert-profile.mutation";
 import {
   upsertProfileSchema,
   UpsertProfileType,
@@ -61,10 +62,14 @@ const CreateCompany = () => {
   const imagePreview = form.watch("profilePhoto");
 
   useEffect(() => {
-    form.reset(createCompanyForm(authUser?.id));
+    form.reset(upsertProfileForm(authUser?.id));
   }, [form, authUser]);
 
-  const isPending = false;
+  // ** --- mutations ---
+  const { mutate: upsertProfile, isPending } = useUpsertProfileMutation({
+    reset: form.reset,
+    setError: form.setError,
+  });
 
   //   ** --- browser ---
   const isBrowser = useBrowser();
@@ -76,10 +81,10 @@ const CreateCompany = () => {
     <Container className="py-16">
       <Form {...form}>
         <form
-          //   onSubmit={form.handleSubmit((data) => createGig(data))}
-          onSubmit={form.handleSubmit((data) =>
-            console.log("submitted data is ", data)
-          )}
+          onSubmit={form.handleSubmit((data) => upsertProfile(data))}
+          // onSubmit={form.handleSubmit((data) =>
+          //   console.log("submitted data is ", data)
+          // )}
           // className="grid grid-cols-12 gap-6"
         >
           <Card className="px-6 h-full flex flex-col rounded-[8px]">
@@ -144,35 +149,41 @@ const CreateCompany = () => {
                 {skillFields.map((field, index) => (
                   <div key={field.id} className="border p-4 rounded-md">
                     {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="flex flex-col gap-y-6">
-                        <FormField
-                          control={form.control}
-                          name={`skills.${index}.name`}
-                          render={({ field: expField }) => (
-                            <FormItem>
-                              <FormLabel>Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Javascript" {...expField} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name={`skills.${index}.years`}
-                          render={({ field: expField }) => (
-                            <FormItem>
-                              <FormLabel>years</FormLabel>
-                              <FormControl>
-                                <Input placeholder="3+" {...expField} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
+                    <div className="flex flex-col gap-y-6">
+                      <FormField
+                        control={form.control}
+                        name={`skills.${index}.name`}
+                        render={({ field: expField }) => (
+                          <FormItem>
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="Javascript"
+                                {...expField}
+                                className="p-5 h-auto! text-[#68696F] font-lato font-normal text-[16px]  rounded-[8px]"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`skills.${index}.years`}
+                        render={({ field: expField }) => (
+                          <FormItem>
+                            <FormLabel>years</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="3+"
+                                {...expField}
+                                className="p-5 h-auto! text-[#68696F] font-lato font-normal text-[16px]  rounded-[8px]"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                     </div>
                     <div className="mt-[20px]">
                       <Button
@@ -206,9 +217,9 @@ const CreateCompany = () => {
 
                 <Button
                   type="submit"
-                  className="cursor-pointer  bg-[#287992] text-white py-5"
+                  className="cursor-pointer  bg-[#287992] text-white py-5 capitalize"
                 >
-                  Submit Form
+                  {isPending ? "updating..." : "submit form"}
                 </Button>
               </div>
             </div>

@@ -7,8 +7,8 @@ const SkillSchema = z.object({
 });
 
 // --- 2. Define the Zod schema for inserting a Profile (Excluding DB defaults) ---
-export const upsertProfileSchema = z.object({
-  id: z.string().uuid({ message: "Invalid user ID format." }).optional(),
+export const profileSchema = z.object({
+  id: z.string().uuid({ message: "Invalid user ID format." }),
   userId: z.string().uuid({ message: "Invalid user ID format." }),
   bio: z
     .string()
@@ -16,7 +16,13 @@ export const upsertProfileSchema = z.object({
     .max(500, { message: "Bio must be 500 characters or less." }),
   profilePhoto: z.string().url({ message: "Invalid profile photo URL." }),
   skills: z.array(SkillSchema).optional(),
+  createdAt: z
+    .date()
+    .describe("Timestamp of when the job was created, auto-generated."),
+  updatedAt: z
+    .date()
+    .describe("Timestamp of when the job was last updated, auto-generated."),
 });
 
 // --- Optional: Infer the TypeScript type for convenience ---
-export type UpsertProfileType = z.infer<typeof upsertProfileSchema>;
+export type Profile = z.infer<typeof profileSchema>;

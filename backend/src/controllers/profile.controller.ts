@@ -5,104 +5,54 @@ import {
   ConnectionError,
   handleAsync,
   NotFoundError,
+  uploads,
 } from "@fvoid/shared-lib";
 import type { LoginInput, RegisterInput } from "@/validations/user.validation";
 import { db } from "@/db";
-import { userTable } from "@/schemas";
-import { eq } from "drizzle-orm";
+import { profileTable, userTable } from "@/schemas";
+import { eq, sql } from "drizzle-orm";
 import { hashPassword, verifyPassword } from "@/utils/hashing.util";
 import { config } from "@/config";
 import { updateImage } from "@/utils/update-image-url.util";
 import { catchError } from "@/utils/catch-error.util";
+import type { UpsertProfileType } from "@/validations/profile.validaiton";
 
-// updateProfile
+// controller
 
-// export const updateProfile = async (req: Request, res: Response) => {
-//   const { id, profilePhoto, ...formData } = req.body as UpdateProfileInput;
+export const upsertProfile = async (req: Request, res: Response) => {
+  const formData = req.body as UpsertProfileType;
 
-//   const isProfile = await handleAsync(
-//     db.query.profileTable.findFirst({
-//       where: eq(profileTable.id, id),
-//     })
-//   );
+  const [error, result] = await catchError(
+    db.transaction(async (tx) => {
+      // upload image to cloudinary
+      const uploadResult = await uploads(formData.profilePhoto ?? "");
 
-//   if (!isProfile) throw new BadRequestError("Id is not defined");
+      formData.profilePhoto = uploadResult?.secure_url;
 
-//   // ** update image
-//   const updateCoverImage = await updateImage(
-//     isProfile.profilePhoto,
-//     profilePhoto
-//   );
+      const [profile] = await tx
+        .insert(profileTable)
+        .values(formData)
+        .onConflictDoUpdate({
+          // 🛑 FIX: The 'target' must be the unique COLUMN (profileTable.userId),
+          // not the value (formData.id). We use userId because a user should
+          // only have one profile, making it a reliable unique key for the upsert.
+          target: profileTable.userId,
+          set: {
+            bio: sql`excluded.bio`,
+            // 🛑 NOTE: I removed 'from' and 'year' as they are not
+            // defined in your profileTable schema.
+            profilePhoto: sql`excluded.profile_photo`,
+            skills: sql`excluded.skills`,
+            updatedAt: new Date(), // It's a good practice to update the timestamp
+          },
+        })
+        .returning();
 
-//   // ** prepare data
-//   const profileData = {
-//     ...formData,
-//     profilePhoto: updateCoverImage,
-//   };
-
-//   // ** update the profile
-//   const [updatedProfile] = await db
-//     .update(profileTable)
-//     .set(profileData)
-//     .where(eq(profileTable.id, id))
-//     .returning();
-
-//   return res.json(updatedProfile);
-// };
-
-// export const getUser = async (req: Request, res: Response) => {
-//   let { application } = req.query;
-//   const { id } = req.params;
-
-//   if (!id) throw new BadRequestError("Id not found!");
-
-//   const [userError, user] = await catchError(
-//     db.query.userTable.findFirst({
-//       where: eq(userTable.id, id),
-//       with: {
-//         // creator: creator ? true : undefined,
-//         // company: company ? true : undefined,
-//         applications: application ? true : undefined,
-//       },
-//     })
-//   );
-
-//   if (userError) throw new ConnectionError("Database Error!");
-//   if (!user) throw new NotFoundError();
-
-//   return res.json(user);
-// };
-
-export const getUser = async (req: Request, res: Response) => {
-  let { application, profile, job } = req.query;
-
-  const { id } = req.params;
-
-  if (!id) throw new BadRequestError("Id not found!");
-
-  // --- Drizzle Query Logic ---
-  const [userError, user] = await catchError(
-    db.query.userTable.findFirst({
-      where: eq(userTable.id, id),
-
-      with: {
-        applications: application
-          ? {
-              with: {
-                job: job ? true : undefined,
-              },
-              // orderBy: (applications, { desc }) => [
-              //   desc(applications.createdAt),
-              // ],
-            }
-          : undefined,
-        profile: profile ? true : undefined,
-      },
+      return profile;
     })
   );
 
-  if (userError) throw new ConnectionError("Database Error!");
-  if (!user) throw new NotFoundError();
+  if (error) throw new ConnectionError("Error upserting profile!");
 
-  return res.json(user);
+  return res.json({ profile: result });
 };

@@ -1,11 +1,9 @@
 import { profile__axios } from "@/axios.service";
-import {
-  LoginApi,
-  LoginSchemaType,
-} from "@/features/auth/schemas/login.schema";
+import { Profile } from "@/features/profile/schemas/profile.schema";
+import { UpsertProfileType } from "@/features/profile/schemas/upsert-profile.schema";
 
 // ** --- Mutations ---
-export const upsertProfile = async (data: LoginSchemaType) => {
-  const response = await profile__axios.post<LoginApi>(`/:id`, data);
+export const upsertProfile = async (data: UpsertProfileType) => {
+  const response = await profile__axios.post<Profile>(`/`, data);
   return response.data;
 };
