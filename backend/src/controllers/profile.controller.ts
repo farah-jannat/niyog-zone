@@ -1,23 +1,10 @@
-import jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
-import {
-  BadRequestError,
-  ConnectionError,
-  handleAsync,
-  NotFoundError,
-  uploads,
-} from "@fvoid/shared-lib";
-import type { LoginInput, RegisterInput } from "@/validations/user.validation";
+import { ConnectionError, uploads } from "@fvoid/shared-lib";
 import { db } from "@/db";
-import { profileTable, userTable } from "@/schemas";
-import { eq, sql } from "drizzle-orm";
-import { hashPassword, verifyPassword } from "@/utils/hashing.util";
-import { config } from "@/config";
-import { updateImage } from "@/utils/update-image-url.util";
+import { profileTable } from "@/schemas";
+import { sql } from "drizzle-orm";
 import { catchError } from "@/utils/catch-error.util";
 import type { UpsertProfileType } from "@/validations/profile.validaiton";
-
-// controller
 
 export const upsertProfile = async (req: Request, res: Response) => {
   const formData = req.body as UpsertProfileType;
