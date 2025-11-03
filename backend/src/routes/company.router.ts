@@ -1,4 +1,5 @@
 import {
+  createCompany,
   getCompany,
   getRecruiterCompanies,
 } from "@/controllers/company.controller";
@@ -13,5 +14,6 @@ const companyRouter = Router();
 
 companyRouter.get("/recruiter/:id", getRecruiterCompanies);
 companyRouter.get("/:id", getCompany);
+companyRouter.post("/", createCompany);
 
 export default companyRouter;

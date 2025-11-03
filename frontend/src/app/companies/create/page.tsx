@@ -22,6 +22,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { jobCategories } from "@/constants";
 import { createCompanyForm } from "@/features/company/default-form-values/company-create.form";
+import useCreateCompanyMutation from "@/features/company/mutations/use-create-company.mutation";
 import {
   insertCompanySchema,
   InsertCompanyType,
@@ -49,7 +50,11 @@ const CreateCompany = () => {
     form.reset(createCompanyForm(authUser?.id));
   }, [form, authUser]);
 
-  const isPending = false;
+  // ** --- mutations ---
+  const { mutate: createCompany, isPending } = useCreateCompanyMutation({
+    reset: form.reset,
+    setError: form.setError,
+  });
 
   //   ** --- browser ---
   const isBrowser = useBrowser();
@@ -61,10 +66,10 @@ const CreateCompany = () => {
     <Container className="py-16">
       <Form {...form}>
         <form
-          //   onSubmit={form.handleSubmit((data) => createGig(data))}
-          onSubmit={form.handleSubmit((data) =>
-            console.log("submitted data is ", data)
-          )}
+          onSubmit={form.handleSubmit((data) => createCompany(data))}
+          // onSubmit={form.handleSubmit((data) =>
+          //   console.log("submitted data is ", data)
+          // )}
           className="grid grid-cols-12 gap-6"
         >
           <div className="col-span-12 xl:col-span-6">

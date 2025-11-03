@@ -1,0 +1,8 @@
+import { company__axios } from "@/axios.service";
+import { Company } from "@/features/company/schemas/company.schema";
+import { InsertCompanyType } from "@/features/company/schemas/create-company.schema";
+
+export const createCompany = async (data: InsertCompanyType) => {
+  const response = await company__axios.post<Company>(`/`, data);
+  return response.data;
+};

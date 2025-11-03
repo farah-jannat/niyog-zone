@@ -5,10 +5,12 @@
 import { db } from "@/db";
 import { companyTable } from "@/schemas";
 import { catchError } from "@/utils/catch-error.util";
+import type { InsertCompanyType } from "@/validations/company.validation";
 import {
   BadRequestError,
   ConnectionError,
   NotFoundError,
+  uploads,
 } from "@fvoid/shared-lib";
 import { eq } from "drizzle-orm";
 import type { Request, Response } from "express";
@@ -160,4 +162,25 @@ export const getRecruiterCompanies = async (req: Request, res: Response) => {
   if (!companies) throw new NotFoundError();
 
   return res.json(companies);
+};
+
+export const createCompany = async (req: Request, res: Response) => {
+  const formData = req.body as InsertCompanyType;
+
+  // upload image to cloudinary
+  const uploadResult = await uploads(formData.logo ?? "");
+
+  // prepare data
+  const companyData = {
+    ...formData,
+    logo: uploadResult?.secure_url,
+  };
+
+  const [companyError, [company]] = await catchError(
+    db.insert(companyTable).values(companyData).returning()
+  );
+
+  if (companyError) throw new ConnectionError("Error creating job!");
+
+  return res.json(company);
 };
