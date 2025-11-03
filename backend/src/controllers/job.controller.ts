@@ -99,15 +99,33 @@ export const getJobs = async (req: Request, res: Response) => {
   const totalCount = totalCountResult?.count || 0;
 
   // 2. Get paginated jobs (applying the same 'where' clause, then limit and offset)
+  // const jobs = await handleAsync(
+  //   db
+  //     .select()
+  //     .from(jobTable)
+  //     .where(whereClause)
+  //     .limit(parsedLimit)
+  //     .offset(offset)
+  //     .orderBy(jobTable.id)
+
+  // );
+
   const jobs = await handleAsync(
-    db
-      .select()
-      .from(jobTable)
-      .where(whereClause)
-      .limit(parsedLimit)
-      .offset(offset)
-      .orderBy(jobTable.id)
+    db.query.jobTable.findMany({
+      where: whereClause,
+      limit: parsedLimit,
+      offset: offset,
+      // orderBy is applied inside the options object for findMany
+      orderBy: (jobTable, { asc }) => [asc(jobTable.id)],
+      // The 'with' clause for eager loading is part of the options object
+      with: {
+        // creator: true,
+        company: true,
+      },
+    })
   );
+
+  console.log("jobs is ", jobs);
 
   return res.status(200).json({
     jobs: jobs,
@@ -139,13 +157,25 @@ export const getLatestJobs = async (req: Request, res: Response) => {
   const totalCount = totalCountResult ? totalCountResult[0]?.count : 0;
 
   // 2. Get paginated jobs (applying the same 'where' clause, then limit and offset)
+  // const [errJobs, jobs] = await catchError(
+  //   db
+  //     .select()
+  //     .from(jobTable)
+  //     .limit(parsedLimit)
+  //     .offset(offset)
+  //     .orderBy(desc(jobTable.createdAt))
+  // );
+
   const [errJobs, jobs] = await catchError(
-    db
-      .select()
-      .from(jobTable)
-      .limit(parsedLimit)
-      .offset(offset)
-      .orderBy(desc(jobTable.createdAt))
+    db.query.jobTable.findMany({
+      limit: parsedLimit,
+      offset: offset,
+      orderBy: (jobTable, { desc }) => [desc(jobTable.createdAt)],
+
+      with: {
+        company: true,
+      },
+    })
   );
 
   if (errJobs) throw new BadRequestError("Something went wrong");

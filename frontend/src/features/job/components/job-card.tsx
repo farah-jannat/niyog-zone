@@ -1,7 +1,10 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Job } from "@/features/job/schemas/job.schema";
 import { useRouter } from "next/navigation";
 import { formatDistanceToNow, parseISO } from "date-fns";
+import Link from "next/link";
 
 interface Props {
   job: Job;
@@ -34,7 +37,13 @@ const JobCard = (props: Props) => {
       // onClick={() => router.push(`/description/${job?.id}`)}
       onClick={() => router.push(`/jobs/${job?.id}`)}
     >
-      <div className="flex items-center gap-[12px]">
+      <div
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+          e.stopPropagation();
+          router.push(`/companies/${job.companyId}`);
+        }}
+        className="flex items-center gap-[12px] cursor-pointer"
+      >
         <div className="w-[34px] h-[34px] bg-[#B60E0E87] border border-black rounded-full">
           <img src={job?.company?.logo} alt="" className=" rounded-full" />
         </div>
