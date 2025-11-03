@@ -1,3 +1,4 @@
+import generateRandomInt from "@/utils/generate-random-int.util";
 import AdminJobsTable from "./components/admin/AdminJobsTable";
 import CompaniesTable from "./components/admin/CompaniesTable";
 
@@ -24,10 +25,10 @@ export const jobMenus = [
 
 export const recruiterMenus = [
   {
-    title: "Job",
+    title: "Jobs",
   },
   {
-    title: "Company",
+    title: "Companies",
   },
 ];
 
@@ -210,3 +211,8 @@ export const jobCategories = [
   { label: "Arts, Design, and Media", value: "Arts, Design, and Media" },
   { label: "Hospitality and Tourism", value: "Hospitality and Tourism" },
 ];
+
+export const profileUrl = `https://robohash.org/${generateRandomInt(
+  1,
+  100
+)}?size=200x200`;

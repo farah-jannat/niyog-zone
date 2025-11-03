@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { profileUrl } from "@/constants";
 import { Pen } from "lucide-react";
 
 interface Props {
@@ -12,18 +13,20 @@ const BioCard = (props: Props) => {
     <div className="grid py-[68px]  md:grid-cols-2 items-center gap-[0px] md:gap-[44px]  ">
       <div className="h-[330px]">
         <img
-          src={user?.profile?.profilePhoto}
+          // src={user?.profile?.profilePhoto}
+          // src={user?.profile?.profilePhoto}
+          src={profileUrl}
           alt=""
           className="w-full h-full object-cover rounded-[4px]"
         />
-        <Button
+        {/* <Button
           // onClick={() => setOpen(true)}
           variant="outline"
           className="w-full mt-[10px] bg-[#287992] text-white hover:bg-[#216377] hover:text-white"
         >
           Edit Profile
           <Pen />
-        </Button>
+        </Button> */}
       </div>
       <div className="">
         <div className="flex flex-col my-[68px] ">

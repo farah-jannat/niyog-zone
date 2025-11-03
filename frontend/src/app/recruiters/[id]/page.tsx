@@ -41,9 +41,9 @@ const Profile = () => {
         />
       </Container>
 
-      <Container className="pt-7">
+      <Container className="py-7">
         {currentTabIndex === 0 && <RecruiterJobList recruiterId={user?.id} />}
-        {/* {currentTabIndex === 1 && <JobCompany />} */}
+        {currentTabIndex === 1 && <p>Currently working in this...</p>}
       </Container>
 
       {/* <Container className="pt-[18px] pb-[72px] bg-[#F5F6FD]">

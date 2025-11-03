@@ -1,4 +1,5 @@
 import JobCard from "@/features/job/components/job-card";
+import JobTable from "@/features/job/components/job-table";
 import { useRecruiterJobsQuery } from "@/features/job/queries/use-recruiter-jobs.query";
 
 interface Props {
@@ -17,6 +18,8 @@ const RecruiterJobList = (props: Props) => {
   });
 
   if (isjobLoading) return null;
+
+  return <JobTable jobs={data?.jobs} />;
 
   return (
     <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">

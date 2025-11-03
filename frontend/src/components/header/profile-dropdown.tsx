@@ -1,5 +1,6 @@
 import CustomDropdown from "@/components/header/custom-dropdown";
 import DropdownMenu from "@/components/header/dropdown-menu";
+import { profileUrl } from "@/constants";
 import { useLogout } from "@/features/auth/mutations/use-logout.mutation";
 import { useAuthStore } from "@/store/use-auth.store";
 import generateRandomInt from "@/utils/generate-random-int.util";
@@ -18,7 +19,8 @@ const ProfileDropdown = () => {
       {/* <img src={authUser?.profilePicture} alt="profile" /> */}
 
       <img
-        src={`https://robohash.org/${generateRandomInt(1, 100)}?size=200x200`}
+        // src={`https://robohash.org/${generateRandomInt(1, 100)}?size=200x200`}
+        src={profileUrl}
         alt="profile"
       />
     </div>
