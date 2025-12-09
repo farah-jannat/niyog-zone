@@ -2,6 +2,7 @@
 import BioCard from "@/components/bio-card";
 import Container from "@/components/container";
 import { recruiterMenus } from "@/constants";
+import { useRecruiterCompaniesQuery } from "@/features/company/queries/use-recruiter-companies.query";
 import JobDetailsTab from "@/features/job/components/job-details-tab";
 import RecruiterJobList from "@/features/job/components/recruiter-job-list";
 import { useUserQuery } from "@/features/user/queries/use-user.query";
@@ -24,6 +25,10 @@ const Profile = () => {
     // "application=true&profile=true&job=true"
     // ""
   );
+  console.log("user id here", id);
+  const { isLoading, data } = useRecruiterCompaniesQuery({ recruiterId: id });
+  if (isLoading) return "hello loading";
+  console.log("data of user companis - ", data);
 
   if (isuserLoading) return null;
 
@@ -43,7 +48,12 @@ const Profile = () => {
 
       <Container className="py-7">
         {currentTabIndex === 0 && <RecruiterJobList recruiterId={user?.id} />}
-        {currentTabIndex === 1 && <p>Currently working in this...</p>}
+        {currentTabIndex === 1 && <p>current working on this</p>}
+        {data?.map((item, idx) => (
+          <div key={idx}>
+            <p>{item.name}</p>
+          </div>
+        ))}
       </Container>
 
       {/* <Container className="pt-[18px] pb-[72px] bg-[#F5F6FD]">
