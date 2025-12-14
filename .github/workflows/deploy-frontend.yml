@@ -34,18 +34,18 @@ jobs:
           build-args: |
             NEXT_PUBLIC_BASE_ENDPOINT=${{ secrets.BASE_ENDPOINT }}
 
-      - name: Pull and restart docker image
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT }}
-          script: |
+      # - name: Pull and restart docker image
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.VPS_HOST }}
+      #     username: ${{ secrets.VPS_USERNAME }}
+      #     key: ${{ secrets.VPS_SSH_KEY }}
+      #     port: ${{ secrets.VPS_PORT }}
+      #     script: |
 
-            cd docker-host/
+      #       cd docker-host/
 
-            # Start or update containers
-            docker compose pull niyog-zone-client
-            docker compose up niyog-zone-client -d
-            docker image prune -f
+      #       # Start or update containers
+      #       docker compose pull niyog-zone-client
+      #       docker compose up niyog-zone-client -d
+      #       docker image prune -f
