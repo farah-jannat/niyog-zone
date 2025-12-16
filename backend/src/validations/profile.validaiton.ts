@@ -8,7 +8,7 @@ const SkillSchema = z.object({
 
 // --- 2. Define the Zod schema for inserting a Profile (Excluding DB defaults) ---
 export const upsertProfileSchema = z.object({
-  id: z.string().uuid({ message: "Invalid user ID format." }).optional(),
+  // id: z.string().uuid({ message: "Invalid profile ID format." }).optional(),
   userId: z.string().uuid({ message: "Invalid user ID format." }),
   bio: z
     .string()

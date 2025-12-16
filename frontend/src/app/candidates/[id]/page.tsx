@@ -100,6 +100,7 @@ const Profile = () => {
 
   if (isuserLoading) return null;
 
+
   return (
     <div>
       <Container className="bg-[#FFFFFF]">
@@ -108,7 +109,7 @@ const Profile = () => {
 
       <Container className="bg-[#F5F6FD] py-8">
         <div className="my-[68px] grid grid-cols-4 md:grid-cols-9 xl:grid-cols-12 gap-4 capitalize">
-          {user.profile.skills.map((skill, i) => (
+          {user?.profile?.skills?.map((skill, i) => (
             <TagCard
               key={i}
               label={`${skill.years}+ years`}
@@ -124,7 +125,8 @@ const Profile = () => {
           heading="Applied Jobs"
           isLoading={isuserLoading}
           error={error}
-          jobs={user.applications.map((app) => app.job)}
+          jobs={user?.applications?.map((app) => app.job!)}
+          // jobs={user?.applications?.map((app)=>app.job)}
         />
       </Container>
     </div>

@@ -29,6 +29,7 @@ import { jobCategories } from "@/constants";
 import { createCompanyForm } from "@/features/company/default-form-values/company-create.form";
 import { upsertProfileForm } from "@/features/profile/default-form-values/upsert-profile.form";
 import useUpsertProfileMutation from "@/features/profile/mutations/use-upsert-profile.mutation";
+import { useProfileQuery } from "@/features/profile/queries/use-profile.query";
 import {
   upsertProfileSchema,
   UpsertProfileType,
@@ -40,9 +41,12 @@ import { MinusCircle, PlusCircle, XCircle } from "lucide-react";
 import { ChangeEvent, Fragment, useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-const CreateCompany = () => {
+const EditProfile = () => {
   // ** --- store ---
   const { authUser } = useAuthStore();
+
+  // bring profile data
+  const { data: profile } = useProfileQuery(authUser?.id!);
 
   // ** --- form ---
   const form = useForm<UpsertProfileType>({
@@ -62,11 +66,13 @@ const CreateCompany = () => {
   const imagePreview = form.watch("profilePhoto");
 
   useEffect(() => {
-    form.reset(upsertProfileForm(authUser?.id));
-  }, [form, authUser]);
+    form.reset(upsertProfileForm( authUser?.id, profile));
+  }, [form, authUser,profile]);
 
+  // if (error) throw new ConnectionError("DB Error upserting profile! "+error);
   // ** --- mutations ---
   const { mutate: upsertProfile, isPending } = useUpsertProfileMutation({
+    id: profile?.id,
     reset: form.reset,
     setError: form.setError,
   });
@@ -263,4 +269,4 @@ const CreateCompany = () => {
   }
 };
 
-export default CreateCompany;
+export default EditProfile;
