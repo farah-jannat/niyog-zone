@@ -9,7 +9,7 @@ interface Props {
   subHeading?: string;
   isBtn?: boolean;
   isLoading: boolean;
-  jobs: Job[] | undefined;
+  jobs?: Job[];
   limit?: number;
   error?: Error | null;
 }

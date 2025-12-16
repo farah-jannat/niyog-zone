@@ -1,3 +1,5 @@
+import { applicationSchema,  insertApplicationSchema } from "@/features/application/schemas/create-application.schema";
+import { profileSchema } from "@/features/profile/schemas/profile.schema";
 import { z } from "zod";
 
 // Zod equivalent of the Drizzle Enum
@@ -18,6 +20,8 @@ export const userSchema = userCreateSchema.extend({
   id: z.string().uuid(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  profile: profileSchema.optional(),
+  applications: z.array(applicationSchema).optional(),
 });
 
 // Zod Type derived from the full schema
