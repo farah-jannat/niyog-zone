@@ -1,6 +1,6 @@
 import { upsertProfile } from "@/features/profile/api/mutations.api";
 import { UpsertProfileType } from "@/features/profile/schemas/upsert-profile.schema";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { UseFormReset, UseFormSetError } from "react-hook-form";
 import { toast } from "sonner";
@@ -10,20 +10,24 @@ export interface ApiValidationError {
 }
 
 interface Props {
+  id?: string;
   setError: UseFormSetError<UpsertProfileType>;
   reset: UseFormReset<UpsertProfileType>;
 }
 
 const useUpsertProfileMutation = (props: Props) => {
+  const queryClient = useQueryClient();
   // ** Props
-  const { reset, setError } = props;
+  const { reset, setError, id } = props;
 
   return useMutation({
-    mutationFn: (data: UpsertProfileType) => upsertProfile(data),
+    mutationFn: (data: UpsertProfileType) => upsertProfile(data, id),
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Profile updated successfully");
-      reset();
+      queryClient.invalidateQueries({ queryKey: ["profile",data?.userId] });
+      console.log("profile dta form mutation ", data)
+      // reset();
     },
 
     onError: (error: AxiosError) => {
