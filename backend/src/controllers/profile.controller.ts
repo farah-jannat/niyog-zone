@@ -1,45 +1,84 @@
 import type { Request, Response } from "express";
-import { ConnectionError, uploads } from "@fvoid/shared-lib";
+import { BadRequestError, ConnectionError, uploads } from "@fvoid/shared-lib";
 import { db } from "@/db";
 import { profileTable } from "@/schemas";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { catchError } from "@/utils/catch-error.util";
 import type { UpsertProfileType } from "@/validations/profile.validaiton";
 
 export const upsertProfile = async (req: Request, res: Response) => {
+  const { id } = req.params;
   const formData = req.body as UpsertProfileType;
+  // console.log("form data ", formData);
 
-  const [error, result] = await catchError(
-    db.transaction(async (tx) => {
-      // upload image to cloudinary
-      const uploadResult = await uploads(formData.profilePhoto ?? "");
+  // upload image to cloudinary
+  if (!id) {
+    const uploadResult = await uploads(formData.profilePhoto ?? "");
+    formData.profilePhoto = uploadResult?.secure_url;
 
-      formData.profilePhoto = uploadResult?.secure_url;
+    const [errProfileInsert, [profile]] = await catchError(
+      db.insert(profileTable).values(formData).returning()
+    );
 
-      const [profile] = await tx
-        .insert(profileTable)
-        .values(formData)
-        .onConflictDoUpdate({
-          // 🛑 FIX: The 'target' must be the unique COLUMN (profileTable.userId),
-          // not the value (formData.id). We use userId because a user should
-          // only have one profile, making it a reliable unique key for the upsert.
-          target: profileTable.userId,
-          set: {
-            bio: sql`excluded.bio`,
-            // 🛑 NOTE: I removed 'from' and 'year' as they are not
-            // defined in your profileTable schema.
-            profilePhoto: sql`excluded.profile_photo`,
-            skills: sql`excluded.skills`,
-            updatedAt: new Date(), // It's a good practice to update the timestamp
-          },
-        })
-        .returning();
+    // if (errProfileInsert)
+    //   throw new ConnectionError("Db error inserting profile");
 
-      return profile;
+    if (errProfileInsert)
+      console.log("@@@@@@@@@@@@@@ Db error inserting profile");
+
+    return res.json(profile);
+    // console.log("updated prfile ", res.json(profile))
+    // return profile;
+  }
+
+  const [profileError, oldProfile] = await catchError(
+    db.query.profileTable.findFirst({
+      where: eq(profileTable.id, id),
     })
   );
 
-  if (error) throw new ConnectionError("Error upserting profile!");
+  if (profileError) throw new ConnectionError("Database Error!");
 
-  return res.json({ profile: result });
+  if (formData.profilePhoto !== oldProfile?.profilePhoto) {
+    const uploadResult = await uploads(formData.profilePhoto ?? "");
+    formData.profilePhoto = uploadResult?.secure_url;
+  }
+
+  const [errProfileUpdate, [profile]] = await catchError(
+    db
+      .update(profileTable)
+      .set(formData)
+      .where(eq(profileTable.id, id))
+      .returning()
+  );
+
+  // if (errProfileUpdate)
+  //   throw new ConnectionError("Db error updating profile " + errProfileUpdate);
+
+  if (errProfileUpdate)
+    console.log(
+      "######################3 Db error updating profile " + errProfileUpdate
+    );
+
+  return res.json(profile);
+
+  // if (error) throw new ConnectionError("DB Error upserting profile! "+error);
+
+  // if (error) console.log("DB Error upserting profile! " + error);
+};
+
+export const getProfile = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  console.log("iddd ", id);
+
+  if (!id) throw new BadRequestError("Id not found!");
+
+  const [profileError, profile] = await catchError(
+    db.query.profileTable.findFirst({
+      where: eq(profileTable.userId, id),
+    })
+  );
+
+  if (profileError) throw new ConnectionError("Database Error!");
+  return res.json(profile);
 };
