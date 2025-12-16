@@ -1,17 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { profileUrl } from "@/constants";
+import { User } from "@/features/user/schemas/user.schema";
+import { useAuthStore } from "@/store/use-auth.store";
 import { Pen } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Props {
-  user: User;
+  user?: User;
 }
 
 const BioCard = (props: Props) => {
   const { user } = props;
 
+  // store
+
+  const { authUser } = useAuthStore();
+
+  const router = useRouter();
+
   return (
     <div className="grid py-[68px]  md:grid-cols-2 items-center gap-[0px] md:gap-[44px]  ">
-      <div className="h-[330px]">
+      <div className="h-[330px]] h-auto">
         <img
           // src={user?.profile?.profilePhoto}
           // src={user?.profile?.profilePhoto}
@@ -19,14 +28,17 @@ const BioCard = (props: Props) => {
           alt=""
           className="w-full h-full object-cover rounded-[4px]"
         />
-        {/* <Button
-          // onClick={() => setOpen(true)}
-          variant="outline"
-          className="w-full mt-[10px] bg-[#287992] text-white hover:bg-[#216377] hover:text-white"
+        <Button
+          onClick={() => router.push(`/profiles/edit/${authUser?.id}`)}
+
+          // variant="outline"
+          className="w-full mt-[10px] bg-[#287992] text-white hover:bg-[#216377] hover:text-white cursor-pointer bg-red-900!"
+
         >
-          Edit Profile
+          Edit Profile erer
           <Pen />
-        </Button> */}
+        </Button>
+        
       </div>
       <div className="">
         <div className="flex flex-col my-[68px] ">
