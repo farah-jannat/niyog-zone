@@ -7,10 +7,11 @@ import JobDetailsTab from "@/features/job/components/job-details-tab";
 import RecruiterJobList from "@/features/job/components/recruiter-job-list";
 import { useUserQuery } from "@/features/user/queries/use-user.query";
 import useTabs from "@/hooks/useTabs";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 const Profile = () => {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter()
 
   // ** --- Utility Hook ---
   const { currentTabIndex, handleTabIndex, tabs } = useTabs({
@@ -49,6 +50,7 @@ const Profile = () => {
       <Container className="py-7">
         {currentTabIndex === 0 && <RecruiterJobList recruiterId={user?.id} />}
         {currentTabIndex === 1 && <p>current working on this</p>}
+        <button onClick={()=>router.push(`/companies/create`)} className="cursor-pointer">Create company</button>
         {data?.map((item, idx) => (
           <div key={idx}>
             <p>{item.name}</p>
