@@ -184,3 +184,17 @@ export const createCompany = async (req: Request, res: Response) => {
 
   return res.json(company);
 };
+
+
+export const deleteCompany = async(req:Request, res:Response)=>{
+
+
+ const {id} = req.params
+ console.log("id ##########3", id)
+ const [companyError, companyId] = await catchError(
+  db.delete(companyTable).where(eq(companyTable.id, id!))
+ )
+
+  if (companyError) throw new ConnectionError("Error deleting company!");
+  return res.json(companyId)
+}
