@@ -6,3 +6,8 @@ export const createCompany = async (data: InsertCompanyType) => {
   const response = await company__axios.post<Company>(`/`, data);
   return response.data;
 };
+
+export const deleteCompany = async(id:string)=>{
+  const response = await company__axios.delete<Company>(`/${id}`)
+  return response.data
+}
