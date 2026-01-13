@@ -10,7 +10,7 @@ import JobDetailsTab from "@/features/job/components/job-details-tab";
 import RecruiterJobList from "@/features/job/components/recruiter-job-list";
 import { useUserQuery } from "@/features/user/queries/use-user.query";
 import useTabs from "@/hooks/useTabs";
-import { Delete } from "lucide-react";
+import { Delete, Edit2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 const Profile = () => {
@@ -95,9 +95,10 @@ const Profile = () => {
               Create company
             </button>
             {companies?.map((company, idx) => (
-              <div key={idx}>
+              <div key={idx} className="flex gap-5 items-center">
                 <p>{company.name}</p>
-                <button onClick={() => deleteCompany(company?.id)}>
+                <span className="cursor-pointer"><Edit2 size={14} onClick={()=> router.push(`/companies/edit/${company?.id}`)}/></span>
+                <button className="cursor-pointer" onClick={() => deleteCompany(company?.id)}>
                   {" "}
                   <Delete />
                 </button>
