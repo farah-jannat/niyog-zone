@@ -1,5 +1,7 @@
 import { Job } from "@/features/job/schemas/job.schema";
 import { formatDistanceToNow } from "date-fns";
+import { Edit2Icon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Props {
   jobs?: Job[];
@@ -7,6 +9,8 @@ interface Props {
 
 const JobTable = (props: Props) => {
   const { jobs } = props;
+ const router = useRouter()
+
 
   const columns = [
     {
@@ -49,7 +53,7 @@ const JobTable = (props: Props) => {
         <tbody>
           {jobs?.map((job) => (
             <tr key={job.id}>
-              <td className="font-roboto text-sm text-[#3E3F47] text-center h-19 whitespace-nowrap">
+              <td className="font-roboto text-sm text-[#3E3F47] h-19 whitespace-nowrap">
                 {job.title}
               </td>
 
@@ -63,6 +67,7 @@ const JobTable = (props: Props) => {
               </td>
               {/* <td className="font-roboto text-sm text-[#3E3F47] text-center  h-20">
               </td> */}
+              <td className="cursor-pointer" onClick={()=> router.push(`/jobs/edit/${job?.id}`)}> <Edit2Icon size={14}/> </td>
             </tr>
           ))}
         </tbody>

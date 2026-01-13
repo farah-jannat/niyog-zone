@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+const requirementSchema = z.object({
+  title: z.string().min(1, { message: "Title can't be empty" }),
+});
+
 export const JobSchema = z.object({
   id: z
     .string()
@@ -8,10 +12,12 @@ export const JobSchema = z.object({
   title: z.string().max(255).min(1).describe("Job title."),
   category: z.string().min(1).describe("job category."),
   description: z.string().min(1).describe("Detailed job description."),
-  requirements: z
-    .array(z.string())
-    .nullable()
-    .describe("List of job requirements."),
+  // requirements: z
+  //   .array(z.string())
+  //   .nullable()
+  //   .describe("List of job requirements."),
+
+  requirements: z.array(requirementSchema).optional(),
   salary: z.number().int().positive().describe("Job salary (integer)."),
   experience: z
     .string()
