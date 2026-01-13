@@ -10,7 +10,7 @@ export const updateJobForm = (job?:Job): UpdateJobType => {
 
   const defaultJobForm: UpdateJobType = {
 
-    id: job?.id,
+    id: job?.id!,
     companyId: job?.companyId ?? "",
     title: job?.title ?? "",
     description: job?.description ?? "",

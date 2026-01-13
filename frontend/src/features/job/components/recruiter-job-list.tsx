@@ -21,12 +21,12 @@ const RecruiterJobList = (props: Props) => {
 
   return <JobTable jobs={data?.jobs} />;
 
-  return (
-    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-      {data && data?.jobs?.length <= 0 && <span>No Job Available</span>}
-      {data && data?.jobs.map((job) => <JobCard key={job.id} job={job} />)}
-    </div>
-  );
+  // return (
+  //   <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+  //     {data && data?.jobs?.length <= 0 && <span>No Job Available</span>}
+  //     {data && data?.jobs.map((job) => <JobCard key={job.id} job={job} />)}
+  //   </div>
+  // );
 };
 
 export default RecruiterJobList;
