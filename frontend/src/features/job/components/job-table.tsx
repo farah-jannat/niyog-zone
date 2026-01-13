@@ -1,16 +1,19 @@
+import { deleteJob } from "@/features/job/api/mutations.api";
+import useDeleteJobMutation from "@/features/job/mutations/use-delete-job.mutation";
 import { Job } from "@/features/job/schemas/job.schema";
 import { formatDistanceToNow } from "date-fns";
-import { Edit2Icon } from "lucide-react";
+import { DeleteIcon, Edit2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface Props {
   jobs?: Job[];
+  
 }
 
 const JobTable = (props: Props) => {
   const { jobs } = props;
- const router = useRouter()
-
+  // console.log("recruiid in jobtable", recruiterId)
+  const router = useRouter();
 
   const columns = [
     {
@@ -30,9 +33,11 @@ const JobTable = (props: Props) => {
     // },
   ];
 
+  console.log("jobs is ", jobs);
 
-  console.log("jobs is ", jobs)
+  // *--- mutation ---
 
+  const {mutate:deleteJob}  = useDeleteJobMutation()
 
   return (
     <div className="overflow-x-auto w-full">
@@ -67,7 +72,22 @@ const JobTable = (props: Props) => {
               </td>
               {/* <td className="font-roboto text-sm text-[#3E3F47] text-center  h-20">
               </td> */}
-              <td className="cursor-pointer" onClick={()=> router.push(`/jobs/edit/${job?.id}`)}> <Edit2Icon size={14}/> </td>
+              <td
+                className="cursor-pointer"
+                onClick={() => router.push(`/jobs/edit/${job?.id}`)}
+              >
+                {" "}
+                <Edit2Icon size={14} />{" "}
+              </td>
+
+              <td
+                className="cursor-pointer"
+                onClick={()=>deleteJob(job?.id)}
+
+              >
+                {" "}
+                <DeleteIcon size={16} />{" "}
+              </td>
             </tr>
           ))}
         </tbody>
