@@ -1,7 +1,10 @@
 import { db } from "@/db";
 import { jobTable } from "@/schemas";
 import { catchError } from "@/utils/catch-error.util";
-import type { InsertJobInput } from "@/validations/job.validation";
+import type {
+  InsertJobInput,
+  UpdateJobInput,
+} from "@/validations/job.validation";
 import {
   BadRequestError,
   ConnectionError,
@@ -42,18 +45,6 @@ export const getJobs = async (req: Request, res: Response) => {
   if (parsedVacancy !== undefined && !isNaN(parsedVacancy)) {
     conditions.push(gte(jobTable.vacancy, parsedVacancy));
   }
-
-  // if (parsedSalary !== undefined && !isNaN(parsedSalary)) {
-  //   conditions.push(gte(jobTable.salary, parsedSalary));
-  // }
-
-  // if (parsedMaxPrice !== undefined && !isNaN(parsedMaxPrice)) {
-  //   conditions.push(lte(jobTable.price, parsedMaxPrice));
-  // }
-
-  // if (typeof industry === "string" && industry.length > 0) {
-  //   conditions.push(eq(jobTable.jobType, deliveryTime as string));
-  // }
 
   if (typeof category === "string" && category.length > 0) {
     conditions.push(eq(jobTable.category, category));
@@ -97,18 +88,6 @@ export const getJobs = async (req: Request, res: Response) => {
   );
 
   const totalCount = totalCountResult?.count || 0;
-
-  // 2. Get paginated jobs (applying the same 'where' clause, then limit and offset)
-  // const jobs = await handleAsync(
-  //   db
-  //     .select()
-  //     .from(jobTable)
-  //     .where(whereClause)
-  //     .limit(parsedLimit)
-  //     .offset(offset)
-  //     .orderBy(jobTable.id)
-
-  // );
 
   const jobs = await handleAsync(
     db.query.jobTable.findMany({
@@ -155,16 +134,6 @@ export const getLatestJobs = async (req: Request, res: Response) => {
   if (errTotal) throw new BadRequestError("Something went wrong");
 
   const totalCount = totalCountResult ? totalCountResult[0]?.count : 0;
-
-  // 2. Get paginated jobs (applying the same 'where' clause, then limit and offset)
-  // const [errJobs, jobs] = await catchError(
-  //   db
-  //     .select()
-  //     .from(jobTable)
-  //     .limit(parsedLimit)
-  //     .offset(offset)
-  //     .orderBy(desc(jobTable.createdAt))
-  // );
 
   const [errJobs, jobs] = await catchError(
     db.query.jobTable.findMany({
@@ -246,18 +215,6 @@ export const getCompanyJobs = async (req: Request, res: Response) => {
   if (parsedVacancy !== undefined && !isNaN(parsedVacancy)) {
     conditions.push(gte(jobTable.vacancy, parsedVacancy));
   }
-
-  // if (parsedSalary !== undefined && !isNaN(parsedSalary)) {
-  //   conditions.push(gte(jobTable.salary, parsedSalary));
-  // }
-
-  // if (parsedMaxPrice !== undefined && !isNaN(parsedMaxPrice)) {
-  //   conditions.push(lte(jobTable.price, parsedMaxPrice));
-  // }
-
-  // if (typeof industry === "string" && industry.length > 0) {
-  //   conditions.push(eq(jobTable.jobType, deliveryTime as string));
-  // }
 
   if (typeof category === "string" && category.length > 0) {
     conditions.push(eq(jobTable.category, category));
@@ -359,18 +316,6 @@ export const getRecruiterJobs = async (req: Request, res: Response) => {
   if (parsedVacancy !== undefined && !isNaN(parsedVacancy)) {
     conditions.push(gte(jobTable.vacancy, parsedVacancy));
   }
-
-  // if (parsedSalary !== undefined && !isNaN(parsedSalary)) {
-  //   conditions.push(gte(jobTable.salary, parsedSalary));
-  // }
-
-  // if (parsedMaxPrice !== undefined && !isNaN(parsedMaxPrice)) {
-  //   conditions.push(lte(jobTable.price, parsedMaxPrice));
-  // }
-
-  // if (typeof industry === "string" && industry.length > 0) {
-  //   conditions.push(eq(jobTable.jobType, deliveryTime as string));
-  // }
 
   if (typeof category === "string" && category.length > 0) {
     conditions.push(eq(jobTable.category, category));
@@ -556,130 +501,27 @@ export const createJob = async (req: Request, res: Response) => {
   return res.json(company);
 };
 
-// import { Job } from "../models/job.model.js";
+export const updateJob = async (req: Request, res: Response) => {
+  const formData = req.body as UpdateJobInput;
 
-// export const postJob = async (req, res) => {
-//   try {
-//     const {
-//       title,
-//       description,
-//       requirements,
-//       salary,
-//       location,
-//       jobType,
-//       experience,
-//       position,
-//       companyId,
-//     } = req.body;
-//     const userId = req.id;
+  const [jobError, oldJob] = await catchError(
+    db.query.jobTable.findFirst({
+      where: eq(jobTable.id, formData.id),
+    })
+  );
+  if (jobError) throw new ConnectionError("Database Error!");
 
-//     if (
-//       !title ||
-//       !description ||
-//       !requirements ||
-//       !salary ||
-//       !location ||
-//       !jobType ||
-//       !experience ||
-//       !position ||
-//       !companyId
-//     ) {
-//       return res.status(400).json({
-//         message: "Somethin is missing.",
-//         success: false,
-//       });
-//     }
-//     const job = await Job.create({
-//       title,
-//       description,
-//       requirements: requirements.split(","),
-//       salary: Number(salary),
-//       location,
-//       jobType,
-//       experienceLevel: experience,
-//       position,
-//       company: companyId,
-//       created_by: userId,
-//     });
-//     return res.status(201).json({
-//       message: "New job created successfully.",
-//       job,
-//       success: true,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+  const [errJobUpdate, [job]] = await catchError(
+    db
+      .update(jobTable)
+      .set(formData)
+      .where(eq(jobTable.id, formData.id))
+      .returning()
+  );
 
-// // for students or applicants
-
-// export const getAllJobs = async (req, res) => {
-//   try {
-//     const keyword = req.query.keyword || "";
-//     const query = {
-//       $or: [
-//         { title: { $regex: keyword, $options: "i" } },
-//         { description: { $regex: keyword, $options: "i" } },
-//       ],
-//     };
-//     const jobs = await Job.find(query)
-//       .populate({
-//         path: "company",
-//       })
-//       .sort({ createdAt: -1 });
-//     if (!jobs) {
-//       return res.status(404).json({
-//         message: "Jobs not found.",
-//         success: false,
-//       });
-//     }
-//     return res.status(200).json({
-//       jobs,
-//       success: true,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// export const getJobById = async (req, res) => {
-//   try {
-//     const jobId = req.params.id;
-//     const job = await Job.findById(jobId).populate({
-//       path: "applications",
-//     });
-
-//     if (!job) {
-//       return res.status(404).json({
-//         message: "Jobs not found.",
-//         success: false,
-//       });
-//     }
-//     return res.status(200).json({ job, success: true });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// // how many jobs admin created till now
-// export const getAdminJobs = async (req, res) => {
-//   try {
-//     const adminId = req.id;
-//     const jobs = await Job.find({ created_by: adminId }).populate({
-//       path: "company",
-//       createdAt: -1,
-//     });
-//     if (!jobs) {
-//       return res.status(404).json({
-//         message: "Jobs not found.",
-//         success: false,
-//       });
-//     }
-//     return res.status(200).json({
-//       jobs,
-//       success: true,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+  if (errJobUpdate)
+    console.log(
+      "######################3 Db error updating jobs " + errJobUpdate
+    );
+  return res.json(job);
+};

@@ -15,7 +15,7 @@ import { useParams, useRouter } from "next/navigation";
 
 const Profile = () => {
   const { id } = useParams<{ id: string }>();
-  const router = useRouter()
+  const router = useRouter();
 
   // ** --- Utility Hook ---
   const { currentTabIndex, handleTabIndex, tabs } = useTabs({
@@ -31,13 +31,17 @@ const Profile = () => {
     // ""
   );
   console.log("user id here", id);
-  const { isLoading, data:companies } = useRecruiterCompaniesQuery({ recruiterId: id });
+  const { isLoading, data: companies } = useRecruiterCompaniesQuery({
+    recruiterId: id,
+  });
   // if (isLoading) return "hello loading";
 
   // if (isuserLoading) return null;
-  
+
   // ** --- mutations  ---
-  const {mutate:deleteCompany, isPending} = useDeleteCompanyMutation({recruiterId: id})
+  const { mutate: deleteCompany, isPending } = useDeleteCompanyMutation({
+    recruiterId: id,
+  });
 
   return (
     <div className="bg-[#F5F6FD]">
@@ -53,16 +57,54 @@ const Profile = () => {
         />
       </Container>
 
-      <Container className="py-7">
-        {currentTabIndex === 0 && <RecruiterJobList recruiterId={user?.id} />}
+      <Container className="py-7 ">
+        {/* {currentTabIndex === 0 && <RecruiterJobList recruiterId={user?.id} />}
         {currentTabIndex === 1 && <p>current working on this</p>}
-        <button onClick={()=>router.push(`/companies/create`)} className="cursor-pointer">Create company</button>
+        <button
+          onClick={() => router.push(`/companies/create`)}
+          className="cursor-pointer"
+        >
+          Create company
+        </button>
         {companies?.map((company, idx) => (
           <div key={idx}>
             <p>{company.name}</p>
-         <button onClick={()=>deleteCompany(company?.id)}> <Delete/></button> 
+            <button onClick={() => deleteCompany(company?.id)}>
+              {" "}
+              <Delete />
+            </button>
           </div>
-        ))}
+        ))} */}
+
+        {currentTabIndex === 0 ? (
+          <>
+            <button className="px-[10px] py-[5px] text-white bg-red-900 rounded-[4px] cursor-pointer hover:bg-red-950"
+           onClick={()=> router.push(`/jobs/create`)} 
+            >
+
+              create job
+            </button>
+            <RecruiterJobList recruiterId={user?.id} />
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => router.push(`/companies/create`)}
+              className="cursor-pointer"
+            >
+              Create company
+            </button>
+            {companies?.map((company, idx) => (
+              <div key={idx}>
+                <p>{company.name}</p>
+                <button onClick={() => deleteCompany(company?.id)}>
+                  {" "}
+                  <Delete />
+                </button>
+              </div>
+            ))}
+          </>
+        )}
       </Container>
 
       {/* <Container className="pt-[18px] pb-[72px] bg-[#F5F6FD]">

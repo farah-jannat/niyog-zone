@@ -7,6 +7,7 @@ import {
   getLatestJobs,
   getRecruiterJobs,
   getSimilarJobs,
+  updateJob,
 } from "@/controllers/job.controller";
 import { verifyClientToken } from "@/middlewares/verify-client-token.middleware";
 import { config } from "@/config";
@@ -22,6 +23,7 @@ jobRouter.get("/:id", getJob);
 jobRouter.get("/", getJobs);
 
 jobRouter.post("/", verifyClientToken(config.JWT_TOKEN), createJob);
+jobRouter.put("/", updateJob)
 // jobRouter.get("/jobs/:id", getJobById);
 // jobRouter.get("/jobs/admin/:id", isAuthenticated, getAdminJobs);
 
