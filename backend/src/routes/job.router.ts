@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createJob,
+  deleteJob,
   getCompanyJobs,
   getJob,
   getJobs,
@@ -24,6 +25,7 @@ jobRouter.get("/", getJobs);
 
 jobRouter.post("/", verifyClientToken(config.JWT_TOKEN), createJob);
 jobRouter.put("/", updateJob)
+jobRouter.delete("/:id", deleteJob)
 // jobRouter.get("/jobs/:id", getJobById);
 // jobRouter.get("/jobs/admin/:id", isAuthenticated, getAdminJobs);
 

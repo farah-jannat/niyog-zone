@@ -525,3 +525,13 @@ export const updateJob = async (req: Request, res: Response) => {
     );
   return res.json(job);
 };
+
+export const deleteJob = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const [jobError, jobId] = await catchError(
+    db.delete(jobTable).where(eq(jobTable.id, id!))
+  );
+  if (jobError) throw new ConnectionError("Error deleting job!")
+    return res.json(jobId)
+};
