@@ -15,3 +15,8 @@ export const updateJob = async (data:UpdateJobType)=>{
   return response.data;
 }
 
+export const deleteJob = async(id:string)=>{
+  const response = await job__axios.delete<Job>(`/${id}`)
+  return response.data
+}
+
